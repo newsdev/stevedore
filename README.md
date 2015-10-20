@@ -32,7 +32,7 @@ Command line option:
 
 1. Run the command-line app with arguments for (the location of your app)
 
-`bundle exec ruby uploader/upload_to_elasticsearch.rb --index=foss-test --host=http://12.2.34.56:80 s3://int-data-dumps/foss-test-data`
+`bundle exec ruby uploader/upload_to_elasticsearch.rb --index=foss-test --host=http://12.3.45.67:80 s3://int-data-dumps/foss-test-data`
 
 --frontend-location (s3:// only)
 
