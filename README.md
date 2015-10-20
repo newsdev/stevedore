@@ -127,24 +127,23 @@ Questions?
 ==========
 Check out the [GitHub issues](issues) or these Theoretically Asked Questions:
 
-Why is this file so big?
-------------------------
+####Why is this file so big?
+
 ☕ Java. ☕
 
 (And the fact that we're packaging JRuby, ElasticSearch, etc.)
 
-Why is demo mode so slow?
---------------------------
+####Why is demo mode so slow?
+
 
 Because it's running Elasticsearch from inside the same Java process as the app itself. It's probably faster if you set up your own separate Elasticsearch server.
 
-Why does this exist? Shouldn't you use DocumentCloud or Overview or Kibana or ________?
----------------------------------------------------------------------------------------
+####Why does this exist? Shouldn't you use DocumentCloud or Overview or Kibana or ________?
 
 Great question! Those are all great tools made by great people, but they solve a different problem than Stevedore. What problem does Stevedore aim to solve? I don't like doing 'training' for software. I think it's pathological and teaches dependency instead of self-sufficiency. Training for how to use Stevedore's search engines (as opposed to the uploader) should be as simple as *Go to this URL, and then type in that box*. Stevedore is designed to make easy-to-use search engines.
 
-Has this been used in real life?
---------------------------------
+####Has this been used in real life?
+
 
 Yeah, we use this code all the time at The New York Times. Reporters use the Stevedore frontend to search emails from politicians, scraped websites and all sorts of other document sets.
 
