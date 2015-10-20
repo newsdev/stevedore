@@ -8,7 +8,7 @@ And, customize the interface to easily make new document-specific custom formats
 I just want to make a search engine!
 ====================================
 
-Do you have all the documents in a folder (or a zip archive) somewhere? Then you're ready to go. Just [download the last release](https://github.com/newsdev/stevedore/releases) then double-click to run it.
+Do you have all the documents in a folder (or a zip archive) somewhere? Then you're ready to go. Just [download the last release](releases) then double-click to run it.
 
 Be sure to have Java 7 installed.
 
@@ -16,6 +16,8 @@ Stevedore can make two types of search engines:
 
 - *Demo search engine* that only your computer can access.
 - *Production search engine* that other computers can access. If you choose this option, you need to have a separate ElasticSearch server to host the search index and an Amazon S3 bucket to host the frontend. Stevedore has no separate security, besides the security of your Amazon S3 bucket and your ElasticSearch servers policies. Anyone who can access the S3 bucket and the ElasticSearch server can use your search engine, so be sure to set your access policies correctly. *How to properly secure your ElasticSearch server is outside the scope of this README*
+
+![An example of a search page.](/screenshots/blob_search_form_annotated.png?raw=true "An example of a search page.")
 
 GUI option:
 -----------
@@ -54,6 +56,8 @@ How to set these up _securely_ is outside the scope of this document. (Unless so
 Customizing Stevedore with New Templates
 ========================================
 
+![The Email template](/screenshots/email_search_form.png?raw=true)
+
 ### Intro to Templates
 
 Each template must contain four distinct files. Whether inheritance will be possible is TBD.
@@ -70,7 +74,7 @@ Each template must contain four distinct files. Whether inheritance will be poss
 3. Right now, yes, you need to write all three templates and the query_builder JS file.
 3. Pick a name for your template file. All of your templates will use that name as their entire filename (except for the extension, either `.template`, `.js` or `.css`.)
 3. Create the files themselves as `templates/<template_type>/<template_name>.<extension>`, e.g. `templates/list_view/blogpost.template`
-3. Write template files for detail_view, list_view and search_form. Copy/paste will be your friend (until there's [a DSL for creating these](https://github.com/newsdev/stevedore/issues/20)) to make styles easy, as well as making sure the `detail_view` modal works well. (Optionally you can add a CSS file too.)
+3. Write template files for detail_view, list_view and search_form. Copy/paste will be your friend (until there's [a DSL for creating these](issues/20)) to make styles easy, as well as making sure the `detail_view` modal works well. (Optionally you can add a CSS file too.)
 8. Write a query_builder. This is a JavaScript file that manages transforming your `search_form`'s HTML into a Backbone object representing a search (e.g. so pagination works, etc.) in the `likeActuallyCreate` method and transforming that object into an ElasticSearch query (`toQuery`). The examples provided will be your guide.
 9. The query_builder is also involved in  serializing/deserializing the query fields into a URL (and saved search format). All you have to do is specify the fields, in an array, in a sensical-ish order in the `fieldOrder` method.
 4. Your query_builder's `likeActuallyCreate` method should, referring to the search template, populate the search Backbone object from the values of the form fields in the search from (which should be now rendered onto the page, but which ought to cope with null values.)
@@ -83,11 +87,19 @@ Stevedore consists of two main pieces:
   - an ingestion GUI and script to process your documents -- emails, powerpoints, whatever -- and send them to ElasticSearch.
   - a website frontend/framework for actually searching ElasticSearch. If you choose to deploy this frontend to the web, you can easily write custom templates for searching with custom fields.
 
-The ingestion script is [uploader/upload.rb](https://github.com/newsdev/stevedore/blob/master/uploader/upload.rb). The ingestion GUI is the rest of the `uploader/` folder, along with `config.ru`.
+The ingestion script is [uploader/upload.rb](blob/master/uploader/upload.rb). The ingestion GUI is the rest of the `uploader/` folder, along with `config.ru`.
 
-The frontend framework is all JavaScript and HTML. No backend (besides vanilla ElasticSearch). You run it (in development) by running `rackup` in the root of this project. In production, put the root of this project somewhere where it gets served on the web -- like Amazon S3 or Nginx. (The files? [search.html]()https://github.com/newsdev/stevedore/blob/master/search.html, [index.html]()https://github.com/newsdev/stevedore/blob/master/index.html, [app/](https://github.com/newsdev/stevedore/tree/master/app), [lib/](https://github.com/newsdev/stevedore/tree/master/lib) and [templates/](https://github.com/newsdev/stevedore/tree/master/templates))
+The frontend framework is all JavaScript and HTML. No backend (besides vanilla ElasticSearch). You run it (in development) by running `rackup` in the root of this project. In production, put the root of this project somewhere where it gets served on the web -- like Amazon S3 or Nginx. (The files? [search.html]()blob/master/search.html, [index.html]()blob/master/index.html, [app/](tree/master/app), [lib/](tree/master/lib) and [templates/](tree/master/templates))
 
 The `app/` folder contains the framework: a set of common components (frames, sort of) that render project-specific templates (in `templates/`) to handle variation in search app UIs. The common interface includes a place for search forms, a list view and detail view -- as well as an index page (`index.html`) for listing all your search engines. `lib/` is supporting libraries like JQuery.
+
+The results list looks like this:
+
+![An example of a results page.](/screenshots/blob_results.png?raw=true "An example of a results page.")
+
+And detail pages, for each result, look like this:
+
+![An example of a list detail page.](/screenshots/detail_view.png?raw=true "An example of a list detail page.")
 
 Here's the workflow we've envisioned for this:
 
@@ -113,7 +125,7 @@ warble jar # to build the stevedore.jar file
 
 Questions?
 ==========
-Check out the [GitHub issues](https://github.com/newsdev/stevedore/issues) or these Theoretically Asked Questions:
+Check out the [GitHub issues](issues) or these Theoretically Asked Questions:
 
 Why is this file so big?
 ------------------------
