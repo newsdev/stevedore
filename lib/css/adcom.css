@@ -1,0 +1,13 @@
+.sort-control:hover {
+  cursor: pointer;
+}
+.sort-control.sort-descending::after {
+  padding-left: 4px;
+  font-size: .8em;
+  content: "▼";
+}
+.sort-control.sort-ascending::after {
+  padding-left: 4px;
+  font-size: .8em;
+  content: "▲";
+}
