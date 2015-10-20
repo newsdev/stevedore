@@ -3,7 +3,7 @@ Stevedore, an ElasticSearch Frontend & Ingestion Engine
 
 From a bunch of documents to an easy-to-use search engine for emails, websites or just about anything. 
 
-And, customize the interface to easily make new document-specific custom formats for searching and exploring. To deploy to your newsroom, just add your own standalone ElasticSearch server; Stevedore's frontend is all-frontend.
+And, customize the interface to easily make new document-specific custom formats for searching and exploring. To deploy to your newsroom, just add your own standalone ElasticSearch server; Stevedore's frontend framework is all-frontend.
 
 I just want to make a search engine!
 ====================================
@@ -36,6 +36,21 @@ Command line option:
 
 --frontend-location (s3:// only)
 
+
+Installation
+============
+
+1. Be sure you have Java 1.7 or newer installed on your local machine.
+2. Download and double-click the Jar file. Wait a few seconds, then a webpage with instructions should open at [http://127.0.0.1:8080](http://127.0.0.1:8080)
+
+If you want other people to use the search engine you create (that is, to deploy Stevedore to a production environment), you also need:
+
+3. an Elasticsearch server running somewhere -- not on your computer.
+4. an Amazon S3 bucket for the frontend and your files to go to. (If you have sensitive documents, you could deploy Stevedore's files to a local HTTP server, so the sensitive documents don't go into the cloud.)
+
+How to set these up _securely_ is outside the scope of this document. (Unless someone else wants to write instructions and submit a pull request.)
+
+
 Customizing Stevedore with New Templates
 ========================================
 
@@ -61,39 +76,24 @@ Each template must contain four distinct files. Whether inheritance will be poss
 4. Your query_builder's `likeActuallyCreate` method should, referring to the search template, populate the search Backbone object from the values of the form fields in the search from (which should be now rendered onto the page, but which ought to cope with null values.)
 5. Your query_builder's `toQuery` method will require some ElasticSearch knowledge. Follow the examples. :)
 
-
 Architecture & Theory
 ---------------------
 
 Stevedore consists of two main pieces:
-  - an ingestion script to process your documents -- emails, powerpoints, whatever -- and send them to ElasticSearch.
-  - a website frontend for actually searching ElasticSearch. If you choose to deploy this frontend to the web, you can easily write custom templates for searching.
+  - an ingestion GUI and script to process your documents -- emails, powerpoints, whatever -- and send them to ElasticSearch.
+  - a website frontend/framework for actually searching ElasticSearch. If you choose to deploy this frontend to the web, you can easily write custom templates for searching with custom fields.
 
+The ingestion script is [uploader/upload.rb](https://github.com/newsdev/stevedore/blob/master/uploader/upload.rb). The ingestion GUI is the rest of the `uploader/` folder, along with `config.ru`.
 
-The frontend is all JavaScript. No backend (besides vanilla ElasticSearch). You run it (in development) by running `rackup` in the root of this project. In production, you start serving nginx from this root of the project.
+The frontend framework is all JavaScript and HTML. No backend (besides vanilla ElasticSearch). You run it (in development) by running `rackup` in the root of this project. In production, put the root of this project somewhere where it gets served on the web -- like Amazon S3 or Nginx. (The files? [search.html]()https://github.com/newsdev/stevedore/blob/master/search.html, [index.html]()https://github.com/newsdev/stevedore/blob/master/index.html, [app/](https://github.com/newsdev/stevedore/tree/master/app), [lib/](https://github.com/newsdev/stevedore/tree/master/lib) and [templates/](https://github.com/newsdev/stevedore/tree/master/templates))
 
-I hate the "You have to have a watcher task running in the background" or "You have to run some obscure script" model of development -- it seems like a ridiculous antipattern.
-
-The `app/` folder consists of a set of common components (frames, sort of) that render project-specific templates (in `templates/`) to handle variation in search app UIs. The common interface includes a place for search forms, a list view and detail view -- as well as an index page (`index.html`) for listing all your search engines.
+The `app/` folder contains the framework: a set of common components (frames, sort of) that render project-specific templates (in `templates/`) to handle variation in search app UIs. The common interface includes a place for search forms, a list view and detail view -- as well as an index page (`index.html`) for listing all your search engines. `lib/` is supporting libraries like JQuery.
 
 Here's the workflow we've envisioned for this:
 
-  Sometimes we're a bit blindsided by a document dump. That's the way it is. This tool has two goals: To easily stand up a generic, workable search tool quickly; and to, when necessary, tweak the tool for highlight project-specific fields or priorities. A generic email-search template is not sufficient: in one case, the focus may be on searching emails by who they're addressed to, so the To: search field should be foregrounded; in another, the focus may be on searching the Subject: fields, and so that ought to be foregrounded. Copying, pasting and modifying the HTML of a template seems to be the easiest way to do this -- in an environment where a person who's minimally aware of this app config can do it.
+  Sometimes we're a bit blindsided by a document dump. This tool has two goals: To easily stand up a generic, workable search tool quickly; and to, when necessary, tweak the tool for highlight project-specific fields or priorities. A generic email-search template is not sufficient: in one case, the focus may be on searching emails by who they're addressed to, so the To: search field should be foregrounded; in another, the focus may be on searching the Subject: fields, and so that ought to be foregrounded. Copying, pasting and modifying the HTML of a template seems to be the easiest way to do this -- in an environment where a person who's minimally aware of this app config can do it.
 
 Another, separate design goal is to use the URL as a config store: my-stevedore-site.my-company.local/jeb searches Jeb Bush emails on production, whatevertheappurlis.my-stevedore-site.my-company.local/hrc searches Hillary Clinton emails on production; 127.0.0.1:8080/jeb searches Jeb Bush emails using the local search app.
-
-Installation
-============
-
-1. Be sure you have Java 1.7 or newer installed on your local machine.
-2. Download and double-click the Jar file. Wait a few seconds, then a webpage with instructions should open at [http://127.0.0.1:8080](http://127.0.0.1:8080)
-
-If you want other people to use the search engine you create (that is, to deploy Stevedore to a production environment), you also need:
-
-3. an Elasticsearch server running somewhere -- not on your computer.
-4. an Amazon S3 bucket for the frontend and your files to go to. (If you have sensitive documents, you could deploy Stevedore's files to a local HTTP server, so the sensitive documents don't go into the cloud.)
-
-How to set these up _securely_ is outside the scope of this document. (Unless someone else wants to write instructions and submit a pull request.)
 
 Development
 ===========
