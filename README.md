@@ -125,7 +125,7 @@ warble jar # to build the stevedore.jar file
 
 Questions?
 ==========
-Check out the [GitHub issues](issues) or these Theoretically Asked Questions:
+Check out the [GitHub issues](/issues) or these Theoretically Asked Questions:
 
 ####Why is this file so big?
 
