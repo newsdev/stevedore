@@ -131,6 +131,11 @@ Why does this exist? Shouldn't you use DocumentCloud or Overview or Kibana or __
 
 Great question! Those are all great tools made by great people, but they solve a different problem than Stevedore. What problem does Stevedore aim to solve? I don't like doing 'training' for software. I think it's pathological and teaches dependency instead of self-sufficiency. Training for how to use Stevedore's search engines (as opposed to the uploader) should be as simple as *Go to this URL, and then type in that box*. Stevedore is designed to make easy-to-use search engines.
 
+Has this been used in real life?
+--------------------------------
+
+Yeah, we use this code all the time at The New York Times. Reporters use the Stevedore frontend to search emails from politicians, scraped websites and all sorts of other document sets.
+
 Want to contribute?
 ===================
 You can help by:
