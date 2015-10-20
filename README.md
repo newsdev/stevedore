@@ -125,7 +125,7 @@ warble jar # to build the stevedore.jar file
 
 Questions?
 ==========
-Check out the [GitHub issues](/issues) or these Theoretically Asked Questions:
+Check out the [GitHub issues](https://github.com/newsdev/stevedore/issues) or these Theoretically Asked Questions:
 
 ####Why is this file so big?
 
@@ -154,6 +154,6 @@ You can help by:
 1. Reporting a bug.
 2. Adding or editing documentation.
 3. Contributing code via a Pull Request from ideas, e.g. your templates, if they're general use.
-4. Fixing bugs in the issues section.
+4. Fixing bugs in the [issues section](https://github.com/newsdev/stevedore/issues).
 5. Telling your friends if Stevedore might be useful to them.
-6. Helping other people in the issues section if you know how to fix the problem their experiencing.
+6. Helping other people in the [issues section](https://github.com/newsdev/stevedore/issues) if you know how to fix the problem their experiencing.
