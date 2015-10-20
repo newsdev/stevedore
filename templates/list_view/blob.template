@@ -1,0 +1,5 @@
+<h4 class="blob-name"><a class="preview" href="#/blob/{{= id }}">
+{{= file.title.length ? file.title : "Untitled Document: " + human_id }}
+</a></h4>
+
+<p>{{= highlighted.snippets || (typeof analyzed.body !== 'undefined' ? (analyzed.body == analyzed.body.substr(0, 500) ? analyzed.body : analyzed.body.substr(0, 500) + ' ...') : '') }}</p>

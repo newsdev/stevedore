@@ -1,0 +1,146 @@
+<fieldset>
+
+  <div id="basic-options">
+    <div class="row panel">
+      <div class="form-input">
+        <div class="form-group">
+          <h5 class="form-subhed basic">Full text</h5>
+          <div class="col-sm-12">
+              <div class="control-input">
+                <input name="search" id="search" class="form-control" placeholder="Your query..." value="{{= search.query_string.replace(/\"/g, "&quot;") }}" type="text">
+              </div>
+          </div> 
+        </div>
+      </div>
+      <div class="form-notes">
+        You may use familiar search operators like:
+        <ul>
+          <li><span style="font-family: monospace;">"quotes for phrases to appear together"</span></li>
+          <li>a minus sign, e.g. <span style="font-family: monospace;">-irrelevant</span> to exclude documents with a given word.</li>
+          <li>Boolean operators like <span style="font-family: monospace;">AND</span> and <span style="font-family: monospace;">NOT</span></li>
+          </ul>
+
+        <p><a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax"> What else can I type here?</a></p>
+      </div>
+    </div>
+
+  </div> <!-- End basic-options -->
+
+<div class="row panel">
+  <div class="form-input">
+    <div class="form-group">
+      <h5 class="form-subhed">Subject</h5>
+      <div class="col-sm-12">
+          <div class="control-input">
+            <input name="subject" id="subject" class="form-control" placeholder="Re: Re: Fwd: Click on The Turkey Have a very happy Thanksgiving" value="{{= search.subject }}" type="text">
+          </div>
+      </div> 
+    </div>
+  </div>
+  <div class="form-notes">
+    Search only in subject lines. Same operators apply here.
+  </div>
+</div>
+
+  <div class="row panel">
+    <div class="form-input">
+      <div class="form-group">
+        <h5 class="form-subhed">To/From Address</h5>
+        <div class="col-sm-6">
+            <label class="control-label" for="to_email">
+                To
+            </label>
+            <div class="control-input">
+              <input name="to_email" id="to_email" class="form-control" placeholder="example@example.com" value="{{= search.to }}" type="text">
+            </div>
+        </div> 
+        <div class="col-sm-6">
+            <label class="control-label" for="from_email">
+                From
+            </label>
+            <div class="control-input">
+              <input name="from_email" id="from_email" class="form-control" placeholder="example@example.com" value="{{= search.from }}" type="text">
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-notes">
+      Search by who sent/received an email. To search for multiple recipients, separate their email addresses (or names) by semicolons.
+      <br />
+    </div>
+  </div>
+
+
+  <div class="row panel">
+    <div class="form-input">
+      <div class="form-group">
+        <h5 class="form-subhed">Date Sent</h5>
+        <div class="col-sm-6">
+            <label class="control-label" for="datesentstart">
+                Start
+            </label>
+            <div class="control-input">
+              <input type="text" id="datesentstart" value="{{= search.date_sent_start }}"  class="datepicker form-control" placeholder="Click to select a date" >
+            </div>
+        </div> 
+        <div class="col-sm-6">
+            <label class="control-label" for="datesentend">
+                End
+            </label>
+            <div class="control-input">
+              <input type="text" id="datesentend" value="{{= search.date_sent_end }}" class="datepicker form-control" placeholder="Click to select a date" >
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-notes">
+      Search for emails sent during a time range. If no "End" is set, emails will be included after the start date until today. If no "Start" is set, all emails before the end date will be included.
+    </div>
+  </div>
+
+
+  <div class="row panel">
+    <div class="form-input">
+      <div class="form-group">
+        <h5 class="form-subhed">Sort By</h5>
+        <div class="col-sm-12">
+          <div class="control-input">
+            <select id="sort" name="sort" class="form-control">
+              <option value="" >Relevance</option>
+              <option value="Creation-Date;desc" {{= (search.sort == "Creation-Date;desc") ? 'selected' : '' }} >Date Sent, Most Recent First</option>
+              <option value="Creation-Date;asc" {{= (search.sort == "Creation-Date;asc") ? 'selected' : '' }} >Date Sent, Oldest First</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-notes">
+      Sorting options. "Relevance" takes into account which of your search terms are included in the email and how often, as well as whether the terms appear in the Subject header or just in the email body.
+    </div>
+  </div>
+
+
+
+  <div class="form-group drawer drawer-default">
+      <div class="form-input">
+        <div class="control-input">
+          <input id="search-btn" type="submit" class="btn btn-primary btn-adcom pull-right" value="Submit">
+        </div>
+      </div>
+      <div class="form-notes">
+        Good luck!
+      </div>
+    </div>
+  </div>
+
+</fieldset>
+
+<ul id="print-search-info">
+  <li>Search: {{= search.query_string }}</li>
+  <li>Subject: {{= search.subject }}</li>
+  <li>To: {{= search.to }}</li>
+  <li>From: {{= search.from }}</li>
+  <li>Date Sent (Start): {{= search.date_sent_start }}</li>
+  <li>Date Sent (End): {{= search.date_sent_end }}</li>
+  <li>Sort: {{= search.sort }}</li>
+</ul>

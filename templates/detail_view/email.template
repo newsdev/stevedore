@@ -1,0 +1,42 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="blob-name"><a class="preview" href="#/blob/{{= id }}">
+        {{= analyzed.metadata.subject == ' ' ?  'No Subject' : analyzed.metadata.subject }}
+    </a></h4>
+
+    <ul class="email-detail-meta">
+        <li><strong>Date:</strong> {{= analyzed.metadata["Creation-Date"] ? moment(analyzed.metadata["Creation-Date"]).format("MMMM Do YYYY, h:mm:ss a") : "No Date" }}</li>
+
+        <li><strong>To:</strong> {{= typeof analyzed.metadata["Message-To"] === "undefined" ? '' :  analyzed.metadata["Message-To"] }}</li>
+        <li><strong>From:</strong> {{= typeof analyzed.metadata["Message-From"] === "undefined" ? '' : (typeof analyzed.metadata["Message-From"] == 'object' ? analyzed.metadata["Message-From"].join("; ") : analyzed.metadata["Message-From"]) }}</li>
+        <li><strong>Cc:</strong> {{= typeof analyzed.metadata["Message-Cc"] === "undefined" ? '' : (typeof analyzed.metadata["Message-Cc"] === "string" ? analyzed.metadata["Message-Cc"] : analyzed.metadata["Message-Cc"].join("; ")) }}</li>
+    </ul>
+</div>
+<div class="modal-body">
+    <p class="body">{{= analyzed.body || file.file }}</p>
+</div>
+<div class="modal-footer">
+    <span style="float:right; width:225px;">
+        <div class="modal-footer">
+          {{ if(source_url === 'error' ){ }}
+            This cannot be downloaded right now. Its name is: {{= source_url }}
+          {{ } else if(source_url === '') { }}
+              This cannot be downloaded right now.
+          {{ } else { }}
+            <a target="_blank" href="{{= source_url }}">Download Original Document</a><br />
+          {{ } }}
+        </div>
+    </span>
+
+    {{ if (attachments.length != 0) { }}
+    <div style="float:left; text-align:left;">
+        <p>Attachments</p>
+        <ul>
+        {{ _.each(attachments, function(attachment){ }}
+            <li><a href="{{= attachment }}">{{= attachment.split('/').slice(-1)[0].split('?')[0] }}</a></li>
+        {{ }); }}
+        </ul>
+    </div>
+    {{ } }}
+
+</div>
