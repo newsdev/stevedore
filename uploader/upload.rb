@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 
 raise Exception, "You've gotta use JRuby" unless RUBY_PLATFORM == 'java'
+
+# Why Java 8? There's some gross, dumb incompatiblity between Java 1.7 and using HTTPS (SSL) to 
+# interact with ElasticSearch. I dunno why...
 raise Exception, "You've gotta use Java 1.8; you're on #{java.lang.System.getProperties["java.runtime.version"]}" unless java.lang.System.getProperties["java.runtime.version"] =~ /1\.8/
 
 require 'rika'
