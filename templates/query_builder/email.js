@@ -17,19 +17,22 @@ Stevedore.QueryBuilder = {
   toQuery: function(){
     var query_section =  { 
                             bool: {
-                              must: [
-                                { 
+                              must: [],
+                              should: [
+                                {
                                   query_string: {
-                                    default_field: "_all",
-                                    default_operator: "AND",
-                                    query: this.get('query_string').length ? this.queryOrAnalysis(this.get('query_string')) : '*', 
-                                  } ,
-                                  // subject DID go here, but got moved below
-
+                                    query: this.queryOrAnalysis(this.get('query_string')),
+                                    fields: ["_all", "analyzed.body.snowball"],
+                                    analyzer: "snowball"
+                                  }
                                 },
-                                 
-                              ],
-                              should: []
+                                {
+                                  query_string: {
+                                    query: this.queryOrAnalysis(this.get('query_string')),
+                                    fields: ["_all", "analyzed.body.snowball"],
+                                  }
+                                }
+                              ]
                             }
                     };
     if(this.get('subject') !== undefined && this.get('subject').length){

@@ -6,10 +6,24 @@ Stevedore.QueryBuilder = {
   toQuery: function(){
     var facets = [];
     var query_section =  { //TODO: make this a bool, add other scoring-relevant stuff.
-                            query_string: {
-                               query: this.queryOrAnalysis(this.get('query_string')),
-                            },
-                    };
+                            bool: {
+                              should: [
+                                {
+                                  query_string: {
+                                    query: this.queryOrAnalysis(this.get('query_string')),
+                                    fields: ["_all", "analyzed.body.snowball"],
+                                    analyzer: "snowball"
+                                  }
+                                },
+                                {
+                                  query_string: {
+                                    query: this.queryOrAnalysis(this.get('query_string')),
+                                    fields: ["_all", "analyzed.body.snowball"],
+                                  }
+                                }
+                              ]
+                            }
+                         };
     var filter_section = {
               bool:{
                 must: facets,

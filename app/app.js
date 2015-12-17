@@ -163,7 +163,19 @@ Stevedore.get_config = function(cb){
     }
   }
   $.getJSON((Stevedore.es_port == 443 ? 'https://' :  'http://') + Stevedore.es_host + ':' + Stevedore.es_port + Stevedore.es_path + '/_aliases', {}, function(data){
-    Stevedore.document_sets = _(data).keys();
+    var keys = _(data).keys();
+    Stevedore.document_sets = [];
+    // if an index has aliases, we display the alias (or aliases) not the "official" index name
+    // cf. https://www.elastic.co/blog/changing-mapping-with-zero-downtime
+    _(keys).each(function(key){
+     if(_.isEmpty(data[key]["aliases"])){
+       Stevedore.document_sets.push(key);
+     }else{
+       _(data[key]["aliases"]).each(function(obj, alias){
+         Stevedore.document_sets.push(alias);
+       })
+     }
+    })
     _parsing_callback();
   })
   $.get(Stevedore.config.document_set_meta_json || 'document_sets.json', {}, function(data){
@@ -221,19 +233,23 @@ Stevedore.es_hit_to_blob = function(hit){
   // }
 
   blob.highlighted = {};
+
+  var highlight_field = hit.highlight["analyzed.body.snowball"] ? "analyzed.body.snowball" : "analyzed.body";
+
   // TODO: refactor the text-to-HTML stuff so it's not repeated so much
   // /<(?!span)/g works better anyways as a RHS
-  if(hit.highlight && hit.highlight["analyzed.body"]){
-    blob.highlighted.snippets = '... ' + hit.highlight["analyzed.body"].
+
+  if(hit.highlight && hit.highlight[highlight_field]){
+    blob.highlighted.snippets = (hit.highlight[highlight_field].join("\n\n") == blob[highlight_field] ? '' : '... ') + hit.highlight[highlight_field].   
                                           join("\n\n").
                                           replace(/<\/?[^>]+>/g, '').
                                           replace(/\n\n+/g, "</p><p class='body'>").
                                           replace(/\[HIGHLIGHT\]/g, '<span class="highlight">'). 
-                                          replace(/\[\/HIGHLIGHT\]/g, '</span>') + " ..."
+                                          replace(/\[\/HIGHLIGHT\]/g, '</span>') + (hit.highlight[highlight_field].join("\n\n") == blob[highlight_field] ? '' : ' ...')
   }
 
-  if(blob.analyzed && blob.analyzed.body){
-    blob.analyzed.body = blob.analyzed.body.
+  if(blob.analyzed && blob[highlight_field]){
+    blob[highlight_field] = blob[highlight_field].
                                   replace(/<\/?[^>]+>/g, '').
                                   replace(/\n\n+/g, "</p><p class='body'>");
   }

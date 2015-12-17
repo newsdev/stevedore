@@ -140,7 +140,11 @@ module Stevedore
                     type: "custom",
                     tokenizer: "email_tokenizer",
                     filter: ["lowercase"]
-                  }
+                  },
+                  snowball_analyzer: {
+                    type: "snowball",
+                    language: "English"
+                  }                  
                 },
                 tokenizer: {
                   email_tokenizer: {
@@ -174,7 +178,21 @@ module Stevedore
             _updated_at: { type: :date },
             analyzed: {
               properties: {
-                body: {type: :string, index_OPTIONS: :offsets, term_vector: :with_positions_offsets },
+                body: {
+                  type: :string, 
+                  index_options: :offsets, 
+                  term_vector: :with_positions_offsets,
+                  store: true,
+                  fields: {
+                    snowball: {
+                      type: :string,
+                      index: "analyzed",
+                      analyzer: 'snowball_analyzer' ,
+                      index_options: :offsets, 
+                      term_vector: :with_positions_offsets,
+                    }
+                  }                  
+                },
                 metadata: {
                   properties: {
                     "Message-From" => {

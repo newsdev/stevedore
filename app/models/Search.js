@@ -44,8 +44,16 @@ Stevedore.Models.DefaultSearch = Backbone.Model.extend({
               force_source: true,
               pre_tags : ["[HIGHLIGHT]"], // these get converted to HTML in app.js
               post_tags : ["[/HIGHLIGHT]"],              
-            }
-
+             },
+             "analyzed.body.snowball": {
+               fragment_size: 300,
+               type: Stevedore.config.highlighting_enabled ? 'postings' : null,
+               number_of_fragments: 5,
+               no_match_size: 300,
+               force_source: true,
+               pre_tags : ["[HIGHLIGHT]"], // these get converted to HTML in app.js
+               post_tags : ["[/HIGHLIGHT]"],              
+             }
           }
         }
       }
