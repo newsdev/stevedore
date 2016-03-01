@@ -6,7 +6,7 @@ Stevedore.Views.SavedSearches = Backbone.View.extend({
   },
   initialize: function(){
     _.bindAll(this, 'render', 'clear');
-    this.listenTo(Stevedore.saved_searches_collection, 'add', this.render);
+    this.listenTo(Stevedore.saved_searches_collection, 'add', _.debounce(this.render, 0.5)); 
     this.listenTo(Stevedore.saved_searches_collection, 'change', this.render);
     this.listenTo(Stevedore.saved_searches_collection, 'remove', this.render);
     this.listenTo(Stevedore.saved_searches_collection, 'reset', this.render);

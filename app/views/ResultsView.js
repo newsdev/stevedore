@@ -6,7 +6,7 @@ Stevedore.Views.Results = Backbone.View.extend({
   initialize: function(){
     _.bindAll(this, 'render', 'closeItem');
     this.listenTo(this.collection, 'reset', this.render);
-    this.listenTo(this.collection, 'add', _.throttle(this.render, 0.5));
+    this.listenTo(this.collection, 'add', _.debounce(this.render, 0.5));
 
   },
 
