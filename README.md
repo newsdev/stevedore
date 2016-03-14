@@ -15,7 +15,7 @@ Be sure to have Java 7 installed.
 Stevedore can make two types of search engines:
 
 - *Demo search engine* that only your computer can access.
-- *Production search engine* that other computers can access. If you choose this option, you need to have a separate ElasticSearch server to host the search index and an Amazon S3 bucket to host the frontend. Stevedore has no separate security, besides the security of your Amazon S3 bucket and your ElasticSearch servers policies. Anyone who can access the S3 bucket and the ElasticSearch server can use your search engine, so be sure to set your access policies correctly. *How to properly secure your ElasticSearch server is outside the scope of this README*
+- *Production search engine* that other computers can access. If you choose this option, you need to have a separate ElasticSearch server to host the search index and an Amazon S3 bucket to host the frontend. Stevedore has no separate security, besides the security of your Amazon S3 bucket and your ElasticSearch server's policies. Anyone who can access the S3 bucket and the ElasticSearch server can use your search engine, so be sure to set your access policies correctly. *How to properly secure your ElasticSearch server is outside the scope of this README*
 
 ![An example of a search page.](/screenshots/blob_search_form_annotated.png?raw=true "An example of a search page.")
 
