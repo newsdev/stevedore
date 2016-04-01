@@ -1,19 +1,23 @@
 var stevedore_routes = {};
-stevedore_routes[Stevedore.project + "/" + "document/:document_id"] =  "showDocument", // #help
-stevedore_routes[Stevedore.project + "/" + "search/"] =                "search",    // #search/kiwis    
-stevedore_routes[Stevedore.project + "/" + "search/:query"] =          "search",    // #search/kiwis
 
-stevedore_routes[Stevedore.project + "/" + "analysis"] =               "emailSenderAnalysis",
-stevedore_routes[Stevedore.project + "/" + "senders"] =                "emailSenderAnalysis",
+var routing_prefix = Stevedore.config.use_slash_based_routing ? "" : Stevedore.project + "/";
+stevedore_routes[routing_prefix + "document/:document_id"] =  "showDocument" // #help
+stevedore_routes[routing_prefix + "search/"] =                "search"    // #search/kiwis    
+stevedore_routes[routing_prefix + "search/:query"] =          "search"    // #search/kiwis
+stevedore_routes[routing_prefix + "analysis"] =               "emailSenderAnalysis"
+stevedore_routes[routing_prefix + "senders"] =                "emailSenderAnalysis"
+stevedore_routes[routing_prefix + ""] =                       "index"
+if(! Stevedore.config.use_slash_based_routing){
+  stevedore_routes[Stevedore.project +       ""] =            "index"
+}else{
+  stevedore_routes["/"] =                                     "index"
+}
 
-stevedore_routes[Stevedore.project + "/" + ""] =                       "index",
-stevedore_routes[Stevedore.project +       ""] =                       "index",
 
 Stevedore.SearchApp = Backbone.Router.extend({
   routes: stevedore_routes,
 
   index: function(){
-    console.log("search router index")
     Stevedore.search_view = new Stevedore.Views.Search({ el: $('#search-container')[0] } );
     Stevedore.search_view.render();
     Stevedore.document_collection = new Stevedore.Collections.Documents([]);

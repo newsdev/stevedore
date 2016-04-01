@@ -1,16 +1,8 @@
 require_relative './uploader/upload_gui.rb'
 require 'rika'
 
-use Rack::Static,
-  :urls => ["/search.html", "/index.html", "/document_sets.json"],
-  :root => File.dirname(__FILE__),
-  :index => 'index.html',
-  :header_rules => [[:all, {'Cache-Control' => 'public, max-age=3600'}]]
-
-use Rack::Static, :urls => ["/app"]
-use Rack::Static, :urls => ["/lib"]
-use Rack::Static, :urls => ["/templates"]
-
+# if you're testing locally and intend to run Stevedore via Nginx (or Apache, I suppose)
+# set the NGINXSTYLE environment variable to simulate the URLs accepted there.
 $search_files = nil
 
 def start_local_elasticsearch_server
@@ -87,8 +79,31 @@ end
 #   }
 # end
 
+if ENV["NGINXSTYLE"]
+  puts "dev server"
+  require './dev_server'
+  use Rack::Static,
+  :urls => ["/document_sets.json"],
+  :root => File.dirname(__FILE__),
+  :index => 'index.html',
+  :header_rules => [[:all, {'Cache-Control' => 'public, max-age=3600'}]]  
+  use Rack::Static, :urls => ["/app"]
+  use Rack::Static, :urls => ["/lib"]
+  use Rack::Static, :urls => ["/templates"]
+  run Rack::URLMap.new('/upload' => Sinatra::Application, '/search' => Stevedore::NginxSimulator)
+else
+  use Rack::Static,
+  :urls => ["/search.html", "/index.html", "/document_sets.json"],
+  :root => File.dirname(__FILE__),
+  :index => 'index.html',
+  :header_rules => [[:all, {'Cache-Control' => 'public, max-age=3600'}]]
 
-run Rack::URLMap.new('/upload' => Sinatra::Application)
+  use Rack::Static, :urls => ["/app"]
+  use Rack::Static, :urls => ["/lib"]
+  use Rack::Static, :urls => ["/templates"]
+  run Rack::URLMap.new('/upload' => Sinatra::Application)
+end
+
 start_local_elasticsearch_server
 
 # this is stolen directly -- shamelessly -- from https://github.com/tabulapdf/tabula/blob/master/config.ru

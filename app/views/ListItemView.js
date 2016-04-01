@@ -23,6 +23,7 @@ Stevedore.Views.ListItem = Backbone.View.extend({
     this.$el.html(this.template( 
       _.extend({}, Stevedore.def_obj, this.model.attributes)
     ));
+    this.$el.attr("href", this.detail_view_link());
     this.$el.attr('id', "hit-" + this.model.get('id'));
     return this;
   },
@@ -32,13 +33,28 @@ Stevedore.Views.ListItem = Backbone.View.extend({
     }
     e.preventDefault();
     e.stopPropagation();
+
+    if(Stevedore.config.use_slash_based_routing){
+      var split_location = window.location.href.split("/");
+      var current_location = 'search/' + split_location[split_location.length - 1]
+    }else{
+      var current_location = window.location.hash;
+    }
+
     Stevedore.detail_view = new Stevedore.Views.Detail({'el': $('#preview-pane'), 
                                                       'model': this.model, 
-                                                      'attributes': { 'previous': window.location.hash }
+                                                      'attributes': { 'previous': current_location }
                                                     });
-    Stevedore.router.navigate(Stevedore.project + "/" + "document/" + this.model.get('id') );
+    Stevedore.router.navigate(this.detail_view_link());
 
     Stevedore.detail_view.render();
   },
+
+
+  // just an internal helper
+  detail_view_link: function(){
+    return (Stevedore.config.use_slash_based_routing ? '/' : Stevedore.project + "/") + "document/" + this.model.get('id')
+  },
+
 });
 
