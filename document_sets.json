@@ -10,6 +10,7 @@
             "index_name": "emails-from-public-official",
             "name": "Some Public Official's Emails",
             "private?": "FALSE",
+            "sort_order": "3",
             "data_type": "email",
             "description": "Search e-mails from two of Mayor John Q. Somebody's accounts, obtained under the Public Records law. "
         },
@@ -17,6 +18,7 @@
             "index_name": "clinton-emails",
             "name": "Hillary Clinton's Emails",
             "private?": "FALSE",
+            "sort_order": "2",
             "data_type": "blob",
             "description": "Search e-mails released by the State Dept. under FOIA. These were printed and OCRed, so we don't have email metadata -- hence the 'blob' datatype instead of 'email' . "
         },
@@ -24,6 +26,7 @@
             "index_name": "sensitive-documents",
             "name": "Sensitive Documents",
             "private?": "TRUE",
+            "sort_order": "1",
             "data_type": "blob",
             "description": "Documents a source gave us that we don't really want the whole newsroom to know about. (But if someone finds out, it's not the end of the world.)"
         }
