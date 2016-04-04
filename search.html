@@ -48,7 +48,8 @@
       // in order to support both pushstate-based routing and ordinary HTTP based routing (for S3 hosting)
       // we don't know whether to pick between absolute and dynamic paths.
       // so we do it here. it works ok.
-      to_load.forEach(function(script_loc, i){
+      for (i = 0; i < to_load.length; i++) { 
+        var script_loc = to_load[i];
         var js = document.createElement("script");
         js.type = "text/javascript";
         js.src = (Stevedore.config.use_slash_based_routing ? '/' : '') + script_loc;
@@ -70,7 +71,7 @@
           }
         }
         head.appendChild(js);
-      });
+      };
 
     </script>
 
