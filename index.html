@@ -63,7 +63,7 @@
   <script type="text/template" id="document-set-template">
       <div class="row tool">
         <h4 style="float:left;">
-          <a href="search.html#{{= set }}">{{= name }}</a></h4>
+          <a href="{{= Stevedore.config.use_slash_based_routing ? '/search/' : 'search.html#'}}{{= set }}">{{= name }}</a></h4>
         <!-- <span style="float:left; margin-top:5px; margin-left: 10px; font-size:10px;">
         </span> -->
         <p>{{= desc }}</p>
@@ -71,7 +71,7 @@
           <h5 style="margin-top:20px;">Sample searches</h5>
           <ul>
             {{ _(samplesearches).each(function(search){ }}
-              <li><a href="/{{= set }}/{{= search.search }}">{{= search.name }}</a></li>
+              <li><a href="{{= Stevedore.config.use_slash_based_routing ? '/search/' : 'search.html#'}}{{= set }}/search/{{= search.search }}">{{= search.name }}</a></li>
             {{ }) }}
           </ul>
         </div>
