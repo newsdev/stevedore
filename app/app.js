@@ -34,16 +34,16 @@ Stevedore.Models = {};
 Stevedore.Collections = {};
 Stevedore.projects = {}
 
-var env = "prd"; // You may want to change this and add additional options -- maybe a 'dev' environment or a 'sensitive' one to the
+Stevedore.env = "prd"; // You may want to change this and add additional options -- maybe a 'dev' environment or a 'sensitive' one to the
                  // Stevedore.config hash. You may want to distinguish between them by the URL, e.g.
-                 // var env = window.location.host.indexOf("localhost") > -1 ? 'dev' : 'prd';
+                 // Stevedore.env = window.location.host.indexOf("localhost") > -1 ? 'dev' : 'prd';
                  // Stevedore.config is set in app/config.js
 
 Stevedore.project = Stevedore.config.use_slash_based_routing ? window.location.pathname.split("/")[2] : window.location.hash.split("/")[0].replace("#", ''); // the first item; [0] is an empty string, [1] is 'search'
-Stevedore.es_host = Stevedore.config[env + 'Host']
-Stevedore.es_port = Stevedore.config[env + 'Port'] || 9200;
-Stevedore.es_scheme = Stevedore.config[env + 'Scheme'] || 'http';
-Stevedore.es_path = Stevedore.config[env + 'Path'] || '';
+Stevedore.es_host = Stevedore.config[Stevedore.env + 'Host']
+Stevedore.es_port = Stevedore.config[Stevedore.env + 'Port'] || 9200;
+Stevedore.es_scheme = Stevedore.config[Stevedore.env + 'Scheme'] || 'http';
+Stevedore.es_path = Stevedore.config[Stevedore.env + 'Path'] || '';
 Stevedore.es_index = Stevedore.project;
 //var es_doctype = 'doc'
 Stevedore.max_hits = 50;
