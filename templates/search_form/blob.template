@@ -27,7 +27,7 @@
   <div class="form-group drawer drawer-default">
       <div class="form-input">
         <div class="control-input">
-          <input id="search-btn" type="submit" class="btn btn-primary btn-adcom pull-right" value="Submit">
+          <input id="search-btn" type="submit" class="btn btn-primary btn-adcom pull-right" value="Search">
         </div>
       </div>
       <div class="form-notes">
