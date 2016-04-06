@@ -19,7 +19,6 @@
           <li>a minus sign, e.g. <span style="font-family: monospace;">-irrelevant</span> to exclude documents with a given word.</li>
           <li>Boolean operators like <span style="font-family: monospace;">AND</span> and <span style="font-family: monospace;">NOT</span></li>
           </ul>
-
         <p><a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax"> What else can I type here?</a></p>
       </div>
     </div>
