@@ -53,7 +53,7 @@ Stevedore.Views.ListItem = Backbone.View.extend({
 
   // just an internal helper
   detail_view_link: function(){
-    return (Stevedore.config.use_slash_based_routing ? '/' : Stevedore.project + "/") + "document/" + this.model.get('id')
+    return (Stevedore.config.use_slash_based_routing ? '/search/' : Stevedore.project + "/") + "document/" + this.model.get('id')
   },
 
 });

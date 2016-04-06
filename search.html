@@ -52,11 +52,12 @@
         var script_loc = to_load[i];
         var js = document.createElement("script");
         js.type = "text/javascript";
-        js.src = (Stevedore.config.use_slash_based_routing ? '/' : '') + script_loc;
+        js.src = (Stevedore.config.use_slash_based_routing ? '/search/' : '') + script_loc;
         js.async = false;
         if(i == to_load.length -1){
           js.onload = function(){
-            if(!Stevedore.config.use_slash_based_routing && (window.location.hash == "#" || window.location.hash == "")){
+            if(Stevedore.config.use_slash_based_routing === false && (window.location.hash == "#" || window.location.hash == "")){
+              console.log("redirecting to index.html because hash is empty")
               window.location.href = "index.html"
             }
 
@@ -92,7 +93,7 @@
         css.rel = "stylesheet";
         if (stylesheet[1])
           css.media = stylesheet[1];
-        css.href = (Stevedore.config.use_slash_based_routing ? '/' : '') + stylesheet[0];
+        css.href = (Stevedore.config.use_slash_based_routing ? '/search/' : '') + stylesheet[0];
         head.appendChild(css);
       });
       </script>
@@ -103,7 +104,7 @@
     <div class="navbar navbar-default navbar-nyt-default navbar-nyt-primary">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="/">Stevedore</a>
+          <a class="navbar-brand" href="#">Stevedore</a>
         </div>
         <ul class="nav navbar-nav navbar-left">
           <li class="navbar-summary"><span>A tool for exploring document sets</span></li>

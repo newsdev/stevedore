@@ -48,9 +48,9 @@ Stevedore.es_index = Stevedore.project;
 //var es_doctype = 'doc'
 Stevedore.max_hits = 50;
 
-$('.page-header #project-name').attr('href', '/search.html#' + Stevedore.project);
+$('.page-header #project-name').attr('href', (Stevedore.config.use_slash_based_routing ? '/search/' : '/search.html#') + Stevedore.project);
 $('.page-header #project-name span').text(Stevedore.project); // placeholder until config comes back, or if the index isn't defined in the config.
-
+$('.navbar .navbar-header .navbar-brand').attr('href', Stevedore.config.use_slash_based_routing ? '/search' : 'index.html');
 // Default Object
 // each ES object, by convention, is required to define these fields
 // all objects are merged onto this, so the fields are always defined
@@ -72,13 +72,13 @@ Stevedore.templates = {};
 Stevedore.getTemplates = function(project, cb){
   Stevedore.template_names = _.extend({}, Stevedore.default_template_names, Stevedore.projects[project]);
   console.log('project', project, ' => ', Stevedore.template_names);
-  $("head").append($("<link rel='stylesheet' href='"+(Stevedore.config.use_slash_based_routing ? '/' : '')+"templates/css/"+Stevedore.template_names['css']+".css?_cachebuster=201602192011' type='text/css' media='screen' />"));
+  $("head").append($("<link rel='stylesheet' href='"+(Stevedore.config.use_slash_based_routing ? '/search/' : '')+"templates/css/"+Stevedore.template_names['css']+".css?_cachebuster=201602192011' type='text/css' media='screen' />"));
 
   var q = queue()
 
   q.defer(function(){
     $.ajax({
-      url: (Stevedore.config.use_slash_based_routing ? '/' : '') + "templates/query_builder/" + Stevedore.template_names['query_builder'] + ".js?_cachebuster=201602192011",
+      url: (Stevedore.config.use_slash_based_routing ? '/search/' : '') + "templates/query_builder/" + Stevedore.template_names['query_builder'] + ".js?_cachebuster=201602192011",
       dataType: "script",
       async: true,
       success: function(data, status, jqxhr){
@@ -101,7 +101,7 @@ Stevedore.getTemplates = function(project, cb){
       Stevedore.templates[template_type] = {}; // template_type is one of "blob" or "email" or others
       q.defer(function(cb){
         $.ajax({
-          url: (Stevedore.config.use_slash_based_routing ? '/' : '') + "templates/" + folder + "/" + template_type + ".template?_cachebuster=201602192011",
+          url: (Stevedore.config.use_slash_based_routing ? '/search/' : '') + "templates/" + folder + "/" + template_type + ".template?_cachebuster=201602192011",
           dataType: "text",
           async: true,
           success: function(data, status, jqxhr){

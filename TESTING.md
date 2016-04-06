@@ -10,6 +10,7 @@ index.html:
   - Do sample searches show up correctly if specified in document_sets.json?
   - Do links to search engines work?
   - Do links to sample searches work?
+  - Stevedore header link works
 
 search.html:
   - If you search for something, do you get results?
@@ -26,4 +27,6 @@ search.html:
   - If you click on a result, then click off the modal, is the search still there (and in the URL bar)?
   - If there are any analyses (like the EmailSenderAnalysis) do those work?
   - Are saved searches prepopulated in the saved search bar?
+  - Does clicking on a saved search work?
   - If you click on a result, then press the arrow keys, does it load the next result? (And does the page scroll downward to that result's scrollTop?)
+  - Stevedore header link works
