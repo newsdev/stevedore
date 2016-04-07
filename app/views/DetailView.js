@@ -23,6 +23,8 @@ Stevedore.Views.Detail = Backbone.View.extend({
   render: function(){
     $('body').off('keydown.blobview');
     $('body').on('keydown.blobview', this.handleClick);
+    
+    $('.modal').on('hidden.bs.modal', this.close);
 
     this.setTemplate();
     this.$el.addClass(Stevedore.template_names['detail_view']);

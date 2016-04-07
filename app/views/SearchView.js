@@ -4,12 +4,13 @@ Stevedore.Views.Search = Backbone.View.extend({
 
   events: {
     "submit": 'search',
-    'click': 'closeItem'
+    'click': 'closeItem',
+    "click .download-as-csv": 'downloadCSV'    
   },
   options: {},
 
   initialize: function(){
-    _.bindAll(this, 'search', 'render', 'renderHits', 'createSearch', 'loadSearch', 'scrollTo');
+    _.bindAll(this, 'search', 'render', 'renderHits', 'createSearch', 'loadSearch', 'downloadCSV', 'scrollTo');
     this.setTemplate();
   },
   setTemplate: function(){
@@ -30,7 +31,7 @@ Stevedore.Views.Search = Backbone.View.extend({
 
     var search = this.createSearch(new_search);
 
-    Stevedore.router.navigate(Stevedore.project + "/" + "search/" + search.toString());
+    Stevedore.router.navigate( (Stevedore.config.use_slash_based_routing ? '' : Stevedore.project + "/") + "search/" + search.toString());
     //only scroll to the top of results on a new search (not loading new results and not loading a search from the URL)
     if(!Stevedore.document_collection.size()){
       this.listenToOnce(this.model, "stevedore:search-done", this.scrollTo);
@@ -68,7 +69,7 @@ Stevedore.Views.Search = Backbone.View.extend({
     search.save();
     Stevedore.document_collection.reset([]);
 
-    Stevedore.router.navigate(Stevedore.project + "/" + "search/" + search.toString());
+    Stevedore.router.navigate( (Stevedore.config.use_slash_based_routing ? '' : Stevedore.project + "/") + "search/" + search.toString());
     this.options = search.attributes;
     this.model = search;
     this.listenTo(this.model, "stevedore:search-start", this.renderHits);

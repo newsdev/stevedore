@@ -11,6 +11,16 @@ Stevedore.config = {
   // prdScheme: "http",    // is your elasticsearch server set up on HTTPS or HTTP? // "https",
   // prdPath: "",          // is your elasticsearch server accessed by some path below the root?
   // document_set_meta_json: 'https://s3.amazonaws.com/your-bucket-name/applications/stevedore/document_sets.json',
+
+
+  // use_slash_based_routing: false // Stevedore supports routing requests
+                                    // that is, different URLs for different search engines, individual searches and documents
+                                    // via a hash (e.g. http://path.to.stevedore/index.html#mydocuments/search/pizza )
+                                    // or via a slash (e.g. http://path.to.stevedore/search/mydocuments/search/pizza )
+                                    // the hash-based routing is the default, since it works in all hosting scenarios
+                                    // but if you're hosting Stevedore with Nginx or another rewrite-capable server
+                                    // you may turn this on.
+                                    // if you're hosting Stevedore on S3, you must leave this false (or commented out)
 }
 
 

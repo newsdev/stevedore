@@ -1,4 +1,4 @@
-<h4 class="email-name"><a class="preview" href="/search/{{= Stevedore.project }}/document/{{= id }}">
+<h4 class="email-name"><a class="preview" href="#">
 {{= analyzed.metadata.subject == ' ' ?  'No Subject' : analyzed.metadata.subject }}
 </a></h4>
 <ul class="email-list-meta">

@@ -80,6 +80,8 @@ Each template must contain four distinct files. Whether inheritance will be poss
 4. Your query_builder's `likeActuallyCreate` method should, referring to the search template, populate the search Backbone object from the values of the form fields in the search from (which should be now rendered onto the page, but which ought to cope with null values.)
 5. Your query_builder's `toQuery` method will require some ElasticSearch knowledge. Follow the examples. :)
 
+The availability of templating relies on Stevedore's objects each containing, at a bare minimum, an `id` field that is persistent across reindexing, a `url` field to the original document and a `body` field that contains the full text.
+
 Architecture & Theory
 ---------------------
 

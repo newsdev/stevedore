@@ -16,7 +16,7 @@ Stevedore.Models.DefaultSearch = Backbone.Model.extend({
     this.set(stuff);
   },
 
-  search: function(){
+  search: function(cb){
     this.trigger("stevedore:search-start");
     $('#paginate').hide();
     $('#loading').addClass('loading');
@@ -74,6 +74,7 @@ Stevedore.Models.DefaultSearch = Backbone.Model.extend({
       $('#paginate').show();
       $('#loading').removeClass('loading');
       $('#loading').removeClass('loading-more');
+      if(cb) cb();      
     }, this), function (err) {
       //TODO: error messages
     });
@@ -102,6 +103,33 @@ Stevedore.Models.DefaultSearch = Backbone.Model.extend({
     }else {
       return query_string;
     }
+  },
+
+  toCSV: function(cb){
+    delimiter = ",";
+    // get all the results
+    var page_count = 20;
+
+    var resp_counter = 0;
+    while (!this.get('hit_count') || ( (this.get('pageNum') * Stevedore.max_hits) < this.get('hit_count')) ){
+      console.log("getting more docs for CSV, hit count was", this.get('hit_count'), "has", this.get('pageNum') * Stevedore.max_hits  );
+      
+      resp_counter += 1;
+      this.search(function(){ resp_counter -= 1; if (resp_counter == 0){
+          var keys = _(Stevedore.mapping.properties).keys();
+          var _keys = _(keys);
+          headers = keys.join(delimiter);
+          var rows = Stevedore.document_collection.map(function(obj){ return _keys.map(function(key){ return "\"" + (obj.get(key) || '').toString().replace(/"/g, '\'') + "\"" }) })
+          if(cb) cb(headers + "\n" + _(rows).map(function(row){ return row.join(delimiter)}).join("\n"));
+      } });
+
+      this.set('pageNum', this.get('pageNum') + 1);
+      if(this.get('pageNum') > page_count){
+        alert("Too many documents, try narrowing your search; returning CSV of only " + (Stevedore.max_hits * page_count).format());
+        break;
+      }
+    }
+
   },
 
   // you need to define these in QueryBuilder

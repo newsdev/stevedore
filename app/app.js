@@ -34,21 +34,23 @@ Stevedore.Models = {};
 Stevedore.Collections = {};
 Stevedore.projects = {}
 
-var env = "prd"; // You may want to change this and add additional options -- maybe a 'dev' environment or a 'sensitive' one to the
+Stevedore.env = "prd"; // You may want to change this and add additional options -- maybe a 'dev' environment or a 'sensitive' one to the
                  // Stevedore.config hash. You may want to distinguish between them by the URL, e.g.
-                 // var env = window.location.host.indexOf("localhost") > -1 ? 'dev' : 'prd';
-Stevedore.project = window.location.hash.split("/")[0].replace("#", ''); // the first item; [0] is an empty string, [1] is 'search'
-Stevedore.es_host = Stevedore.config[env + 'Host']
-Stevedore.es_port = Stevedore.config[env + 'Port'] || 9200;
-Stevedore.es_scheme = Stevedore.config[env + 'Scheme'] || 'http';
-Stevedore.es_path = Stevedore.config[env + 'Path'] || '';
+                 // Stevedore.env = window.location.host.indexOf("localhost") > -1 ? 'dev' : 'prd';
+                 // Stevedore.config is set in app/config.js
+
+Stevedore.project = Stevedore.config.use_slash_based_routing ? window.location.pathname.split("/")[2] : window.location.hash.split("/")[0].replace("#", ''); // the first item; [0] is an empty string, [1] is 'search'
+Stevedore.es_host = Stevedore.config[Stevedore.env + 'Host']
+Stevedore.es_port = Stevedore.config[Stevedore.env + 'Port'] || 9200;
+Stevedore.es_scheme = Stevedore.config[Stevedore.env + 'Scheme'] || 'http';
+Stevedore.es_path = Stevedore.config[Stevedore.env + 'Path'] || '';
 Stevedore.es_index = Stevedore.project;
 //var es_doctype = 'doc'
 Stevedore.max_hits = 50;
 
-$('.page-header #project-name').attr('href', '/search.html#' + Stevedore.project);
+$('.page-header #project-name').attr('href', (Stevedore.config.use_slash_based_routing ? '/search/' : '/search.html#') + Stevedore.project);
 $('.page-header #project-name span').text(Stevedore.project); // placeholder until config comes back, or if the index isn't defined in the config.
-
+$('.navbar .navbar-header .navbar-brand').attr('href', Stevedore.config.use_slash_based_routing ? '/search' : 'index.html');
 // Default Object
 // each ES object, by convention, is required to define these fields
 // all objects are merged onto this, so the fields are always defined
@@ -70,13 +72,13 @@ Stevedore.templates = {};
 Stevedore.getTemplates = function(project, cb){
   Stevedore.template_names = _.extend({}, Stevedore.default_template_names, Stevedore.projects[project]);
   console.log('project', project, ' => ', Stevedore.template_names);
-  $("head").append($("<link rel='stylesheet' href='/templates/css/"+Stevedore.template_names['css']+".css' type='text/css' media='screen' />"));
+  $("head").append($("<link rel='stylesheet' href='"+(Stevedore.config.use_slash_based_routing ? '/search/' : '')+"templates/css/"+Stevedore.template_names['css']+".css?_cachebuster=201604071122' type='text/css' media='screen' />"));
 
   var q = queue()
 
   q.defer(function(){
     $.ajax({
-      url: "templates/query_builder/" + Stevedore.template_names['query_builder'] + ".js",
+      url: (Stevedore.config.use_slash_based_routing ? '/search/' : '') + "templates/query_builder/" + Stevedore.template_names['query_builder'] + ".js?_cachebuster=201604071122",
       dataType: "script",
       async: true,
       success: function(data, status, jqxhr){
@@ -99,7 +101,7 @@ Stevedore.getTemplates = function(project, cb){
       Stevedore.templates[template_type] = {}; // template_type is one of "blob" or "email" or others
       q.defer(function(cb){
         $.ajax({
-          url: "templates/" + folder + "/" + template_type + ".template",
+          url: (Stevedore.config.use_slash_based_routing ? '/search/' : '') + "templates/" + folder + "/" + template_type + ".template?_cachebuster=201604071122",
           dataType: "text",
           async: true,
           success: function(data, status, jqxhr){
@@ -134,12 +136,22 @@ if(typeof elasticsearch !== 'undefined'){
 
 Stevedore.get_mapping = function(){
   // https://stevedore.newsdev.net/es/jeb-bush-emails/_mapping
-    Stevedore.client.indices.getMapping({type: 'doc', index: Stevedore.es_index})
+    Stevedore.client.indices.getMapping({index: Stevedore.es_index})
       .then(
         _.bind(function(resp){
-          Stevedore.config.highlighting_enabled = typeof resp[Stevedore.es_index] !== 'undefined' ? resp[Stevedore.es_index].mappings.doc.properties.analyzed.properties.body.index_options === "offsets" : false;
+          var index_name = _.has(resp, Stevedore.es_index) ? Stevedore.es_index : _.keys(resp)[0]; // Stevedore.es_index might be an alias.
+          var es_type = _.has(resp[index_name].mappings, 'doc') ? 'doc' : _.keys(resp[index_name].mappings)[0];
+          Stevedore.mapping = typeof resp[index_name] !== 'undefined' ? resp[index_name].mappings[es_type] : null;
+          try{
+            Stevedore.config.highlighting_enabled = typeof resp[index_name] !== 'undefined' ? resp[index_name].mappings[es_type].properties.analyzed.properties.body.index_options === "offsets" : false;
+          }catch(TypeError){
+            Stevedore.config.highlighting_enabled = false;
+          }
        }, this),
-        function(error){ window.location = "index.html"; });
+        function(error){ 
+          console.log("Mapping couldn't be fetched", error);          
+          window.location = "index.html?error=mapping";
+        });
 
 }
 Stevedore.get_count = function(){
@@ -148,7 +160,10 @@ Stevedore.get_count = function(){
       _.bind(function(resp){
       Stevedore.blob_count = resp.count;
      }, this), 
-      function(error){ window.location = "index.html"; });
+      function(error){ 
+        console.log("Count couldn't be fetched", error);        
+        window.location = "index.html?error=count";
+      });
 }
 
 
@@ -178,7 +193,7 @@ Stevedore.get_config = function(cb){
     })
     _parsing_callback();
   })
-  $.get(Stevedore.config.document_set_meta_json || 'document_sets.json', {}, function(data){
+  $.get(Stevedore.config.document_set_meta_json || '/document_sets.json', {}, function(data){
     Stevedore.document_set_metadata = {};
     _(data["document sets"]).each(function(document_set){
       if( _.isNull(document_set.name)) document_set.name = document_set.index_name;
@@ -234,7 +249,7 @@ Stevedore.es_hit_to_blob = function(hit){
 
   blob.highlighted = {};
 
-  var highlight_field = hit.highlight["analyzed.body.snowball"] ? "analyzed.body.snowball" : "analyzed.body";
+  var highlight_field = hit.highlight && hit.highlight["analyzed.body.snowball"] ? "analyzed.body.snowball" : "analyzed.body";
 
   // TODO: refactor the text-to-HTML stuff so it's not repeated so much
   // /<(?!span)/g works better anyways as a RHS
@@ -246,17 +261,32 @@ Stevedore.es_hit_to_blob = function(hit){
                                           replace(/\n\n+/g, "</p><p class='body'>").
                                           replace(/\[HIGHLIGHT\]/g, '<span class="highlight">'). 
                                           replace(/\[\/HIGHLIGHT\]/g, '</span>') + (hit.highlight[highlight_field].join("\n\n") == blob[highlight_field] ? '' : ' ...')
+    // if there are more than 3 linebreaks above, strip all but two, so highlighted thing is always in place
+    var split_highlighted_snippets = blob.highlighted.snippets.split('<span class="highlight">')[0].split("</p>");
+    if( split_highlighted_snippets.length > 3){
+      blob.highlighted.snippets = blob.highlighted.snippets.split("</p>").slice(split_highlighted_snippets.length - 2).join("</p>");
+    }
   }
 
+  // 2015-11-10: decided to change this from \n\n+ to \n\n* for replacing newlines in source text with <p> tags
+  // not sure why I ever required 2 or more.
+  // 2015-11-16: decided to change it back because it split too many lines in for jeb-george-documents (search "chair")
+  // For snippets only, I'm going to only make \n\n+ a new paragraph, but use line breaks as is (that is, turn \n\n* into <p>) for the body.
+  // Maybe a solution would be to see if there are any paragraph breaks and, if there are, 
   if(blob.analyzed && blob[highlight_field]){
     blob[highlight_field] = blob[highlight_field].
                                   replace(/<\/?[^>]+>/g, '').
-                                  replace(/\n\n+/g, "</p><p class='body'>");
+                                  replace(/\n\n*/g, "</p><p class='body'>");
   }
+  if(blob.analyzed && blob.analyzed.body){
+    blob.analyzed.body = blob.analyzed.body.
+                                  replace(/<\/?[^>]+>/g, '').
+                                  replace(/\n\n*/g, "</p><p class='body'>");
+  }  
   if(blob.file && blob.file.file){
     blob.file.file = blob.file.file.
                                   replace(/<\/?[^>]+>/g, '').
-                                  replace(/\n\n+/g, "</p><p class='body'>");
+                                  replace(/\n\n*/g, "</p><p class='body'>");
   }
   blob.attachments = []
   processAttachment = function(attachment) {
