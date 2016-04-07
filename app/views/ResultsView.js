@@ -32,7 +32,7 @@ Stevedore.Views.Results = Backbone.View.extend({
       this.$el.children('ol').append(list_item_view.$el);
     }, this));
     // display the more results button only if there are already some results, but not all of them (and there's no button yet)
-    if((!this.$el.find('#paginate').length) && this.collection.size() && this.collection.size() < Stevedore.search_view.model.get('hit_count') ) {
+    if((!this.$el.find('#paginate').length) && this.collection.size() > 0 && this.collection.size() < Stevedore.search_view.model.get('hit_count') ) {
       this.$el.children('ol').after('<div id="pagination-controls" class="row"><button id="paginate" class="btn btn-adcom btn-primary">More Results</button></div>')
     }
     if(typeof Stevedore.search_view.model !== 'undefined' && this.collection.size() >= Stevedore.search_view.model.get('hit_count')){
