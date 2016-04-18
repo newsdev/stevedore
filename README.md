@@ -1,9 +1,9 @@
 Stevedore, an ElasticSearch Frontend & Ingestion Engine
 =======================================================
 
-From a bunch of documents to an easy-to-use search engine for emails, websites or just about anything. 
+From a bunch of documents to an easy-to-use search engine for emails, websites, social media posts or just about anything.
 
-And, customize the interface to easily make new document-specific custom formats for searching and exploring. To deploy to your newsroom, just add your own standalone ElasticSearch server; Stevedore's frontend framework is all-frontend.
+For more in-depth projects, you can easily customize the interface to easily make new document-specific custom formats for searching and exploring. To deploy to your newsroom, just add your own standalone ElasticSearch server; Stevedore's frontend framework is all-frontend.
 
 I just want to make a search engine!
 ====================================
@@ -14,8 +14,8 @@ Be sure to have Java 7 installed.
 
 Stevedore can make two types of search engines:
 
-- *Demo search engine* that only your computer can access.
-- *Production search engine* that other computers can access. If you choose this option, you need to have a separate ElasticSearch server to host the search index and an Amazon S3 bucket to host the frontend. Stevedore has no separate security, besides the security of your Amazon S3 bucket and your ElasticSearch server's policies. Anyone who can access the S3 bucket and the ElasticSearch server can use your search engine, so be sure to set your access policies correctly. *How to properly secure your ElasticSearch server is outside the scope of this README*
+- *Local search engine* that only your computer can access.
+- *Production search engine* that other computers can access. If you choose this option, you need to have a separate ElasticSearch server to host the search index and an Amazon S3 bucket to host the frontend. 
 
 ![An example of a search page.](/screenshots/blob_search_form_annotated.png?raw=true "An example of a search page.")
 
@@ -24,7 +24,7 @@ GUI option:
 
 1. Double-click the Stevedore icon, which will open [127.0.0.1:8080](127.0.0.1:8080) in your default web browser.
 2. Give your new search engine a name.
-3. Select whether you're creating a local, demo-mode search engine (that only you will be able to access) or a production search engine with a separate ElasticSearch server and hosted on S3.
+3. Select whether you're creating a local-only-mode search engine (that only you will be able to access) or a production search engine with a separate ElasticSearch server and hosted on S3.
 3. Type in the path to your documents -- either a folder on your computer or on an Amazon S3 bucket -- onto the page. If you're uploading to a separate ElasticSearch server, you'll have to add its URL here too.
 4. You can watch the progress logs, or just close the window. (Don't close the app though!)
 5. After a bit, the app will redirect you to your search engine, once it is ready.
@@ -50,7 +50,7 @@ If you want other people to use the search engine you create (that is, to deploy
 3. an Elasticsearch server running somewhere -- not on your computer.
 4. an Amazon S3 bucket for the frontend and your files to go to. (If you have sensitive documents, you could deploy Stevedore's files to a local HTTP server, so the sensitive documents don't go into the cloud.)
 
-How to set these up _securely_ is outside the scope of this document. (Unless someone else wants to write instructions and submit a pull request.)
+Stevedore has no security of its own, besides the security of your Amazon S3 bucket and your ElasticSearch server's policies. Anyone who can access the S3 bucket and the ElasticSearch server can use your search engine, so be sure to set your access policies correctly. How to set these up _securely_ is outside the scope of this document. (Unless someone else wants to write instructions and submit a pull request.)
 
 
 Customizing Stevedore with New Templates
@@ -67,23 +67,31 @@ Each template must contain four distinct files. Whether inheritance will be poss
   - a "search box" containing all the relevant fields to be searched. Design is important here. 
   - a "query builder" JavaScript function to transform the search box into a valid ElasticSearch query.
 
+Optionally, you can include custom CSS too.
+
 ### How to write a new template
 
-1. Read "Template format" above.
-2. Maybe ask Jeremy if you have questions.
-3. Right now, yes, you need to write all three templates and the query_builder JS file.
-3. Pick a name for your template file. All of your templates will use that name as their entire filename (except for the extension, either `.template`, `.js` or `.css`.)
-3. Create the files themselves as `templates/<template_type>/<template_name>.<extension>`, e.g. `templates/list_view/blogpost.template`
-3. Write template files for detail_view, list_view and search_form. Copy/paste will be your friend (until there's [a DSL for creating these](issues/20)) to make styles easy, as well as making sure the `detail_view` modal works well. (Optionally you can add a CSS file too.)
-8. Write a query_builder. This is a JavaScript file that manages transforming your `search_form`'s HTML into a Backbone object representing a search (e.g. so pagination works, etc.) in the `likeActuallyCreate` method and transforming that object into an ElasticSearch query (`toQuery`). The examples provided will be your guide.
-9. The query_builder is also involved in  serializing/deserializing the query fields into a URL (and saved search format). All you have to do is specify the fields, in an array, in a sensical-ish order in the `fieldOrder` method.
-4. Your query_builder's `likeActuallyCreate` method should, referring to the search template, populate the search Backbone object from the values of the form fields in the search from (which should be now rendered onto the page, but which ought to cope with null values.)
-5. Your query_builder's `toQuery` method will require some ElasticSearch knowledge. Follow the examples. :)
+1. Pick a name for your template file. All of your templates will use that name as their entire filename (except for the extension, either `.template`, `.js` or `.css`.)
+2. Create the files themselves as `templates/<template_type>/<template_name>.<extension>`, e.g. `templates/list_view/blogpost.template`
+3. Write template files for detail_view, list_view and search_form. Copy/paste will be your friend (until there's [a DSL for creating these](issues/20)) to make styles easy, as well as making sure the `detail_view` modal works well.
+4. Write a query_builder. This is a JavaScript file that manages transforming your `search_form`'s HTML into a Backbone object representing a search (e.g. so pagination works, etc.) in the `likeActuallyCreate` method and transforming that object into an ElasticSearch query (`toQuery`). The examples provided will be your guide.
+5. The query_builder is also involved in  serializing/deserializing the query fields into a URL (and saved search format). All you have to do is specify the fields, in an array, in a sensical-ish order in the `fieldOrder` method.
+6. Your query_builder's `likeActuallyCreate` method should, referring to the search template, populate the search Backbone object from the values of the form fields in the search from (which should be now rendered onto the page, but which ought to cope with null values.)
+7. Your query_builder's `toQuery` method will require some ElasticSearch knowledge. Follow the examples. :)
 
-The availability of templating relies on Stevedore's objects each containing, at a bare minimum, an `id` field that is persistent across reindexing, a `url` field to the original document and a `body` field that contains the full text.
+The availability of templating relies on Stevedore's objects each containing, at a bare minimum, an `id` field that is persistent across reindexing, a `source_url` field to the original document and an `analyzed.body` field that contains the full text.
+
+Customizing the Upload Process
+==============================
+
+You may have documents that need to be searchable in Stevedore, but need to be indexed in a different way. You have two options here: customize the uploader, or go it alone and create your own upload script.
+
+Creating your own upload script is relatively easy. Using whatever method you prefer, shove your data into ElasticSearch, being sure to include an `id` field, a `source_url` field and an 'analyzed.body' field. Stevedore will infer the existence of your database directly from ElasticSearch, with no action from you necessary (you may still want to add metadata in document_sets.json).
+
+Information on how to customize the uploader is TK.
 
 Architecture & Theory
----------------------
+=====================
 
 Stevedore consists of two main pieces:
   - an ingestion GUI and script to process your documents -- emails, powerpoints, whatever -- and send them to ElasticSearch.
@@ -135,7 +143,7 @@ Check out the [GitHub issues](https://github.com/newsdev/stevedore/issues) or th
 
 (And the fact that we're packaging JRuby, ElasticSearch, etc.)
 
-####Why is demo mode so slow?
+####Why is local-only mode so slow?
 
 
 Because it's running Elasticsearch from inside the same Java process as the app itself. It's probably faster if you set up your own separate Elasticsearch server.

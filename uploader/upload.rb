@@ -255,7 +255,7 @@ Stevedore.config = {
 Stevedore.content_types = {
   'email': "message/rfc822",
   'hypothetical': /application\\\/pdf/,
-  'daily_worker': /.*/,
+  'social_media': /.*/,
 }
 CONFIG
     end
