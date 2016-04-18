@@ -1,0 +1,53 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="blob-name"><a class="preview" href="#/blob/{{= id }}">
+    {{= typeof deleted !== 'undefined' && deleted === true ? 'Deleted' : ''}} {{= platform }} post from 
+    {{= typeof candidate_name !== 'undefined' ? (candidate_name == 'TK' && typeof platform_username !== 'undefined' ? platform_username : candidate_name) : "Untitled Document: " + human_id }}
+    </a></h4>
+</div>
+<div class="modal-body">
+  <p class="socmed-posting">{{= highlighted.snippets || (typeof body !== 'undefined' ? (body == body.substr(0, 500) ? body : body.substr(0, 500) + ' ...') : '') }}</p>
+  <p class="socmed-meta">posted to {{= platform }} at {{= typeof created_at !== 'undefined' ? ((created_at.indexOf("+0000") === -1 || created_at.indexOf("+0000 20") > -1) ? moment.utc(created_at) : moment.utc(created_at.replace(" +", '+'))).local().format("MMMM Do YYYY, h:mm:ss a") : '' }}</p>
+  {{ if (typeof geo !== 'undefined' && geo){ }}
+  {{split_geo = typeof geo === 'string' ? geo.split(",") : geo}}
+  <strong>Geotagged: <a href="http://maps.google.com/maps?z=12&t=m&q=loc:{{=split_geo[1]}}+{{=split_geo[0]}}">{{=split_geo[0]}}, {{=split_geo[1]}}</a></strong>
+  {{ } }}
+
+  {{ if (attachments.length != 0) { }}
+  <div>
+      <ul>
+      {{ _.each(attachments, function(attachment){ }}
+        {{ if(attachment.indexOf(".mp4") > -1){ }}
+          <video style="max-width: 300px;" controls>
+            <source src="{{= attachment }}" type="video/mp4">
+            Sorry, this is busted. Try downloading the video from the link below, then viewing on your computer. Or let Jeremy know and he'll research a solution.
+          </video>
+        {{ }else{ }}
+          <img style="max-width: 200px;" src="{{= attachment }}" />
+          <img style="max-width: 100px;" src="{{= attachment }}" />
+        {{ } }}
+      {{ }); }}
+      </ul>
+  </div>
+  {{ } }}
+
+
+</div>
+<div class="modal-footer">
+  {{ if (attachments.length != 0) { }}
+  Attachments:
+  <div style="float:left; text-align:left;">
+      <p>Attachments</p>
+      <ul>
+      {{ _.each(attachments, function(attachment){ }}
+          <li><a href="{{= attachment }}">{{= attachment.split('/').slice(-1)[0].split('?')[0] }}</a></li>
+      {{ }); }}
+      </ul>
+  </div>
+  {{ } }}
+
+  {{ if(typeof deleted === 'undefined' || deleted !== true) { }}
+    <a href="{{= link }}">Original {{= platform }} posting</a>
+  {{ } }}
+</div>
+

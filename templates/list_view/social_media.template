@@ -1,0 +1,29 @@
+<!-- delete
+geo
+ -->
+
+<h4 class="blob-name"><a class="preview" href="/search/{{= Stevedore.project }}/document/{{= id }}">
+    {{= typeof deleted !== 'undefined' && deleted === true ? '<strong>Deleted:</strong>' : ''}}
+    {{= typeof candidate_name !== 'undefined' ? (candidate_name == 'TK' && typeof platform_username !== 'undefined' ? platform_username : candidate_name) : "Untitled Document: " + human_id }} {{= typeof platform !== 'undefined' ? platform : 'UNKNOWN PLATFORM' }} post 
+</a></h4>
+
+{{ if (typeof geo !== 'undefined' && geo){ }}
+  {{split_geo = typeof geo === 'string' ? geo.split(",") : geo}}
+  <strong>Geotagged: <a href="http://maps.google.com/maps?z=12&t=m&q=loc:{{=split_geo[1]}}+{{=split_geo[0]}}">{{=split_geo[0]}}, {{=split_geo[1]}}</a></strong>
+{{ } }}
+<p class="socmed-posting">{{= highlighted.snippets || (typeof body !== 'undefined' ? (body == body.substr(0, 500) ? body : body.substr(0, 500) + ' ...') : '(Text of deleted tweet is not in our database.)') }}</p>
+
+<!-- 
+"created_at": "2015-08-17T22:43:34",
+"created_at": "2014-05-20 16:04:10 +0000", needs to be "2014-05-20 16:04:10+0000"
+"created_at": "Thu Aug 06 21:08:10 +0000 2015",
+-->
+
+<p class="socmed-meta">posted to {{= typeof platform !== 'undefined' ? platform : 'UNKNOWN PLATFORM' }} at {{= typeof created_at !== 'undefined' ? ((created_at.indexOf("+0000") === -1 || created_at.indexOf("+0000 20") > -1) ? moment.utc(created_at) : moment.utc(created_at.replace(" +", '+'))).local().format("MMMM Do YYYY, h:mm:ss a") : '' }} 
+{{if (typeof link !== 'undefined') { }}
+  {{ if(typeof deleted === 'undefined' || deleted !== true) { }}
+    <a href="{{= link }}">Original {{= typeof platform !== 'undefined' ? platform : 'UNKNOWN PLATFORM' }} posting</a>
+  {{ } }}
+{{ } }}
+</p>
+

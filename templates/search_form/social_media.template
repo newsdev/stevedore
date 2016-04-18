@@ -1,0 +1,163 @@
+<fieldset>
+
+  <div id="basic-options">
+    <div class="row panel">
+      <div class="form-input">
+        <div class="form-group">
+          <h5 class="form-subhed basic">Search Everything:</h5>
+          <div class="col-sm-12">
+              <div class="control-input">
+                <input name="search" id="search" class="form-control" placeholder="Your query..." value="{{= search.query_string.replace(/\"/g, "&quot;") }}" type="search">
+              </div>
+          </div> 
+        </div>
+      </div>
+      <div class="form-notes">
+        You may use familiar search operators like:
+        <ul>
+          <li><span style="font-family: monospace;">"quotes for phrases to appear together"</span></li>
+          <li>a minus sign, e.g. <span style="font-family: monospace;">-irrelevant</span> to exclude documents with a given word.</li>
+          <li>Boolean operators like <span style="font-family: monospace;">AND</span> and <span style="font-family: monospace;">NOT</span></li>
+          </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="advanced-options-container drawer">
+    <a class="drawer-toggle collapsed" data-toggle="collapse" href="#advanced-options">
+      <div class="container">
+        <p class="text-muted">
+          <span class="drawer-visible-on-out">Advanced Search Options</span>
+          <span class="drawer-visible-on-in">Hide Advanced Search Options</span>
+          <span class="vee"></span>
+        </p>
+      </div>
+    </a>
+
+
+    <div id="advanced-options" class="collapse">
+      <div class="row panel">
+        <div class="form-input">
+          <div class="form-group">
+            <h5 class="form-subhed">Sender</h5>
+            <div class="col-sm-12">
+                <div class="control-input">
+                  <select name="candidate-select" id="candidate-select">
+                  <!-- you will have to fill this in yourself -->
+                    <option value="">All Candidates</option>
+                    <option value="TK1" {{= (search.candidate_name === 'TK1') ? 'selected' : '' }}>Someone</options>
+                    <option value="TK2" {{= (search.candidate_name === 'TK2') ? 'selected' : '' }}>Someone else</option>
+                  </select>
+                </div>
+            </div> 
+          </div>
+        </div>
+        <div class="form-notes">
+          Whose posts do you want?
+        </div>
+      </div>
+
+      <div class="row panel">
+        <div class="form-input">
+          <div class="form-group">
+            <h5 class="form-subhed">Date</h5>
+            <div class="col-sm-6">
+                <label class="control-label" for="date_start">
+                    Start
+                </label>
+                <div class="control-input">
+                  <input type="text" id="date_start" value="{{= search.date_start }}"  class="datepicker form-control" placeholder="Click to select a date" >
+                </div>
+            </div> 
+            <div class="col-sm-6">
+                <label class="control-label" for="date_end">
+                    End
+                </label>
+                <div class="control-input">
+                  <input type="text" id="date_end" value="{{= search.date_end }}" class="datepicker form-control" placeholder="Click to select a date" >
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-notes">
+          Search for posts during a time range. If no "End" is set, posts will be included after the start date until today. If no "Start" is set, all posts before the end date will be included.
+        </div>
+      </div>
+
+
+      <div class="row panel">
+        <div class="form-input">
+          <div class="form-group">
+            <h5 class="form-subhed">Platform</h5>
+            <div class="col-sm-12">
+                <div class="control-input" id="platform-checkboxes">
+                  <label><input type="checkbox" {{= search.platform && search.platform.indexOf('twitter') > -1 ? 'checked' : '' }} name="twitter" value="twitter">Twitter</label>
+                  <label><input type="checkbox" {{= search.platform && search.platform.indexOf('facebook') > -1 ? 'checked' : '' }} name="facebook" value="facebook">Facebook</label>
+                  <label><input type="checkbox" {{= search.platform && search.platform.indexOf('instagram') > -1 ? 'checked' : '' }} name="instagram" value="instagram">Instagram</label>
+                </div>
+            </div> 
+          </div>
+        </div>
+        <div class="form-notes">
+          Which platforms should we search? (If no platforms are checked, you'll see results from all platforms.)
+
+          For Snapchat posts, see <a href="http://ouija.prd.newsdev.nytimes.com">Ouija</a>.
+        </div>
+      </div>
+
+      <div class="row panel">
+        <div class="form-input">
+          <div class="form-group">
+            <h5 class="form-subhed">Politwoops Mode</h5>
+            <div class="col-sm-12">
+                <div class="control-input">
+                  <label><input type="checkbox" id="deleted" {{= typeof search.deleted === 'boolean' && search.deleted == true ? 'checked' : '' }}  name="deleted" value="deleted">Only show deleted posts</label>
+                </div>
+            </div> 
+          </div>
+        </div>
+        <div class="form-notes">
+          Want to only see deleted tweets? (Like <a href="http://www.niemanlab.org/2015/08/arguing-that-politicians-tweets-shouldnt-be-irrevocable-twitter-shuts-down-politwoops-worldwide/">Politwoops</a>.)
+        </div>
+      </div>
+
+
+      <div class="row panel">
+        <div class="form-input">
+          <div class="form-group">
+            <h5 class="form-subhed">Sort By</h5>
+            <div class="col-sm-12">
+              <div class="control-input">
+                <select id="sort" name="sort" class="form-control">
+                  <option value="" >Relevance</option>
+                  <option value="created_at;desc" {{= (search.sort == "created_at;desc") ? 'selected' : '' }} >Date, Most Recent First</option>
+                  <option value="created_at;asc" {{= (search.sort == "created_at;asc") ? 'selected' : '' }} >Date, Oldest First</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-notes">
+          Sorting options. "Relevance" takes into account which of your search terms are included in the email and how often, as well as whether the terms appear in the Subject header or just in the email body.
+        </div>
+      </div>
+
+
+
+
+
+    </div>
+  </div>
+  <div class="form-group drawer drawer-default">
+      <div class="form-input">
+        <div class="control-input">
+          <input id="search-btn" type="submit" class="btn btn-primary btn-adcom pull-right" value="Submit">
+        </div>
+      </div>
+      <div class="form-notes">
+        Good luck!
+      </div>
+    </div>
+  </div>
+
+</fieldset>
