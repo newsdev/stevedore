@@ -1,9 +1,80 @@
 require_relative './uploader/upload_gui.rb'
 require 'rika'
-
+require 'fileutils'
 # if you're testing locally and intend to run Stevedore via Nginx (or Apache, I suppose)
 # set the NGINXSTYLE environment variable to simulate the URLs accepted there.
-$search_files = nil
+
+$search_files = nil # just initializing outside of any closures.
+
+def data_dir
+  # OS X: ~/Library/Application Support/Stevedore
+  # Win:  %APPDATA%/Stevedore
+  # Linux: ~/.stevedore
+
+
+  # when invoking as "java -Dstevedore.data_dir=/foo/bar ... -jar stevedore.war"
+  data_dir = java.lang.System.getProperty('stevedore.data_dir')
+  unless data_dir.nil?
+    return java.io.File.new(data_dir).getPath
+  end
+
+  # when invoking with env var
+  data_dir = ENV['TABULA_DATA_DIR']
+  unless data_dir.nil?
+    return java.io.File.new(data_dir).getPath
+  end
+
+  # use the usual directory in (system-dependent) user home dir
+  data_dir = nil
+  case java.lang.System.getProperty('os.name')
+  when /Windows/
+    # APPDATA is in a different place (under user.home) depending on
+    # Windows OS version. so use that env var directly, basically
+    appdata = ENV['APPDATA']
+    if appdata.nil?
+      home = java.lang.System.getProperty('user.home')
+    end
+    data_dir = java.io.File.new(appdata, '/Stevedore').getPath
+
+  when /Mac/
+    home = java.lang.System.getProperty('user.home')
+    data_dir = File.join(home, '/Library/Application Support/Stevedore')
+
+
+  else
+    # probably *NIX
+    home = java.lang.System.getenv('XDG_DATA_HOME')
+    if !home.nil?
+      # XDG
+      data_dir = File.join(data_home, '/stevedore')
+    else
+      # other, normal *NIX systems
+      home = java.lang.System.getProperty('user.home')
+      home = '.' if home.nil?
+      data_dir = File.join(home, '/.stevedore')
+    end
+  end # /case
+
+  data_dir
+end
+
+def ensure_templates_exist!
+  Dir.glob("templates/**/*").each do |path|
+    new_path = File.join(data_dir, path.gsub(File.dirname(__FILE__), ''))
+    next if File.exists?(new_path) # don't clobber existing, potentially-edited files
+    next unless File.basename(path).include?(".") # skip folders, i.e. anything in templates with no file extension (we can't File.file? or Dir.dir? because these might be in a JAR)
+    if "#{$PROGRAM_NAME}".include?("stevedore.war") || "#{$PROGRAM_NAME}".include?("stevedore.jar")
+      stream = self.to_java.get_class.get_class_loader.get_resource_as_stream('/' + path)
+    else
+      stream = open( File.join(File.dirname(__FILE__), path) ){|f| f.read}
+    end
+    FileUtils.mkdir_p(File.dirname(new_path))
+    open(new_path, 'w'){|f| f << stream }
+
+    # FileUtils.cp(path, new_path) if !File.exists?(new_path)
+  end
+end
+
 
 def start_local_elasticsearch_server
   Dir[File.join(File.dirname(__FILE__), "elasticsearch-1.7.2/lib/*.jar")].each do |jar|
@@ -15,6 +86,9 @@ def start_local_elasticsearch_server
 
   settings_builder.put("path.conf", File.join(File.dirname(__FILE__), "config"))
   settings_builder.put("http.cors.enabled", true)
+
+  settings_builder.put("path.data", data_dir)
+  settings_builder.put("path.logs", data_dir)
 
   tuple = org.elasticsearch.node.internal.InternalSettingsPreparer.prepareSettings(settings_builder.build, true)
   org.elasticsearch.common.logging.log4j.LogConfigurator.configure(tuple.v1());
@@ -51,7 +125,7 @@ map "/files/" do
     end
 
     requested_file_path = File.join($search_files, *clean)
-    puts "RFP: #{requested_file_path} " 
+    # puts "RFP: #{requested_file_path} " 
     next ['404', {'Content-Type' => 'text/html'}, ['File not found (2).'] ] unless File.file?(requested_file_path)
     Rack::File.new(requested_file_path).call(env.merge({"PATH_INFO" => ''}))
   }
@@ -104,6 +178,7 @@ else
   run Rack::URLMap.new('/upload' => Sinatra::Application)
 end
 
+ensure_templates_exist!
 start_local_elasticsearch_server
 
 # this is stolen directly -- shamelessly -- from https://github.com/tabulapdf/tabula/blob/master/config.ru
@@ -156,6 +231,9 @@ if "#{$PROGRAM_NAME}".include?("stevedore.war") || "#{$PROGRAM_NAME}".include?("
     puts "return to this window and press \"Control-C\" to close it."
     puts "======================================================\n\n"
   end
+
+
+  puts "template files are located in #{data_dir}/templates. edit 'em if you want."
 end
 
 

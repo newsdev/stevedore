@@ -12,6 +12,8 @@ Warbler::Config.new do |config|
 
   # Application directories to be included in the webapp.
   config.dirs = %w(uploader app config lib log templates elasticsearch-1.7.2)
+  # notably, we want to EXCLUDE screenshots, data.
+
   # Additional files/directories to include, above those in config.dirs
   config.includes = FileList["document_sets.json", "index.html", "LICENSE", "README.md", "search.html"]
 
