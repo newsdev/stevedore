@@ -1,0 +1,308 @@
+{
+  "Twitter": [
+    {
+      "candidate_name": "Bernie Sanders",
+      "handle": "berniesanders",
+      "id": "216776631",
+      "Party": "D"
+    }, {
+      "candidate_name": "Rick Santorum",
+      "handle": "ricksantorum",
+      "id": "58379000",
+      "Party": "R"
+    }, {
+      "candidate_name": "Lindsey Graham",
+      "handle": "LindseyGrahamSC",
+      "id": "432895323",
+      "Party": "R"
+    }, {
+      "candidate_name": "Marco Rubio",
+      "handle": "marcorubio",
+      "id": "15745368",
+      "Party": "R"
+    }, {
+      "candidate_name": "Rand Paul",
+      "handle": "randpaul",
+      "id": "216881337",
+      "Party": "R"
+    }, {
+      "candidate_name": "Hillary Clinton",
+      "handle": "hillaryclinton",
+      "id": "1339835893",
+      "Party": "D"
+    }, {
+      "candidate_name": "Mike Huckabee",
+      "handle": "govmikehuckabee",
+      "id": "15416505",
+      "Party": "R"
+    }, {
+      "candidate_name": "Carly Fiorina",
+      "handle": "carlyfiorina",
+      "id": "65691824",
+      "Party": "R"
+    }, {
+      "candidate_name": "Martin O'Malley",
+      "handle": "martinomalley",
+      "id": "15824288",
+      "Party": "D"
+    }, {
+      "candidate_name": "Rick Perry",
+      "handle": "governorperry",
+      "id": "18906561",
+      "Party": "R"
+    }, {
+      "candidate_name": "Scott Walker",
+      "handle": "scottwalker",
+      "id": "33750798",
+      "Party": "R"
+    }, {
+      "candidate_name": "George E. Pataki",
+      "handle": "governorpataki",
+      "id": "2865560724",
+      "Party": "R"
+    }, {
+      "candidate_name": "Jeb Bush",
+      "handle": "jebbush",
+      "id": "113047940",
+      "Party": "R"
+    }, {
+      "candidate_name": "Lincoln D. Chafee",
+      "handle": "lincolnchafee",
+      "id": "89781370",
+      "Party": "D"
+    }, {
+      "candidate_name": "Bobby Jindal",
+      "handle": "bobbyjindal",
+      "id": "17078632",
+      "Party": "R"
+    }, {
+      "candidate_name": "Ted Cruz",
+      "handle": "tedcruz",
+      "id": "23022687",
+      "Party": "R"
+    }, {
+      "candidate_name": "Ben Carson",
+      "handle": "realbencarson",
+      "id": "1180379185",
+      "Party": "R"
+    }, {
+      "candidate_name": "Donald Trump",
+      "handle": "realDonaldTrump",
+      "id": "25073877",
+      "Party": "R"
+    }, {
+      "candidate_name": "Chris Christie",
+      "handle": "chrischristie",
+      "id": "1347285918",
+      "Party": "R"
+    }, {
+      "candidate_name": "Jim Gilmore",
+      "handle": "gov_gilmore",
+      "id": "3021632183",
+      "Party": "R"
+    }, {
+      "candidate_name": "John Kasich",
+      "handle": "johnkasich",
+      "id": "18020081",
+      "Party": "R"
+      },
+    {
+      "candidate_name": "Gary Johnson",
+      "handle": "GovGaryJohnson",
+      "id": "95713333",
+      "Party": "L"
+    }
+  ],
+  "Facebook": [
+    {
+      "candidate_name": "Bernie Sanders",
+      "handle": "berniesanders",
+      "Party": "D"
+    }, {
+      "candidate_name": "Rick Santorum",
+      "handle": "RickSantorum",
+      "Party": "R"
+    }, {
+      "candidate_name": "Lindsey Graham",
+      "handle": "LindseyGrahamSC",
+      "Party": "R"
+    }, {
+      "candidate_name": "Marco Rubio",
+      "handle": "MarcoRubio",
+      "Party": "R"
+    }, {
+      "candidate_name": "Rand Paul",
+      "handle": "RandPaul",
+      "Party": "R"
+    }, {
+      "candidate_name": "Hillary Clinton",
+      "handle": "hillaryclinton",
+      "Party": "D"
+    }, {
+      "candidate_name": "Mike Huckabee",
+      "handle": "mikehuckabee",
+      "Party": "R"
+    }, {
+      "candidate_name": "Carly Fiorina",
+      "handle": "CarlyFiorina",
+      "Party": "R"
+    }, {
+      "candidate_name": "Martin O'Malley",
+      "handle": "MartinOMalley",
+      "Party": "D"
+    }, {
+      "candidate_name": "Rick Perry",
+      "handle": "GovernorPerry",
+      "Party": "R"
+    }, {
+      "candidate_name": "Scott Walker",
+      "handle": "scottkwalker",
+      "Party": "R"
+    }, {
+      "candidate_name": "George E. Pataki",
+      "handle": "GovGeorgePataki",
+      "Party": "R"
+    }, {
+      "candidate_name": "Jeb Bush",
+      "handle": "jebbush",
+      "Party": "R"
+    }, {
+      "candidate_name": "Lincoln D. Chafee",
+      "handle": "chafee2016",
+      "Party": "D"
+    }, {
+      "candidate_name": "Bobby Jindal",
+      "handle": "bobbyjindal",
+      "Party": "R"
+    }, {
+      "candidate_name": "Ted Cruz",
+      "handle": "tedcruzpage",
+      "Party": "R",
+      "id": "69983322463"
+    }, {
+      "candidate_name": "Ben Carson",
+      "handle": "realbencarson",
+      "Party": "R"
+    }, {
+      "candidate_name": "Donald Trump",
+      "handle": "DonaldTrump",
+      "Party": "R"
+    }, {
+      "candidate_name": "Chris Christie",
+      "handle": "govchristie",
+      "Party": "R"
+    }, {
+      "candidate_name": "John Kasich",
+      "handle": "JohnKasich",
+      "Party": "R"
+    }, {
+      "candidate_name": "Gary Johnson",
+      "handle": "govgaryjohnson",
+      "Party": "L"
+    }
+  ],
+  "Instagram": [
+    {
+      "candidate_name": "Bernie Sanders",
+      "handle": "berniesanders",
+      "id": null,
+      "Party": "D"
+    }, {
+      "candidate_name": "Rick Santorum",
+      "handle": "ricksantorum",
+      "id": null,
+      "Party": "R"
+    }, {
+      "candidate_name": "Lindsey Graham",
+      "handle": "lindseygrahamsc",
+      "id": null,
+      "Party": "R"
+    }, {
+      "candidate_name": "Marco Rubio",
+      "handle": "marcorubiofla",
+      "id": null,
+      "Party": "R"
+    }, {
+      "candidate_name": "Rand Paul",
+      "handle": "drrandpaul",
+      "id": null,
+      "Party": "R"
+    }, {
+      "candidate_name": "Hillary Clinton",
+      "handle": "hillaryclinton",
+      "id": null,
+      "Party": "D"
+    }, {
+      "candidate_name": "Mike Huckabee",
+      "handle": "govmikehuckabee",
+      "id": null,
+      "Party": "R"
+    }, {
+      "candidate_name": "Carly Fiorina",
+      "handle": "carlyfiorina",
+      "id": null,
+      "Party": "R"
+    }, {
+      "candidate_name": "Martin O'Malley",
+      "handle": "martinomalley",
+      "id": null,
+      "Party": "D"
+    }, {
+      "candidate_name": "Rick Perry",
+      "handle": "governorperry",
+      "id": null,
+      "Party": "R"
+    }, {
+      "candidate_name": "Scott Walker",
+      "handle": "scottwalker",
+      "id": null,
+      "Party": "R"
+    }, {
+      "candidate_name": "George E. Pataki",
+      "handle": "governorpataki",
+      "id": null,
+      "Party": "R"
+    }, {
+      "candidate_name": "Jeb Bush",
+      "handle": "jebbush",
+      "id": null,
+      "Party": "R"
+    }, {
+      "candidate_name": "Lincoln D. Chafee",
+      "handle": "lincchafee",
+      "id": null,
+      "Party": "D"
+    }, {
+      "candidate_name": "Bobby Jindal",
+      "handle": "bobbyjindal",
+      "id": null,
+      "Party": "R"
+    }, {
+      "candidate_name": "Ben Carson",
+      "handle": "realbencarson",
+      "id": null,
+      "Party": "R"
+    }, {
+      "candidate_name": "Donald Trump",
+      "handle": "realdonaldtrump",
+      "id": null,
+      "Party": "R"
+    }, {
+      "candidate_name": "Chris Christie",
+      "handle": "chrischristie",
+      "id": null,
+      "Party": "R"
+    }, {
+      "candidate_name": "John Kasich",
+      "handle": "johnkasich",
+      "id": null,
+      "Party": "R"
+    }, {
+      "candidate_name": "Gary Johnson",
+      "handle": "garyjohnson2016",
+      "id": null,
+      "Party": "L"
+    }
+  ]
+
+}

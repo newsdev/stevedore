@@ -1,4 +1,4 @@
-require_relative './uploader/upload_gui.rb'
+require_relative './uploader/gui_for_uploader.rb'
 require 'rika'
 require 'fileutils'
 # if you're testing locally and intend to run Stevedore via Nginx (or Apache, I suppose)
@@ -179,7 +179,7 @@ else
 end
 
 ensure_templates_exist!
-start_local_elasticsearch_server
+# start_local_elasticsearch_server
 
 # this is stolen directly -- shamelessly -- from https://github.com/tabulapdf/tabula/blob/master/config.ru
 # only do this if running as jar or app. (if "rackup", we don't

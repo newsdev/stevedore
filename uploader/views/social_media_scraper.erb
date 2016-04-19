@@ -64,7 +64,7 @@
         $('#logs').text('');
         var was_disabled = $('#index-name input').is('[disabled]');
         $('#index-name input').removeAttr('disabled');
-        $.post('/upload/do', $('form').serialize(), function(json_resp){
+        $.post('/upload/archive', $('form').serialize(), function(json_resp){
           resp = JSON.parse(json_resp);
           console.log(resp);
           if(!resp["success"]){
@@ -220,14 +220,14 @@
 
     <div id="everything-container" class="container local">
 
-      <h1>Let's make a search engine!</h1>
-      <p>We've gotta take your documents, process them to extract the text, and then send that to the search engine.</p>
+      <h1>Let's archive some social media posts!</h1>
+      <p>We've gotta get each person's posts from each platform, then send that to the search engine.</p>
 
-      <form id="new-index" method="post" action="/do"> <!-- TODO, submit and stuff -->
+      <form id="new-index" method="post" action="/archive"> <!-- TODO, submit and stuff -->
         <div class="input-field" id="index-title">
           <h4>Let's give this search engine you're making a name.</h4>
           <p>Keep it short but descriptive.</p>
-          <input class="form-input" name="index-title" type="text" placeholder="Mayor Smith's Emails">
+          <input class="form-input" name="index-title" type="text" placeholder="Social Media from City Councilmembers">
         </div>
 
         <div class="input-field" id="index-description">
@@ -249,30 +249,24 @@
         </div>
 
 
-        <div class="input-field foreign-only" id="files-foreign">
-          <h4>What files should we put into the search engine?</h4>
-          <p>Give me a path on Amazon S3.</p>
-          <input class="form-input" name="files" type="text" placeholder="s3://my-bucket-name/emails/">
+        <div class="input-field handles" id="twitter-handles">
+          <h4>What Twitter accounts should we archive?</h4>
+          <p>The person's name or title (however you want to format it), then their handle (the @ sign is optional).</p>
+          <textarea class="form-input" name="twitter" type="text" placeholder="Barack Obama: @BarackObama"></textarea>
+        </div>
+        <div class="input-field handles" id="facebook-handles">
+          <h4>What Facebook pages should we archive?</h4>
+          <p>The person's name or title (however you want to format it), then their Facebook usernames: that is, part of the page's URL that comes after facebook.com.</p>
+          <textarea class="form-input" name="facebook" type="text" placeholder="Bernie Sanders (Democratic candidate and Senator): berniesanders"></textarea>
+        </div>
+        <div class="input-field handles" id="instagram-handles">
+          <h4>What Instagram accounts should we archive?</h4>
+          <p>The person's name or title (however you want to format it), then their handle (the @ sign is optional).</p>
+          <textarea class="form-input" name="instagram" type="text" placeholder="Donald Trump: realdonaldtrump"></textarea>
         </div>
 
-        <div class="input-field local-only" id="files-local">
-          <h4>What files should we put into the search engine?</h4>
-          <p>Give me an absolute path on your computer.</p>
-           <p>Eventually, you might be able to drag a folder into this text box</p>
-          <input class="form-input" name="files" type="text" placeholder="/Users/MyUsername/files/stuff/">
-        </div>
 
-        <div class="input-field" id="filetype">
-          <h4>What kind of files are these?</h4>
-          <p>Are these emails? Or just unstructured blobs of text?</p>
-          <p>You can also write your own templates if you want. If you've written your own, select Other and type in a value. </p>
-          <select name="filetype">
-            <option value="blob">blobs of text</option> 
-            <option value="email">emails</option>
-            <option value="OTHER">Other</option>
-          </select>
-          <input class="form-input" name="other-filetype" type="text" placeholder="crime-report" style="display: none;">
-        </div>
+
 
 
         <div class="input-field foreign-only"  id="es-host">
@@ -281,13 +275,47 @@
           <input class="form-input" name="es-host" type="text" placeholder="http://localhost:9200">
         </div>
 
-        <div class="input-field foreign-only" id="frontend-location">
-          <h4>Where should we put the search engine?</h4>
+        <div class="input-field" id="frontend-location">
+          <h4>Where should we put the media files (and the search engine)?</h4>
           <p>Give me a path on Amazon S3. <span id="already-on-s3"> If your documents are already on S3, you may want to just set this to the same path.<span></p>
           <p>The keys to write to this S3 bucket should already be in your environment, visit <a href="http://docs.aws.amazon.com/AWSSdkDocsRuby/latest//DeveloperGuide/prog-basics-creds.html">this Amazon help page</a> for more info.</p>
           <p></p>
           <input class="form-input" name="frontend-location" type="text" placeholder="s3://my-bucket-name/emails/frontend">
         </div>
+
+
+
+        <div class="input-field" id="index-description">
+          <h4>Twitter Consumer Key</h4>
+          <p>Get it from Twitter. Obviously we'll have a better way to do this in the future.</p>
+          <textarea name="twitter-consumer-key" ></textarea>
+        </div>
+        <div class="input-field" id="index-description">
+          <h4>Twitter Consumer Secret</h4>
+          <p>Get it from Twitter. Obviously we'll have a better way to do this in the future.</p>
+          <textarea name="twitter-consumer-secret" ></textarea>
+        </div>
+        <div class="input-field" id="index-description">
+          <h4>Twitter Access Token</h4>
+          <p>Get it from Twitter. Obviously we'll have a better way to do this in the future.</p>
+          <textarea name="twitter-access-token" ></textarea>
+        </div>
+        <div class="input-field" id="index-description">
+          <h4>Twitter Access Token Secret</h4>
+          <p>Get it from Twitter. Obviously we'll have a better way to do this in the future.</p>
+          <textarea name="twitter-access-token-secret" ></textarea>
+        </div>
+        <div class="input-field" id="index-description">
+          <h4>Facebook Access Key</h4>
+          <p>get it from <a href="https://developers.facebook.com/tools/explorer/">here</a>. You may need to create a Facebook app.</p>
+          <textarea name="facebook-access-key" ></textarea>
+        </div>
+
+
+
+
+
+
 
 
         <div class="input-field" id="index-name">
@@ -298,7 +326,7 @@
 
 
         <input type="submit" id="submit" value="Submit" class="btn"></input>
-        <p>Once you press submit, Stevedore will start processing your documents. This can take a few minutes, especially if you have a lot of documents. Follow the logs below for information on progress. Once your documents are done processing, you'll be taken directly to your new search engine.</p>
+        <p>Once you press submit, Stevedore will start scraping your documents. This can take a few minutes or hours, especially if you want to archive posts from lots of people. Follow the logs below for information on progress. Once your documents are done processing, you'll be taken directly to your new search engine.</p>
       </form>
 
       <h4>Logs: What's goin' on?</h4>
