@@ -72,13 +72,13 @@ Stevedore.templates = {};
 Stevedore.getTemplates = function(project, cb){
   Stevedore.template_names = _.extend({}, Stevedore.default_template_names, Stevedore.projects[project]);
   console.log('project', project, ' => ', Stevedore.template_names);
-  $("head").append($("<link rel='stylesheet' href='"+(Stevedore.config.use_slash_based_routing ? '/search/' : '')+"templates/css/"+Stevedore.template_names['css']+".css?_cachebuster=201604071122' type='text/css' media='screen' />"));
+  $("head").append($("<link rel='stylesheet' href='"+(Stevedore.config.use_slash_based_routing ? '/search/' : '')+"templates/css/"+Stevedore.template_names['css']+".css?_cachebuster=201604251811' type='text/css' media='screen' />"));
 
   var q = queue()
 
   q.defer(function(){
     $.ajax({
-      url: (Stevedore.config.use_slash_based_routing ? '/search/' : '') + "templates/query_builder/" + Stevedore.template_names['query_builder'] + ".js?_cachebuster=201604071122",
+      url: (Stevedore.config.use_slash_based_routing ? '/search/' : '') + "templates/query_builder/" + Stevedore.template_names['query_builder'] + ".js?_cachebuster=201604251811",
       dataType: "script",
       async: true,
       success: function(data, status, jqxhr){
@@ -101,7 +101,7 @@ Stevedore.getTemplates = function(project, cb){
       Stevedore.templates[template_type] = {}; // template_type is one of "blob" or "email" or others
       q.defer(function(cb){
         $.ajax({
-          url: (Stevedore.config.use_slash_based_routing ? '/search/' : '') + "templates/" + folder + "/" + template_type + ".template?_cachebuster=201604071122",
+          url: (Stevedore.config.use_slash_based_routing ? '/search/' : '') + "templates/" + folder + "/" + template_type + ".template?_cachebuster=201604251811",
           dataType: "text",
           async: true,
           success: function(data, status, jqxhr){
