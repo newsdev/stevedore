@@ -4,7 +4,7 @@
     {{ } }}
 </div>
 
-<h4 class="blob-name"><a class="preview" href="{{= Stevedore.config.use_slash_based_routing ? '/search/' : 'search.html#'}}/{{=Stevedore.project}}/document/{{=id}}">
+<h4 class="blob-name"><a class="preview" href="{{= Stevedore.config.use_slash_based_routing ? '/search/' : 'search.html#'}}{{=Stevedore.project}}/document/{{=id}}">
 {{= file.title.length ? file.title : "Untitled Document: " + human_id }}
 </a></h4>
 
