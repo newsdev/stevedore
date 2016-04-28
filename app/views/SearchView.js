@@ -9,6 +9,7 @@ Stevedore.Views.Search = Backbone.View.extend({
   },
   options: {},
   option_template_string: '<option class="stevedore-autogen" value="{{= key }}" {{= (search[field] === key) ? "selected" : "" }}>{{= key }}</option>',
+  checkbox_template_string: '<label><input class="stevedore-autogen" type="checkbox" {{= search[field] && search[field].indexOf(key) > -1 ? "checked" : "" }} name="{{=key}}" value="{{=key}}">{{=key}}</label>',
 
   initialize: function(){
     _.bindAll(this, 'search', 'render', 'renderHits', 'createSearch', 'loadSearch', 'downloadCSV', 'scrollTo');
@@ -118,16 +119,7 @@ Stevedore.Views.Search = Backbone.View.extend({
     }
   },
 
-  generateOptions: function(field, select_el){
-    // use ElasticSearch to get an aggregation based on this field
-    // that is, a listing of all the distinct values of the field
-    // then generate the HTML for that.
-    $selectEl = $(select_el);
-    console.log($(select_el).find('.stevedore-autogen'), $(select_el).find('.stevedore-autogen').length)
-    if($(select_el).find('.stevedore-autogen').length > 0){
-      return;
-    }
-
+  getValuesForField: function(field, successCb, errorCb){
     Stevedore.client.search({
       index: Stevedore.es_index,
       body: {
@@ -145,21 +137,44 @@ Stevedore.Views.Search = Backbone.View.extend({
 
         }
       }
-    }).then(_.bind(function (resp) {
-      $selectEl = $(select_el);
-      console.log($(select_el).find('.stevedore-autogen'), $(select_el).find('.stevedore-autogen').length)
-      if($(select_el).find('.stevedore-autogen').length > 0){
-        return;
-      }
-      var options_html = _(resp.aggregations.extant_keys.buckets).map(_.bind(function(key_obj){
-        return _.template(this.option_template_string)(_.extend(key_obj, {'field': field}))
-      },this)).join("");
+    }).then(successCb, errorCb);
+  },
 
-      $(select_el).append($(options_html));
-    }, this), function (err) {
-      //TODO: error messages
-      console.log('option generation errors!')
-    });
+  generateElsFromAggregate: function(field, select_el, template_string){
+    // use ElasticSearch to get an aggregation based on this field
+    // that is, a listing of all the distinct values of the field
+    // then generate the HTML for that.    
+    $selectEl = $(select_el);
+    console.log($(select_el).find('.stevedore-autogen'), $(select_el).find('.stevedore-autogen').length)
+    if($(select_el).find('.stevedore-autogen').length > 0){
+      return;
+    }
+    this.getValuesForField(field, 
+      _.bind(function (resp) {
+        $selectEl = $(select_el);
+        console.log($(select_el).find('.stevedore-autogen'), $(select_el).find('.stevedore-autogen').length)
+        if($(select_el).find('.stevedore-autogen').length > 0){
+          return;
+        }
+        var options_html = _(resp.aggregations.extant_keys.buckets).map(_.bind(function(key_obj){
+          return _.template(template_string)(_.extend(key_obj, {'field': field}))
+        },this)).join("");
+
+        $(select_el).append($(options_html));
+      }, this),
+      function (err) {
+        //TODO: error messages
+        console.log('option generation errors!')
+      }
+    )
+  },
+
+  generateOptions: function(field, select_el){
+    this.generateElsFromAggregate(field, select_el, this.option_template_string)
+  },
+
+  generateCheckboxes: function(field, select_el){
+    this.generateElsFromAggregate(field, select_el, this.this.checkbox_template_string)
   },
 
   render: function(){
@@ -174,7 +189,8 @@ Stevedore.Views.Search = Backbone.View.extend({
       { 
         search: typeof this.model === "undefined" ? {query_string: ''} : this.model.attributes,
         es_index: Stevedore.es_index || '',
-        generateOptions: _.bind(this.generateOptions, this)
+        generateOptions: _.bind(this.generateOptions, this),
+        generateCheckboxes: _.bind(this.generateCheckboxes, this)        
       }
     ));
     // datepickers need a datepicker class and they'll Just Work.

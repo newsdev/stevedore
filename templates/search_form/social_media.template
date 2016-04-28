@@ -43,7 +43,6 @@
             <div class="col-sm-12">
                 <div class="control-input">
                   <select name="candidate-select" id="candidate-select">
-                  <!-- you will have to fill this in yourself -->
                     <option value="">All Candidates</option>
                     {{ generateOptions('candidate_name', '#candidate-select') }}
                   </select>
