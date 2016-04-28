@@ -174,7 +174,7 @@ Stevedore.Views.Search = Backbone.View.extend({
   },
 
   generateCheckboxes: function(field, select_el){
-    this.generateElsFromAggregate(field, select_el, this.this.checkbox_template_string)
+    this.generateElsFromAggregate(field, select_el, this.checkbox_template_string)
   },
 
   render: function(){
