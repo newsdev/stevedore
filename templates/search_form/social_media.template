@@ -45,8 +45,7 @@
                   <select name="candidate-select" id="candidate-select">
                   <!-- you will have to fill this in yourself -->
                     <option value="">All Candidates</option>
-                    <option value="TK1" {{= (search.candidate_name === 'TK1') ? 'selected' : '' }}>Someone</options>
-                    <option value="TK2" {{= (search.candidate_name === 'TK2') ? 'selected' : '' }}>Someone else</option>
+                    {{ generateOptions('candidate_name', '#candidate-select') }}
                   </select>
                 </div>
             </div> 

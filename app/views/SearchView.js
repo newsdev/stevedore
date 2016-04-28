@@ -8,6 +8,7 @@ Stevedore.Views.Search = Backbone.View.extend({
     "click .download-as-csv": 'downloadCSV'    
   },
   options: {},
+  option_template_string: '<option class="stevedore-autogen" value="{{= key }}" {{= (search[field] === key) ? "selected" : "" }}>{{= key }}</option>',
 
   initialize: function(){
     _.bindAll(this, 'search', 'render', 'renderHits', 'createSearch', 'loadSearch', 'downloadCSV', 'scrollTo');
@@ -117,6 +118,50 @@ Stevedore.Views.Search = Backbone.View.extend({
     }
   },
 
+  generateOptions: function(field, select_el){
+    // use ElasticSearch to get an aggregation based on this field
+    // that is, a listing of all the distinct values of the field
+    // then generate the HTML for that.
+    $selectEl = $(select_el);
+    console.log($(select_el).find('.stevedore-autogen'), $(select_el).find('.stevedore-autogen').length)
+    if($(select_el).find('.stevedore-autogen').length > 0){
+      return;
+    }
+
+    Stevedore.client.search({
+      index: Stevedore.es_index,
+      body: {
+        // Don't need any docs, just the agg results
+        size: 0,
+        aggs: {
+          // Top 10 people who have emailed the most,
+          extant_keys: {
+            terms: {
+              field: field,
+              size: 0, // we want all of them!!
+              order: {_count: 'desc'}
+            }
+          },
+
+        }
+      }
+    }).then(_.bind(function (resp) {
+      $selectEl = $(select_el);
+      console.log($(select_el).find('.stevedore-autogen'), $(select_el).find('.stevedore-autogen').length)
+      if($(select_el).find('.stevedore-autogen').length > 0){
+        return;
+      }
+      var options_html = _(resp.aggregations.extant_keys.buckets).map(_.bind(function(key_obj){
+        return _.template(this.option_template_string)(_.extend(key_obj, {'field': field}))
+      },this)).join("");
+
+      $(select_el).append($(options_html));
+    }, this), function (err) {
+      //TODO: error messages
+      console.log('option generation errors!')
+    });
+  },
+
   render: function(){
     this.setTemplate();
     if (!_.isUndefined(Stevedore.template_names)) this.$el.addClass(Stevedore.template_names['search_form']);
@@ -126,8 +171,11 @@ Stevedore.Views.Search = Backbone.View.extend({
     }
     // with the details of a query object, autofill it back in (from saved searches box)
     this.$el.find("#search-form-container").html(this.template(
-      {search: typeof this.model === "undefined" ? {query_string: ''} : this.model.attributes,
-       es_index: Stevedore.es_index || ''}
+      { 
+        search: typeof this.model === "undefined" ? {query_string: ''} : this.model.attributes,
+        es_index: Stevedore.es_index || '',
+        generateOptions: _.bind(this.generateOptions, this)
+      }
     ));
     // datepickers need a datepicker class and they'll Just Work.
     // TODO: consider setting minDate, maxDate based on the dataset.
