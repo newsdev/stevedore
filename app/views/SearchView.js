@@ -33,7 +33,7 @@ Stevedore.Views.Search = Backbone.View.extend({
 
     var search = this.createSearch(new_search);
 
-    Stevedore.router.navigate( (Stevedore.config.use_slash_based_routing ? '' : Stevedore.project + "/") + "search/" + search.toString());
+    Stevedore.router.navigate( Stevedore.project + "/" +  "search/" + search.toString());
     //only scroll to the top of results on a new search (not loading new results and not loading a search from the URL)
     if(!Stevedore.document_collection.size()){
       this.listenToOnce(this.model, "stevedore:search-done", this.scrollTo);
@@ -47,9 +47,9 @@ Stevedore.Views.Search = Backbone.View.extend({
     this.options = new_search.attributes;
 
     // don't repeat selections in saved.
-    if(Stevedore.saved_searches_collection.size() == 0 || !_.isEqual(
-        _.pick(new_search.attributes, 'query_string', 'facets'),
-        _.pick(Stevedore.saved_searches_collection.at(0).attributes, 'query_string', 'facets'))
+    if(typeof Stevedore.saved_searches_collection !== "undefined" && (Stevedore.saved_searches_collection.size() == 0 || !_.isEqual(
+            _.pick(new_search.attributes, 'query_string', 'facets'),
+            _.pick(Stevedore.saved_searches_collection.at(0).attributes, 'query_string', 'facets')))
       ){
       Stevedore.saved_searches_collection.create(new_search);
     }
@@ -71,7 +71,7 @@ Stevedore.Views.Search = Backbone.View.extend({
     search.save();
     Stevedore.document_collection.reset([]);
 
-    Stevedore.router.navigate( (Stevedore.config.use_slash_based_routing ? '' : Stevedore.project + "/") + "search/" + search.toString());
+    Stevedore.router.navigate( Stevedore.project +  "/" + "search/" + search.toString());
     this.options = search.attributes;
     this.model = search;
     this.listenTo(this.model, "stevedore:search-start", this.renderHits);
@@ -86,7 +86,7 @@ Stevedore.Views.Search = Backbone.View.extend({
 
   downloadCSV: function(){
     this.model.toCSV(function(csvData){
-      filename = "fl_contracts.xls"
+      filename = Stevedore.project + ".xls"
       var blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
       if (navigator.msSaveBlob) { // IE 10+
           navigator.msSaveBlob(blob, filename);

@@ -72,23 +72,33 @@ Stevedore.templates = {};
 Stevedore.getTemplates = function(project, cb){
   Stevedore.template_names = _.extend({}, Stevedore.default_template_names, Stevedore.projects[project]);
   console.log('project', project, ' => ', Stevedore.template_names);
-  $("head").append($("<link rel='stylesheet' href='"+(Stevedore.config.use_slash_based_routing ? '/search/' : '')+"templates/css/"+Stevedore.template_names['css']+".css?_cachebuster=201604251811' type='text/css' media='screen' />"));
+  $("head").append($("<link rel='stylesheet' href='templates/css/"+Stevedore.template_names['css']+".css?_cachebuster=201604251811' type='text/css' media='screen' />"));
 
   var q = queue()
 
   q.defer(function(){
     $.ajax({
-      url: (Stevedore.config.use_slash_based_routing ? '/search/' : '') + "templates/query_builder/" + Stevedore.template_names['query_builder'] + ".js?_cachebuster=201604251811",
+      url: "templates/query_builder/" + Stevedore.template_names['query_builder'] + ".js?_cachebuster=201604251811",
       dataType: "script",
       async: true,
       success: function(data, status, jqxhr){
-        Stevedore.Models.Search = Stevedore.Models.DefaultSearch.extend(Stevedore.QueryBuilder); // create the methods we want!
-        Stevedore.saved_searches_collection = new Stevedore.Collections.SavedSearches([], {model: Stevedore.Models.Search})
-        Stevedore.saved_searches_view = new Stevedore.Views.SavedSearches({ el: $('#saved-searches-container')[0] } );
-        Stevedore.saved_searches_collection.fetch();
-        Stevedore.trigger('stevedore:querybuilder-loaded');
 
-        if(cb) cb(); // only if we're inside q...
+        var renderStuff = function(){
+          Stevedore.Models.Search = Stevedore.Models.DefaultSearch.extend(Stevedore.QueryBuilder); // create the methods we want!
+          Stevedore.saved_searches_collection = new Stevedore.Collections.SavedSearches([], {model: Stevedore.Models.Search})
+          Stevedore.saved_searches_view = new Stevedore.Views.SavedSearches({ el: $('#saved-searches-container')[0] } );
+          Stevedore.saved_searches_collection.fetch();
+          Stevedore.trigger('stevedore:querybuilder-loaded');
+
+          if(cb) cb(); // only if we're inside q...
+        }
+
+        // TODO: what if this comes back before Search.js does?? then it'll error out. 
+        if(typeof Stevedore.Models.DefaultSearch === "undefined"){
+          Stevedore.listenTo(Stevedore, 'stevedore:searchmodel-loaded', renderStuff)
+        }else{
+          renderStuff()
+        }
       },
       error: function(a,b,c){
         console.log('error getting query-builder : ', a,b,c);
@@ -101,7 +111,7 @@ Stevedore.getTemplates = function(project, cb){
       Stevedore.templates[template_type] = {}; // template_type is one of "blob" or "email" or others
       q.defer(function(cb){
         $.ajax({
-          url: (Stevedore.config.use_slash_based_routing ? '/search/' : '') + "templates/" + folder + "/" + template_type + ".template?_cachebuster=201604251811",
+          url: "templates/" + folder + "/" + template_type + ".template?_cachebuster=201604251811",
           dataType: "text",
           async: true,
           success: function(data, status, jqxhr){

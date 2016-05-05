@@ -28,7 +28,7 @@ Stevedore.Views.SavedSearches = Backbone.View.extend({
     Stevedore.saved_searches_collection.localStorage._clear(); // localStorage adapter sucks
     Stevedore.saved_searches_collection.fetch();
 
-    Stevedore.router.navigate(Stevedore.config.use_slash_based_routing ? '' : (Stevedore.project + "/") + '');
+    Stevedore.router.navigate(Stevedore.project + "/");
     this.render();
   },
   showSavedSearches: function(e) {

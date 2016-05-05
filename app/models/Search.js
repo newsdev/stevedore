@@ -150,3 +150,4 @@ Stevedore.Models.DefaultSearch = Backbone.Model.extend({
     return sort_query;
   }
 });
+Stevedore.trigger('stevedore:searchmodel-loaded');

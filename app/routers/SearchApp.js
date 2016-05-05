@@ -1,6 +1,6 @@
 var stevedore_routes = {};
 
-var routing_prefix = Stevedore.config.use_slash_based_routing ? "" : Stevedore.project + "/";
+var routing_prefix = Stevedore.project + "/";
 stevedore_routes[routing_prefix + "document/:document_id"] =  "showDocument" // #help
 stevedore_routes[routing_prefix + "search/"] =                "search"    // #search/kiwis    
 stevedore_routes[routing_prefix + "search/:query"] =          "search"    // #search/kiwis
@@ -12,7 +12,11 @@ if(! Stevedore.config.use_slash_based_routing){
 }else{
   stevedore_routes["/"] =                                     "index"
 }
+  stevedore_routes["/"] =                                     "index"
 
+stevedore_routes[Stevedore.project + "/" + ""] =                       "index"
+stevedore_routes[Stevedore.project +       ""] =                       "index"
+stevedore_routes[""] =                       "index"
 
 Stevedore.SearchApp = Backbone.Router.extend({
   routes: stevedore_routes,
@@ -25,6 +29,7 @@ Stevedore.SearchApp = Backbone.Router.extend({
   },
 
   showDocument: function(document_id) {
+    console.log('document', document_id)
     Stevedore.search_view = new Stevedore.Views.Search({ el: $('#search-container')[0] } );
     Stevedore.search_view.render();
     Stevedore.document_collection = new Stevedore.Collections.Documents([]);
