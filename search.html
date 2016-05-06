@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript">
     // TK an explanation of why this is happening
-    var new_base = window.location.href.split("search")[0]; // TODO: but what if search is elsewhere in the URL!?
+    var new_base = window.location.href.split("/search")[0] + "/";
     // the fix is to only split the path and exclude the domain bits
     document.write("<base href=\"" + new_base + "\">");    
     </script>
@@ -16,25 +16,26 @@
     // TK an explanation of why this is happening
     var new_base = window.location.href.split("search")[0]; // TODO: but what if search is elsewhere in the URL!?
     // the fix is to only split the path and exclude the domain bits
+    console.log('base', new_base);
     document.write("<base href=\"" + new_base + "\">");    
     </script>
 
 
-    <script src="/app/config.js" type="text/javascript"></script>
-    <script src="/lib/js/jquery-2.1.3.min.js" type="text/javascript"></script>
-    <script src="/lib/js/underscore-min.js" type="text/javascript"></script>
-    <script src="/lib/js/backbone-min.js" type="text/javascript"></script>
-    <script src="/lib/js/backbone.localStorage-min.js" type="text/javascript"></script>
-    <script src="/lib/js/elasticsearch-js/elasticsearch.min.js" type="text/javascript"></script>
-    <script src="/lib/js/elasticsearch-js/elasticsearch.jquery.min.js" type="text/javascript"></script>
-    <script src="/lib/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="/lib/js/humanhash.js" type="text/javascript"></script>
-    <script src="/lib/js/queue.v1.min.js"></script>
-    <script src="/lib/js/js-yaml.min.js" type="text/javascript"></script>
-    <script src="/lib/js/moment.js"></script>
-    <script src="/lib/js/pikaday.js"></script>
-    <script src="/lib/js/pikaday.jquery.js"></script>
-    <script src="/lib/js/typeface0515.js"></script> 
+    <script src="app/config.js" type="text/javascript"></script>
+    <script src="lib/js/jquery-2.1.3.min.js" type="text/javascript"></script>
+    <script src="lib/js/underscore-min.js" type="text/javascript"></script>
+    <script src="lib/js/backbone-min.js" type="text/javascript"></script>
+    <script src="lib/js/backbone.localStorage-min.js" type="text/javascript"></script>
+    <script src="lib/js/elasticsearch-js/elasticsearch.min.js" type="text/javascript"></script>
+    <script src="lib/js/elasticsearch-js/elasticsearch.jquery.min.js" type="text/javascript"></script>
+    <script src="lib/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="lib/js/humanhash.js" type="text/javascript"></script>
+    <script src="lib/js/queue.v1.min.js"></script>
+    <script src="lib/js/js-yaml.min.js" type="text/javascript"></script>
+    <script src="lib/js/moment.js"></script>
+    <script src="lib/js/pikaday.js"></script>
+    <script src="lib/js/pikaday.jquery.js"></script>
+    <script src="lib/js/typeface0515.js"></script> 
     <script>try{Typekit.load();}catch(e){}</script>
 
     <link href="lib/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
@@ -132,20 +133,20 @@
       <!-- facets, etc. TK for saved searches. -->
     </script>
 
-    <script src="/app/app.js" type="text/javascript"></script>
-    <script src="/app/models/Search.js" type="text/javascript"></script>
-    <script src="/app/collections/SavedSearchCollection.js" type="text/javascript"></script>
-    <script src="/app/models/Document.js" type="text/javascript"></script>
-    <script src="/app/collections/DocumentCollection.js" type="text/javascript"></script>
-    <script src="/app/views/DetailView.js" type="text/javascript"></script>
-    <script src="/app/models/EmailSenderAnalysis.js" type="text/javascript"></script>
-    <script src="/app/views/EmailSenderAnalysisView.js" type="text/javascript"></script>
-    <script src="/app/views/ResultsView.js" type="text/javascript"></script>
-    <script src="/app/views/ListItemView.js" type="text/javascript"></script>
-    <script src="/app/views/SavedSearchesView.js" type="text/javascript"></script>
-    <script src="/app/views/SavedSearchView.js" type="text/javascript"></script>
-    <script src="/app/views/SearchView.js" type="text/javascript"></script>
-    <script src="/app/routers/SearchApp.js" type="text/javascript"></script>        
+    <script src="app/app.js" type="text/javascript"></script>
+    <script src="app/models/Search.js" type="text/javascript"></script>
+    <script src="app/collections/SavedSearchCollection.js" type="text/javascript"></script>
+    <script src="app/models/Document.js" type="text/javascript"></script>
+    <script src="app/collections/DocumentCollection.js" type="text/javascript"></script>
+    <script src="app/views/DetailView.js" type="text/javascript"></script>
+    <script src="app/models/EmailSenderAnalysis.js" type="text/javascript"></script>
+    <script src="app/views/EmailSenderAnalysisView.js" type="text/javascript"></script>
+    <script src="app/views/ResultsView.js" type="text/javascript"></script>
+    <script src="app/views/ListItemView.js" type="text/javascript"></script>
+    <script src="app/views/SavedSearchesView.js" type="text/javascript"></script>
+    <script src="app/views/SavedSearchView.js" type="text/javascript"></script>
+    <script src="app/views/SearchView.js" type="text/javascript"></script>
+    <script src="app/routers/SearchApp.js" type="text/javascript"></script>        
     <script type="text/javascript">
       if(!Stevedore.config.use_slash_based_routing && (window.location.hash == "#" || window.location.hash == "")){
         window.location.href = "index.html"
