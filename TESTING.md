@@ -30,3 +30,5 @@ search.html:
   - Does clicking on a saved search work?
   - If you click on a result, then press the arrow keys, does it load the next result? (And does the page scroll downward to that result's scrollTop?)
   - Stevedore header link works
+  - in "pub" do proxied links to documents work right?
+  - Does it work in hash-mode under a path?
