@@ -465,3 +465,116 @@ ul.list > .list-item .counter::before,
     padding-left: 15px;
   }
 }
+.drawer > .container {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.drawer .drawer-toggle p {
+  position: relative;
+  padding: 10px 0;
+  margin: 0;
+}
+.drawer .drawer-toggle:hover {
+  text-decoration: none;
+  cursor: pointer;
+}
+.drawer .drawer-toggle:focus,
+.drawer .drawer-toggle:active {
+  text-decoration: none;
+  outline: none;
+}
+.drawer .drawer-toggle:hover .vee::after {
+  border-color: #555;
+}
+.drawer .drawer-toggle:not(.collapsed) .vee::after {
+  content: '';
+  border-style: solid;
+  -webkit-transform: rotate(225deg) rotate3d(1, 1, 0, 55deg);
+     -moz-transform: rotate(225deg) rotate3d(1, 1, 0, 55deg);
+      -ms-transform: rotate(225deg) rotate3d(1, 1, 0, 55deg);
+          transform: rotate(225deg) rotate3d(1, 1, 0, 55deg);
+}
+.drawer .drawer-toggle:not(.collapsed) .drawer-visible-on-out {
+  display: none;
+}
+.drawer .drawer-toggle.collapsed .drawer-visible-on-in {
+  display: none;
+}
+.drawer h1,
+.drawer h2,
+.drawer h3,
+.drawer h4,
+.drawer h5,
+.drawer h6 {
+  max-width: 680px;
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-weight: 700;
+  line-height: 1.2em;
+}
+.drawer ol,
+.drawer ul {
+  padding-left: 25px;
+}
+.drawer-default {
+  background-color: #f6f6f6;
+  border-top: 1px solid #e2e2e2;
+  border-bottom: 1px solid #e2e2e2;
+}
+.drawer-default .drawer-toggle {
+  font-size: 13px;
+  font-weight: 500;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.drawer-default .drawer-toggle:hover {
+  color: #555;
+}
+.drawer-default .collapse > :first-child,
+.drawer-default .collapsing > :first-child {
+  padding-bottom: 00px;
+}
+.drawer-default em {
+  font-size: .9em;
+}
+.drawer-default ol,
+.drawer-default ul {
+  margin-top: .67em;
+  overflow: auto;
+  line-height: 1.33em;
+}
+.drawer-default ol li,
+.drawer-default ul li {
+  margin-bottom: .67em;
+}
+.drawer-instructions {
+  font-size: 17px;
+  font-weight: 300;
+  color: #333;
+}
+.drawer-instructions h1,
+.drawer-instructions h2,
+.drawer-instructions h3,
+.drawer-instructions h4,
+.drawer-instructions h5,
+.drawer-instructions h6 {
+  font-size: 300;
+  color: black;
+}
+.drawer-instructions > .container {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.navbar ~ .drawer {
+  border-top: none;
+}
+form .drawer {
+  padding: 8px 0 8px 0;
+}
+.modal-content .modal-body .drawer-default:last-child,
+.modal-content .modal-footer .drawer-default:last-child {
+  margin-bottom: -15px;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
