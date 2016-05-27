@@ -1,4 +1,4 @@
-require_relative './uploader/upload_gui.rb'
+require_relative './uploader/gui_for_uploader.rb'
 require 'rika'
 require 'fileutils'
 # if you're testing locally and intend to run Stevedore via Nginx (or Apache, I suppose)
