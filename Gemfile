@@ -12,7 +12,7 @@ platform :jruby do
   # but with my own custom version of Tika, http://github.com/jeremybmerrill/tika
   # because Warbler can't handle gems sourced from git, I had to make a whole new gem.
   gem 'rika-stevedore', "1.6.2", :require => "rika"
-  gem 'stevedore-uploader', :path => "../stevedore-uploader"
+  gem 'stevedore-uploader', "~> 1.0.3"
   
   gem "sinatra"
   gem "warbler", "2.0.0.rc2"

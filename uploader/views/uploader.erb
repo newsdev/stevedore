@@ -61,6 +61,8 @@
       var logs = new EventSource('/upload/stream');
 
       $(document).on('click', '#submit', function(e){
+        $('#logs').html("<p>Creating a search engine...</p>");
+
         var was_disabled = $('#index-name input').is('[disabled]');
         $('#index-name input').removeAttr('disabled');
         $.post('/upload/do', $('form').serialize(), function(json_resp){

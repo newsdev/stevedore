@@ -22,6 +22,10 @@ post '/do' do
   es_index =  params["index-name"]
   invalid << ["index-name", params["index-name"]] if es_index.nil? || es_index.empty?
 
+  settings.logs.puts "Creating a search engine..."  
+
+  settings.logs.flush
+
 
   # if the files are already on S3, extract the bucket name from params["files"]
   # if they're not, extract the bucket name from params["frontend-location"] 
