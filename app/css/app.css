@@ -398,7 +398,9 @@ footer .tool-credit:before {
   }
 }
 
-
+.modal-body {
+  overflow-wrap: break-word;
+}
 
 
 
