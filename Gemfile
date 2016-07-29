@@ -23,4 +23,6 @@ platform :jruby do
   gem "twitter"
   gem "koala"
 
+  gem "therubyrhino" # for an uberhackish way of checking if we're doing slash-based, nginx-style routing (not S3-style routing with querystring params)
+
 end

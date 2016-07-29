@@ -87,6 +87,9 @@ GEM
       pst (~> 0.0.2)
       rika-stevedore (>= 1.6.1)
       rubyzip (~> 1.1)
+    therubyrhino (2.0.4)
+      therubyrhino_jar (>= 1.7.3)
+    therubyrhino_jar (1.7.6)
     thread_safe (0.3.5-java)
     tilt (2.0.4)
     twitter (5.16.0)
@@ -124,6 +127,7 @@ DEPENDENCIES
   rika-stevedore (= 1.6.2)
   sinatra
   stevedore-uploader (~> 1.0.3)
+  therubyrhino
   twitter
   warbler (= 2.0.0.rc2)
 

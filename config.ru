@@ -1,5 +1,6 @@
 require_relative './uploader/gui_for_uploader.rb'
 require 'rika'
+require 'rhino'
 require 'fileutils'
 # if you're testing locally and intend to run Stevedore via Nginx (or Apache, I suppose)
 # set the NGINXSTYLE environment variable to simulate the URLs accepted there.
@@ -153,7 +154,13 @@ end
 #   }
 # end
 
-if ENV["NGINXSTYLE"]
+
+config_js = open("app/config.js"){|f| f.read }
+use_slash_based_routing = ENV["NGINXSTYLE"] || ENV["NGINXVERSION"] || Rhino::Context.open{|ctx| ctx.eval("Stevedore = {}; " + config_js); ctx.eval("Stevedore.config") }["use_slash_based_routing"]
+
+puts use_slash_based_routing ? "using slash-based routing" : "using query-string based routing"
+
+if use_slash_based_routing
   puts "dev server"
   require './dev_server'
   use Rack::Static,
