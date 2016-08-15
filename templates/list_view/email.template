@@ -1,5 +1,5 @@
 <h4 class="email-name"><a class="preview" href="#">
-{{= analyzed.metadata.subject.toString()`.trim() == '' ?  'No Subject' : analyzed.metadata.subject }}
+{{= analyzed.metadata.subject.toString().trim() == '' ?  'No Subject' : analyzed.metadata.subject }}
 </a></h4>
 <ul class="email-list-meta">
     <li><strong>From:</strong> {{= typeof analyzed.metadata["Message-From"] === "undefined" ? '' : (typeof analyzed.metadata["Message-From"] == 'object' ? analyzed.metadata["Message-From"].join("; ") : analyzed.metadata["Message-From"]) }}</li>
