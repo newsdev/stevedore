@@ -3,21 +3,21 @@ GEM
   specs:
     addressable (2.4.0)
     andand (1.3.3)
-    aws-sdk (2.3.9)
-      aws-sdk-resources (= 2.3.9)
-    aws-sdk-core (2.3.9)
+    aws-sdk (2.5.8)
+      aws-sdk-resources (= 2.5.8)
+    aws-sdk-core (2.5.8)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.3.9)
-      aws-sdk-core (= 2.3.9)
+    aws-sdk-resources (2.5.8)
+      aws-sdk-core (= 2.5.8)
     buftok (0.2.0)
-    domain_name (0.5.20160310)
+    domain_name (0.5.20160826)
       unf (>= 0.0.5, < 1.0.0)
-    elasticsearch (1.0.17)
-      elasticsearch-api (= 1.0.17)
-      elasticsearch-transport (= 1.0.17)
-    elasticsearch-api (1.0.17)
+    elasticsearch (1.1.0)
+      elasticsearch-api (= 1.1.0)
+      elasticsearch-transport (= 1.1.0)
+    elasticsearch-api (1.1.0)
       multi_json
-    elasticsearch-transport (1.0.17)
+    elasticsearch-transport (1.1.0)
       faraday
       multi_json
     equalizer (0.0.10)
@@ -41,17 +41,15 @@ GEM
       faraday_middleware (>= 0.8, < 0.10)
       hashie (>= 0.4.0)
       multi_json (~> 1.0, >= 1.0.3)
-    jmespath (1.2.4)
-      json_pure (>= 1.8.1)
+    jmespath (1.3.1)
     jruby-jars (9.0.5.0)
-    jruby-openssl (0.9.16-java)
+    jruby-openssl (0.9.17-java)
     jruby-rack (1.1.20)
     json (1.8.3-java)
-    json_pure (1.8.3)
-    koala (2.3.0)
+    koala (2.4.0)
       addressable
       faraday
-      multi_json
+      multi_json (>= 1.3.0)
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
     manticore (0.6.0-java)
@@ -63,13 +61,13 @@ GEM
     multi_json (1.12.1)
     multipart-post (2.0.0)
     naught (1.1.0)
-    nokogiri (1.6.7.2-java)
+    nokogiri (1.6.8-java)
     pst (0.0.2)
       andand
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
-    rake (11.1.2)
+    rake (11.2.2)
     rika-stevedore (1.6.2-java)
     rubyzip (1.1.7)
     simple_oauth (0.3.1)
@@ -91,7 +89,7 @@ GEM
       therubyrhino_jar (>= 1.7.3)
     therubyrhino_jar (1.7.6)
     thread_safe (0.3.5-java)
-    tilt (2.0.4)
+    tilt (2.0.5)
     twitter (5.16.0)
       addressable (~> 2.3)
       buftok (~> 0.2.0)
@@ -112,7 +110,6 @@ GEM
 
 PLATFORMS
   java
-  ruby
 
 DEPENDENCIES
   aws-sdk (~> 2)
@@ -121,10 +118,8 @@ DEPENDENCIES
   guess_html_encoding
   instagram
   jruby-jars (= 9.0.5.0)
-  jruby-openssl
   koala
   manticore
-  rika-stevedore (= 1.6.2)
   sinatra
   stevedore-uploader (~> 1.0.3)
   therubyrhino
@@ -132,4 +127,4 @@ DEPENDENCIES
   warbler (= 2.0.0.rc2)
 
 BUNDLED WITH
-   1.11.2
+   1.12.5

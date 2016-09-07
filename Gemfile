@@ -4,14 +4,13 @@ platform :jruby do
   gem 'bundler'
   gem 'elasticsearch'
   gem 'manticore'
-  gem "jruby-openssl"
+  # gem "jruby-openssl"
   gem 'aws-sdk', '~> 2'
   gem 'guess_html_encoding'
 
-  # a small fork of http://github.com/ricn/rika at http://github.com/jeremybmerrill/tika
+  # a small fork of https://github.com/ricn/rika at http://github.com/jeremybmerrill/tika
   # but with my own custom version of Tika, http://github.com/jeremybmerrill/tika
   # because Warbler can't handle gems sourced from git, I had to make a whole new gem.
-  gem 'rika-stevedore', "1.6.2", :require => "rika"
   gem 'stevedore-uploader', "~> 1.0.3"
   
   gem "sinatra"
