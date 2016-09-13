@@ -10,7 +10,7 @@ I just want to make a search engine!
 
 Do you have all the documents in a folder (or a zip archive) somewhere? Then you're ready to go. Just [download the last release](../../releases) then double-click to run it.
 
-Be sure to have Java 7 installed.
+Be sure to have Java 8 installed.
 
 Stevedore can make two types of search engines:
 
