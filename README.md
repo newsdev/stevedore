@@ -154,7 +154,6 @@ Great question! Those are all great tools made by great people, but they solve a
 
 ####Has this been used in real life?
 
-
 Yeah, we use this code all the time at The New York Times. Reporters use the Stevedore frontend to search emails from politicians, scraped websites and all sorts of other document sets.
 
 Want to contribute?

@@ -86,7 +86,7 @@ Stevedore.Views.Search = Backbone.View.extend({
 
   downloadCSV: function(){
     this.model.toCSV(function(csvData){
-      filename = "fl_contracts.xls"
+      filename = Stevedore.project  + ".csv"
       var blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
       if (navigator.msSaveBlob) { // IE 10+
           navigator.msSaveBlob(blob, filename);

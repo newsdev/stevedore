@@ -18,6 +18,9 @@ module Stevedore
     get '/:project*' do 
       open('search.html').read
     end
+    get '/:project*/' do 
+      open('search.html').read
+    end    
     get '/' do 
       open('index.html').read
     end

@@ -1,3 +1,28 @@
+/* used in CSV generator */
+JSON.flatten = function(data) {
+    var result = {};
+    function recurse (cur, prop) {
+        if (Object(cur) !== cur) {
+            result[prop] = cur;
+        } else if (Array.isArray(cur)) {
+             for(var i=0, l=cur.length; i<l; i++)
+                 recurse(cur[i], prop + "[" + i + "]");
+            if (l == 0)
+                result[prop] = [];
+        } else {
+            var isEmpty = true;
+            for (var p in cur) {
+                isEmpty = false;
+                recurse(cur[p], prop ? prop+"."+p : p);
+            }
+            if (isEmpty && prop)
+                result[prop] = {};
+        }
+    }
+    recurse(data, "");
+    return result;
+}
+
 Stevedore.Models.DefaultSearch = Backbone.Model.extend({
 
   // there are two ways to actually create a Search instance
@@ -105,32 +130,41 @@ Stevedore.Models.DefaultSearch = Backbone.Model.extend({
     }
   },
 
+  // a semi-hacky way of generating a CSV from a result set.
   toCSV: function(cb){
     delimiter = ",";
-    // get all the results
-    var page_count = 20;
+    var max_page_count = 20;
+    var keys = null, 
+        headers = null;
 
     var resp_counter = 0;
     while (!this.get('hit_count') || ( (this.get('pageNum') * Stevedore.max_hits) < this.get('hit_count')) ){
       console.log("getting more docs for CSV, hit count was", this.get('hit_count'), "has", this.get('pageNum') * Stevedore.max_hits  );
       
       resp_counter += 1;
-      this.search(function(){ resp_counter -= 1; if (resp_counter == 0){
-          var keys = _(Stevedore.mapping.properties).keys();
-          var _keys = _(keys);
-          headers = keys.join(delimiter);
+      this.search(function(){ 
+        resp_counter -= 1;
+        if (resp_counter == 0){
+          if(keys === null){
+            keys = _(JSON.flatten(Stevedore.document_collection.at(0).attributes)).keys();
+            var _keys = _(keys);
+            console.log('set keys', keys);
+            headers = keys.join(delimiter);
+          }
+
           var rows = Stevedore.document_collection.map(function(obj){ return _keys.map(function(key){ return "\"" + (obj.get(key) || '').toString().replace(/"/g, '\'') + "\"" }) })
           if(cb) cb(headers + "\n" + _(rows).map(function(row){ return row.join(delimiter)}).join("\n"));
-      } });
+        }
+      });
 
       this.set('pageNum', this.get('pageNum') + 1);
-      if(this.get('pageNum') > page_count){
-        alert("Too many documents, try narrowing your search; returning CSV of only " + (Stevedore.max_hits * page_count).format());
+      if(this.get('pageNum') > max_page_count){
+        alert("Too many documents, try narrowing your search; returning CSV of only " + (Stevedore.max_hits * max_page_count).format());
         break;
       }
     }
-
   },
+
 
   // you need to define these in QueryBuilder
   toQuery: function(){
