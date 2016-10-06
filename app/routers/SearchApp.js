@@ -6,6 +6,7 @@ stevedore_routes[routing_prefix + "search/"] =                "search"    // #se
 stevedore_routes[routing_prefix + "search/:query"] =          "search"    // #search/kiwis
 stevedore_routes[routing_prefix + "analysis"] =               "emailSenderAnalysis"
 stevedore_routes[routing_prefix + "senders"] =                "emailSenderAnalysis"
+stevedore_routes[routing_prefix + "alldocs"] =                "allDocumentsAnalysis" 
 stevedore_routes[routing_prefix + ""] =                       "index"
 if(! Stevedore.config.use_slash_based_routing){
   stevedore_routes[Stevedore.project +       ""] =            "index"
