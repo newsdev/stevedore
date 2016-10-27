@@ -16,7 +16,6 @@ Stevedore.Models.AllDocumentsAnalysis = Backbone.Model.extend({
       }
       response.hits.hits.forEach(_.bind(function (hit) {
         if(typeof hit.fields !== 'undefined'){
-          console.log(hit.fields);
           document_names.push(hit);        
         }
       }, this));
@@ -24,10 +23,8 @@ Stevedore.Models.AllDocumentsAnalysis = Backbone.Model.extend({
       this.trigger('stevedore:analysis-loaded');
 
 
-      console.log(response.hits.total !== document_names.length, response.hits.total, document_names.length)
       if (response.hits.total !== document_names.length) {
         // now we can call scroll over and over
-        console.log("scrolling", document_names.length)
         Stevedore.client.scroll({
           scrollId: response._scroll_id,
           scroll: '10s'

@@ -12,7 +12,10 @@ Stevedore.Views.AllDocumentsAnalysis = Backbone.View.extend({
     this.$el.show();
     this.$el.empty();
 
-    this.$el.html('<div class="alldocs"><h2>All Documents</h2><ol></ol>loading...</div>')
+    this.$el.html('<div class="alldocs"><a href="#">back to search</a><h2>All Documents</h2><ol></ol>loading...</div>')
+    this.$el.find("a").on("click", function(){ 
+      window.location.href = window.location.href.split("/alldocs")[0];
+    })
 
     _.each(this.model.get('document_names'), function(doc_name) {
       // bleh
