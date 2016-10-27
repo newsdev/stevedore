@@ -72,13 +72,13 @@ Stevedore.templates = {};
 Stevedore.getTemplates = function(project, cb){
   Stevedore.template_names = _.extend({}, Stevedore.default_template_names, Stevedore.projects[project]);
   console.log('project', project, ' => ', Stevedore.template_names);
-  $("head").append($("<link rel='stylesheet' href='"+(Stevedore.config.use_slash_based_routing ? '/search/' : '')+"templates/css/"+Stevedore.template_names['css']+".css?_cachebuster=201604251811' type='text/css' media='screen' />"));
+  $("head").append($("<link rel='stylesheet' href='"+(Stevedore.config.use_slash_based_routing ? '/search/' : '')+"templates/"+Stevedore.template_names['css']+"/styles.css?_cachebuster=201610271435' type='text/css' media='screen' />"));
 
   var q = queue()
 
   q.defer(function(){
     $.ajax({
-      url: (Stevedore.config.use_slash_based_routing ? '/search/' : '') + "templates/query_builder/" + Stevedore.template_names['query_builder'] + ".js?_cachebuster=201604251811",
+      url: (Stevedore.config.use_slash_based_routing ? '/search/' : '') + "templates/" + Stevedore.template_names['query_builder'] + "/query_builder.js?_cachebuster=201610271435",
       dataType: "script",
       async: true,
       success: function(data, status, jqxhr){
@@ -96,24 +96,24 @@ Stevedore.getTemplates = function(project, cb){
       }
     });
   });
-  _(['search_form', 'list_view', 'detail_view']).each(function(folder){
-    _(Stevedore.template_names[folder] == "blob" ? [Stevedore.template_names[folder]] : [Stevedore.template_names[folder], "blob"]).each(function(template_type){
-      Stevedore.templates[template_type] = {}; // template_type is one of "blob" or "email" or others
+  _(['search_form', 'list_view', 'detail_view']).each(function(template_type){
+    _(Stevedore.template_names[template_type] == "blob" ? [Stevedore.template_names[template_type]] : [Stevedore.template_names[template_type], "blob"]).each(function(data_type){
+      Stevedore.templates[data_type] = {}; // data_type is one of "blob" or "email" or others
       q.defer(function(cb){
         $.ajax({
-          url: (Stevedore.config.use_slash_based_routing ? '/search/' : '') + "templates/" + folder + "/" + template_type + ".template?_cachebuster=201604251811",
+          url: (Stevedore.config.use_slash_based_routing ? '/search/' : '') + "templates/" + data_type + "/" + template_type + ".template?_cachebuster=201610271435",
           dataType: "text",
           async: true,
           success: function(data, status, jqxhr){
-            Stevedore.templates[template_type] = Stevedore.templates[template_type] || {}
-            Stevedore.templates[template_type][folder] = _.template(data);
+            Stevedore.templates[data_type] = Stevedore.templates[data_type] || {}
+            Stevedore.templates[data_type][template_type] = _.template(data);
             if (Stevedore.search_view) Stevedore.search_view.render(); // problem if this happens before Stevedore.search_form is craeted
             if (Stevedore.detail_view) Stevedore.detail_view.render();
             if (Stevedore.results_view) Stevedore.results_view.render();
             cb()
           },
           error: function(a,b,c){
-            console.log('error getting template('+folder+', '+template_type+') : ', a,b,c);
+            console.log('error getting template('+template_type+', '+data_type+') : ', a,b,c);
             cb();
           }
         });
