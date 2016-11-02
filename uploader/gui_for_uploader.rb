@@ -38,6 +38,8 @@ post '/do' do
     s3_bucket = nil
     s3path = nil
   end
+  
+  S3_BASEPATH = "https://#{s3_bucket}.s3.amazonaws.com/#{s3path}"
 
   if params["local"] == "local"
     es_host = "localhost:9200"
@@ -60,10 +62,12 @@ post '/do' do
   halt JSON.dump({success: false, invalid: invalid}) unless invalid.empty?
   
   filetype = params["filetype"] == "OTHER" ? params["other-filetype"] : params["filetype"] 
+  require 'manticore' # I'm not sure why this is necessary, but it is (to avoid a weird `SSLConnectionSocketFactory not found in packages ...` bug)
   require 'stevedore-uploader'
   require_relative './lib/frontend-uploader'
 
   begin
+    puts [es_host, es_index]
     f = Stevedore::ESUploader.new(es_host, es_index, s3_bucket, s3path)
     f.do! source, settings.logs
 

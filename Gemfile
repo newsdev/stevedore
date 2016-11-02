@@ -11,7 +11,7 @@ platform :jruby do
   # a small fork of https://github.com/ricn/rika at http://github.com/jeremybmerrill/tika
   # but with my own custom version of Tika, http://github.com/jeremybmerrill/tika
   # because Warbler can't handle gems sourced from git, I had to make a whole new gem.
-  gem 'stevedore-uploader', "~> 1.0.3"
+  gem 'stevedore-uploader', "~> 1.0.5"
   
   gem "sinatra"
   gem "warbler", "2.0.0.rc2"
