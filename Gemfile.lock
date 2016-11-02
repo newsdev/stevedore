@@ -69,7 +69,7 @@ GEM
       rack
     rake (11.3.0)
     rika-stevedore (1.7.0-java)
-    rubyzip (1.1.7)
+    rubyzip (1.2.0)
     simple_oauth (0.3.1)
     sinatra (1.4.7)
       rack (~> 1.5)
@@ -102,11 +102,11 @@ GEM
       naught (~> 1.0)
       simple_oauth (~> 0.3.0)
     unf (0.1.4-java)
-    warbler (2.0.0.rc2)
+    warbler (2.0.4)
       jruby-jars (>= 9.0.0.0)
       jruby-rack (>= 1.1.1, < 1.3)
       rake (>= 10.1.0)
-      rubyzip (>= 1.0, < 1.2)
+      rubyzip (~> 1.0, < 1.4)
 
 PLATFORMS
   java
@@ -124,7 +124,7 @@ DEPENDENCIES
   stevedore-uploader (~> 1.0.5)
   therubyrhino
   twitter
-  warbler (= 2.0.0.rc2)
+  warbler (~> 2.0.0)
 
 BUNDLED WITH
    1.12.5

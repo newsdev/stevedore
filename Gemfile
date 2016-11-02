@@ -14,7 +14,7 @@ platform :jruby do
   gem 'stevedore-uploader', "~> 1.0.5"
   
   gem "sinatra"
-  gem "warbler", "2.0.0.rc2"
+  gem "warbler", "~> 2.0.0"
   gem "jruby-jars", "9.0.5.0"
 
   # these are just for the social media scraping functionality

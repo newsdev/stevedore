@@ -133,6 +133,10 @@ bundle install
 warble jar # to build the stevedore.jar file
 ````
 
+Running in Docker
+-----------------
+docker run -e AWS_ACCESS_KEY_ID=AKIAwhatever -e AWS_SECRET_ACCESS_KEY='asdfasdf' -p 8080:8080 -p 9200:9200 -v /path/to/stevedore:/jar -t java:8 java -jar /jar/stevedore.jar
+
 Questions?
 ==========
 Check out the [GitHub issues](https://github.com/newsdev/stevedore/issues) or these Theoretically Asked Questions:
