@@ -13,7 +13,7 @@ Stevedore.Views.Detail = Backbone.View.extend({
     if(typeof Stevedore.template_names === "undefined" || typeof Stevedore.templates === "undefined"){
       return;
     }
-    if( (( this.model.get('analyzed') && this.model.get('analyzed').metadata) ? this.model.get('analyzed').metadata["Content-Type"] : '').match(  new RegExp(Stevedore.content_types[Stevedore.template_names['detail_view']]) ) ){
+    if( (( this.model.get('analyzed') && this.model.get('analyzed').metadata && this.model.get('analyzed').metadata["Content-Type"]) ? this.model.get('analyzed').metadata["Content-Type"] : '').match(  new RegExp(Stevedore.content_types[Stevedore.template_names['detail_view']]) ) ){
       this.project_specific_template = !_.isUndefined(Stevedore.templates[Stevedore.template_names['detail_view']].detail_view) ? Stevedore.templates[Stevedore.template_names['detail_view']].detail_view : _.template('<div></div>');
     }else{
       this.project_specific_template = !_.isUndefined(Stevedore.templates['blob'].detail_view) ? Stevedore.templates['blob'].detail_view : _.template('<div></div>');

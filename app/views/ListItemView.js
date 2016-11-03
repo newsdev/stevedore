@@ -10,7 +10,7 @@ Stevedore.Views.ListItem = Backbone.View.extend({
     this.setTemplate();
   },
   setTemplate: function(){
-    if(  (this.model.get('analyzed').metadata ? this.model.get('analyzed').metadata["Content-Type"] : '').match(  new RegExp(Stevedore.content_types[Stevedore.template_names['list_view']]) ) ){
+    if(  ((this.model.get('analyzed').metadata && this.model.get('analyzed').metadata["Content-Type"]) ? this.model.get('analyzed').metadata["Content-Type"] : '').match(  new RegExp(Stevedore.content_types[Stevedore.template_names['list_view']]) ) ){
       this.template = !_.isUndefined(Stevedore.templates[Stevedore.template_names['list_view']].list_view) ? Stevedore.templates[Stevedore.template_names['list_view']].list_view : _.template('<div></div>');
     }else{
       this.template = !_.isUndefined(Stevedore.templates['blob'].list_view) ? Stevedore.templates['blob'].list_view : _.template('<div></div>');
