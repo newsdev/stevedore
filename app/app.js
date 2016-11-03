@@ -282,11 +282,17 @@ Stevedore.es_hit_to_blob = function(hit){
     blob.analyzed.body = blob.analyzed.body.
                                   replace(/<\/?[^>]+>/g, '').
                                   replace(/\n\n*/g, "</p><p class='body'>");
-  }  
+  } else {
+    blob.analyzed = blob.analyzed || {};
+    blob.analyzed.body = '';
+  }
   if(blob.file && blob.file.file){
     blob.file.file = blob.file.file.
                                   replace(/<\/?[^>]+>/g, '').
                                   replace(/\n\n*/g, "</p><p class='body'>");
+  } else {
+    blob.file = blob.file || {};
+    blob.file.file = '';
   }
   blob.attachments = []
   processAttachment = function(attachment) {

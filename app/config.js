@@ -37,4 +37,5 @@ Stevedore.config = {
 Stevedore.content_types = {
   'email': "message/rfc822",
   'hypothetical': /application\/pdf/,
+  'social_media': /.*/,    
 }

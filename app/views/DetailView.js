@@ -8,6 +8,7 @@ Stevedore.Views.Detail = Backbone.View.extend({
     this.listenTo(this.model, 'change', this.render);
     this.listenTo(this.model, 'notfound', this.renderNotFound);
     this.setTemplate();
+    this.model.fetch();
   },
   setTemplate: function(){
     if(typeof Stevedore.template_names === "undefined" || typeof Stevedore.templates === "undefined"){
@@ -71,6 +72,8 @@ Stevedore.Views.Detail = Backbone.View.extend({
       newIndex = newIndex >= Stevedore.document_collection.size() ? 0 : newIndex;
     }
     this.model = Stevedore.document_collection.at(newIndex);
+    this.listenTo(this.model, 'change', this.render);    
+    this.model.fetch();
 
     var $result_li = Stevedore.results_view.$el.find("#hit-" + this.model.get('id'));
     console.log($result_li, $result_li.offset().top);

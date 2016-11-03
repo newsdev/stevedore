@@ -50,38 +50,22 @@ Stevedore.Models.DefaultSearch = Backbone.Model.extend({
     }
     console.log('search!', this.attributes);
 
-
-    Stevedore.client.search({
-      index: Stevedore.es_index,
-      body: {
+    var search_body = {
         size: Stevedore.max_hits,
         from: this.get('pageNum') * Stevedore.max_hits,
         query: this.toQuery(),
         sort: this.toSort(),
-        highlight: {
-          fields: {
+        highlight: this.highlight()
+      };
+    if(this.source_fields()){
+      // https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-source-filtering.html
+      // you can use this to exclude fields, e.g. if the body is huge and you're not going to display it anyways (as in courtdocs)
+      search_body["_source"] = this.source_fields();
+    }
 
-            "analyzed.body": {
-              fragment_size: 300,
-              type: Stevedore.config.highlighting_enabled ? 'postings' : null,
-              number_of_fragments: 5,
-              no_match_size: 300,
-              force_source: true,
-              pre_tags : ["[HIGHLIGHT]"], // these get converted to HTML in app.js
-              post_tags : ["[/HIGHLIGHT]"],              
-             },
-             "analyzed.body.snowball": {
-               fragment_size: 300,
-               type: Stevedore.config.highlighting_enabled ? 'postings' : null,
-               number_of_fragments: 5,
-               no_match_size: 300,
-               force_source: true,
-               pre_tags : ["[HIGHLIGHT]"], // these get converted to HTML in app.js
-               post_tags : ["[/HIGHLIGHT]"],              
-             }
-          }
-        }
-      }
+    Stevedore.client.search({
+      index: Stevedore.es_index,
+      body: search_body
     }).then(_.bind(function (resp) {
       if(!resp){
         return;
@@ -182,5 +166,33 @@ Stevedore.Models.DefaultSearch = Backbone.Model.extend({
   toSort: function(){
     var sort_query = ["_score"];
     return sort_query;
+  },
+
+  highlight: function(){
+    return  {
+              fields: {
+                "analyzed.body": {
+                  fragment_size: 300,
+                  type: Stevedore.config.highlighting_enabled ? 'postings' : null,
+                  number_of_fragments: 5,
+                  no_match_size: 300,
+                  force_source: true,
+                  pre_tags : ["[HIGHLIGHT]"], // these get converted to HTML in app.js
+                  post_tags : ["[/HIGHLIGHT]"],              
+                 },
+                 "analyzed.body.snowball": {
+                   fragment_size: 300,
+                   type: Stevedore.config.highlighting_enabled ? 'postings' : null,
+                   number_of_fragments: 5,
+                   no_match_size: 300,
+                   force_source: true,
+                   pre_tags : ["[HIGHLIGHT]"], // these get converted to HTML in app.js
+                   post_tags : ["[/HIGHLIGHT]"],              
+                 }
+              }
+            };
+  },
+  source_fields: function(){
+    return {"exclude": ["analyzed.body", "file.file"],}
   }
 });
