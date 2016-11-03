@@ -185,7 +185,9 @@ else
 end
 
 ensure_templates_exist!
-start_local_elasticsearch_server
+if ENV["NO_ES"].nil?
+  start_local_elasticsearch_server
+end
 
 # this is stolen directly -- shamelessly -- from https://github.com/tabulapdf/tabula/blob/master/config.ru
 # only do this if running as jar or app. (if "rackup", we don't
