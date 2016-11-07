@@ -62,7 +62,7 @@ post '/do' do
   halt JSON.dump({success: false, invalid: invalid}) unless invalid.empty?
   
   filetype = params["filetype"] == "OTHER" ? params["other-filetype"] : params["filetype"] 
-  require 'manticore' # I'm not sure why this is necessary, but it is (to avoid a weird `SSLConnectionSocketFactory not found in packages ...` bug)
+  require 'manticore' # for dumb, inscrutable reasons, you have to require manticore before rika (or stevedore-uploader) or else get a weird `SSLConnectionSocketFactory not found in packages ...` bug)
   require 'stevedore-uploader'
   require_relative './lib/frontend-uploader'
 
