@@ -13,7 +13,8 @@
   <script src="lib/js/elasticsearch-js/elasticsearch.jquery.min.js" type="text/javascript"></script>  
   <script src="lib/js/backbone-min.js" type="text/javascript"></script>
   <script src="lib/js/js-yaml.min.js" type="text/javascript"></script>
-  
+  <script src="lib/js/adcom.min.js" type="text/javascript"></script>
+  <script src="lib/js/bootstrap.min.js" type="text/javascript"></script>
   <script src="app/app.js?_cachebuster=201610271435" type="text/javascript"></script>
 
   <link rel="stylesheet" type="text/css" media="screen" href="lib/css/bootstrap.min.css" />
@@ -78,13 +79,31 @@
        {{ } }}
   </script>
 
+  <script type="text/template" id="group-template">
+    <div class="drawer group-{{= index}}">
+      <a class="drawer-toggle {{= index == 0 ? '' : 'collapsed'}}" data-toggle="collapse" href="#drawer-content-{{= index }}">
+        <div class="container">
+          <span class="drawer-visible-on-out"><span class="group">{{= groupName }}</span> <span class="text-muted">(Click to show)</span></span>     
+          <span class="drawer-visible-on-in"><span class="group">{{= groupName }}</span> <span class="text-muted">(Click to hide)</span></span>
+          <span class="vee"></span>
+        </div>
+      </a>
+      <div id="drawer-content-{{= index }}" class="drawer-content {{= index == 0 ? '' : 'collapse'}}">
+        <div class="container">
+        </div>
+      </div>
+    </div>
+  </script>
+
 
   <script type="text/javascript">
+    var name_for_group_of_orphaned_document_sets = "Document sets that aren\'t ready for widespread use yet (Ask first...)"
+
     function render(){
-      template_func = _.template($('#document-set-template').html())
+      var template_func = _.template($('#document-set-template').html())
       $('#tools-list').empty();
 
-      function renderSet(set){
+      function renderSet(set, groupClass){
         var default_obj = {
           desc: '<span class="red">Caution!</span> No description yet. This document set may not be ready -- so it might be mislabeled, incomplete, wrong or just not what you think it is.',
           name: 'Unnamed: ' + set, 
@@ -93,37 +112,59 @@
         }
 
         var set_metadata = _.extend(default_obj, Stevedore.document_set_metadata[set]);
-        $('#tools-list').append(template_func(set_metadata));
+        if(typeof groupClass !== 'undefined'){
+          $('#tools-list .' + groupClass + ' .drawer-content .container').append(template_func(set_metadata));
+        }else{
+          $('#tools-list').append(template_func(set_metadata));
+        }
       }
 
-      // first render out the document sets with metadata and descriptions
-      // then remove them from the list...
+
       _(
         _(
-          _(Stevedore.document_set_metadata).pairs()
-        ).sortBy(function(key_obj){ return parseInt(key_obj[1]["sort_order"]); })
-      ).each(function(key_obj){
-        var set_name = key_obj[0];
-        var metadata = key_obj[1];
+          _(
+            _(
+              _(Stevedore.document_set_metadata).pairs()
+            ).groupBy(function(key_obj){ return key_obj[1]["group"]; })
+          ).pairs()
+        ).sortBy(function(key_obj){ return parseInt(Stevedore.document_set_groups[key_obj[0]]); })
+      ).each(function(key_list, i){
+        var groupName = key_list[0];
+        var list_of_document_sets = key_list[1];
 
-        // don't render document sets with no name (or a name identical to the index name) yet -- they'll be rendered when we loop through Stevedore.document_sets (which is the list of indexes in ES)
-        if((typeof metadata["name"] === "undefined") || (metadata["name"] == set_name)) return; 
-        var indexToRemove = Stevedore.document_sets.indexOf(set_name);
-        // if the metadata entry doesn't exist in the list of indexes in ElasticSearch (and therefore it probably lives on a different ElasticSearch), so don't render it.        
-        if(indexToRemove == -1) return;
-        Stevedore.document_sets.splice(indexToRemove ,1);
-        
-        // if it has some metadata, but no title, don't render it yet.        
-        if(metadata["private?"] == "TRUE") return;
-        renderSet(set_name);
+        renderGroupOfDocumentSets(groupName, list_of_document_sets, i);
 
       });
+
+      function renderGroupOfDocumentSets(groupName, list_of_document_sets, group_index){
+        var group_template_func = _.template($('#group-template').html());
+        $('#tools-list').append(group_template_func({'groupName': groupName, 'index': group_index}))
+
+        _(list_of_document_sets).each(function(key_obj){
+          console.log(key_obj);
+          // first render out the document sets with metadata and descriptions
+          // then remove them from the list...
+          var set_name = key_obj[0];
+          var metadata = key_obj[1];
+
+          // don't render document sets with no name (or a name identical to the index name) yet -- they'll be rendered when we loop through Stevedore.document_sets (which is the list of indexes in ES)
+          if((typeof metadata["name"] === "undefined") || (metadata["name"] == set_name) && groupName != name_for_group_of_orphaned_document_sets) return; 
+          var indexToRemove = Stevedore.document_sets.indexOf(set_name);
+          // if the metadata entry doesn't exist in the list of indexes in ElasticSearch (and therefore it probably lives on a different ElasticSearch), so don't render it.        
+          if(indexToRemove == -1 && groupName != name_for_group_of_orphaned_document_sets) return;
+          if(indexToRemove != -1) Stevedore.document_sets.splice(indexToRemove ,1);
+          
+          // if it has some metadata, but no title, don't render it yet.        
+          if(metadata["private?"] == "TRUE") return;
+          renderSet(set_name, 'group-' + group_index.toString());
+        })
+
+      }
+      console.log(Stevedore.document_sets[0]);
+
+      // we removed all the ones that had metadata from Stevedore.document_sets. (with `splice`, above)
       // so that now we can render out the unloved, unmetadataed orphan document sets
-      $('#tools-list').append('<hr /><h4>Document sets that aren\'t ready for widespread use yet (Ask first...)</h4>')
-      _(Stevedore.document_sets).each(function(set){
-        if (set == "_river") return;
-        renderSet(set);
-      })
+      renderGroupOfDocumentSets(name_for_group_of_orphaned_document_sets, _(Stevedore.document_sets).map(function(index_name){ return [index_name, {index_name: index_name, name: index_name}] }), 1234567); 
     }
 
     Stevedore.get_config(render);

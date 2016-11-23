@@ -4,8 +4,10 @@
 // are written here.
 
 Stevedore.config = {
-  prdHost: "localhost",
-  prdPort: 9200,
+  prdHost: '10.214.1.107',
+  prdPort: 80,
+   document_set_meta_json: 'https://s3.amazonaws.com/int.nyt.com/applications/stevedore/document_sets.json',
+  use_slash_based_routing: true,
   // prdHost: "12.3.45.6", // IP address of your elasticsearch server
   // prdPort: 80,          // your elasticsearch server's port is probably 9200, but might be 80 or 443
   // prdScheme: "http",    // is your elasticsearch server set up on HTTPS or HTTP? // "https",

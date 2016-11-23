@@ -195,6 +195,10 @@ Stevedore.get_config = function(cb){
   })
   $.get(Stevedore.config.document_set_meta_json || '/document_sets.json', {}, function(data){
     Stevedore.document_set_metadata = {};
+
+    Stevedore.document_set_groups = {};
+    _(data["groups"]).each(function(obj){Stevedore.document_set_groups[obj["group_name"]] = obj["sort_order"]} );
+
     _(data["document sets"]).each(function(document_set){
       if( _.isNull(document_set.name)) document_set.name = document_set.index_name;
       document_set.samplesearches = _(data["sample searches"]).chain().filter(function(search){ return search.index_name == document_set.index_name }).map(function(search){ search['name'] = search['description']; return search}).value()
