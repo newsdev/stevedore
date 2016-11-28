@@ -97,7 +97,7 @@
 
 
   <script type="text/javascript">
-    var name_for_group_of_orphaned_document_sets = "Document sets that aren\'t ready for widespread use yet (Ask first...)"
+    var name_for_group_of_orphaned_document_sets = "Document sets that aren\'t ready yet (Ask first...)"
 
     function render(){
       var template_func = _.template($('#document-set-template').html())
@@ -127,7 +127,7 @@
               _(Stevedore.document_set_metadata).pairs()
             ).groupBy(function(key_obj){ return key_obj[1]["group"]; })
           ).pairs()
-        ).sortBy(function(key_obj){ return parseInt(Stevedore.document_set_groups[key_obj[0]]); })
+        ).sortBy(function(key_obj){ return parseInt(Stevedore.document_set_groups[key_obj[0]] || 123456); })
       ).each(function(key_list, i){
         var groupName = key_list[0];
         var list_of_document_sets = key_list[1];
@@ -141,7 +141,6 @@
         $('#tools-list').append(group_template_func({'groupName': groupName, 'index': group_index}))
 
         _(list_of_document_sets).each(function(key_obj){
-          console.log(key_obj);
           // first render out the document sets with metadata and descriptions
           // then remove them from the list...
           var set_name = key_obj[0];
