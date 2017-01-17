@@ -5,7 +5,7 @@
 </div>
 
 <h4 class="blob-name"><a class="preview" href="{{= Stevedore.config.use_slash_based_routing ? '/search/' : 'search.html#'}}{{=Stevedore.project}}/document/{{=id}}">
-{{= (file && file.title && file.title.length) ? file.title : "Untitled Document: " + human_id }}
+{{= file.title }}
 </a></h4>
 
 <p>{{= highlighted.snippets || (typeof analyzed.body !== 'undefined' ? (analyzed.body == analyzed.body.substr(0, 500) ? analyzed.body : analyzed.body.substr(0, 500) + ' ...') : '') }}</p>

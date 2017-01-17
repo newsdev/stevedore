@@ -290,14 +290,23 @@ Stevedore.es_hit_to_blob = function(hit){
     blob.analyzed = blob.analyzed || {};
     blob.analyzed.body = '';
   }
-  if(blob.file && blob.file.file){
+
+  // ensure we have a raw file body and a raw file title
+  if(typeof blob.file === "undefined"){
+    blob.file = blob.file || {};
+  }
+
+  if (blob.file.file){
     blob.file.file = blob.file.file.
                                   replace(/<\/?[^>]+>/g, '').
                                   replace(/\n\n*/g, "</p><p class='body'>");
   } else {
-    blob.file = blob.file || {};
     blob.file.file = '';
   }
+  if(typeof blob.file.title === "undefined" || blob.file.title.length == 0){
+    blob.file.title = "Untitled Document: " + human_id
+  }
+  
   blob.attachments = []
   processAttachment = function(attachment) {
       blob.attachments.push(attachment);
