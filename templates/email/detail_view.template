@@ -14,7 +14,7 @@
         {{ if( analyzed.metadata["dkim_verified"]){ }}
             <li>
                 <span class="glyphicon glyphicon-ok" style="color: green;" title="Verified authentic"></span>
-                <strong><a href="https://docs.google.com/document/d/1Huqyd1UO_b2netzhDVl1vfUs9IjdjDSKc1ZOwWpiQoM/edit?usp=sharing" title="What does this mean?">Definitely authentic</a></strong>
+                <strong><a href="https://www.emailonacid.com/blog/article/email-development/what_is_dkim_everything_you_need_to_know_about_digital_signatures" title="What does this mean?">Definitely authentic</a></strong>
             </li>
         {{ } }}
 
