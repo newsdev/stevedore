@@ -10,7 +10,7 @@
   <p class="socmed-meta">posted to {{= platform }} at {{= typeof created_at !== 'undefined' ? ((created_at.indexOf("+0000") === -1 || created_at.indexOf("+0000 20") > -1) ? moment.utc(created_at) : moment.utc(created_at.replace(" +", '+'))).local().format("MMMM Do YYYY, h:mm:ss a") : '' }}</p>
   {{ if (typeof geo !== 'undefined' && geo){ }}
   {{split_geo = typeof geo === 'string' ? geo.split(",") : geo}}
-  <strong>Geotagged: <a href="http://maps.google.com/maps?z=12&t=m&q=loc:{{=split_geo[1]}}+{{=split_geo[0]}}">{{=split_geo[0]}}, {{=split_geo[1]}}</a></strong>
+  <strong>Geotagged: <a href="http://maps.google.com/maps?z=12&t=m&q=loc:{{=split_geo[0]}}+{{=split_geo[1]}}">{{=split_geo[0]}}, {{=split_geo[1]}}</a></strong>
   {{ } }}
 
   {{ if (attachments.length != 0) { }}
