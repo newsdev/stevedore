@@ -19,7 +19,7 @@ Stevedore.Views.AllDocumentsAnalysis = Backbone.View.extend({
 
     _.each(this.model.get('document_names'), function(doc_name) {
       // bleh
-      var html = '<li><h4><a href=/search/'+Stevedore.project+'/document/' +doc_name["_id"] +'>'+doc_name.fields["title"] || doc_name.fields["source_url"] +'</a></h4></li>';
+      var html = '<li><h4><a href=/search/'+Stevedore.project+'/document/' +doc_name["_id"] +'>'+doc_name.fields["title"][0]["file"]["title"] || doc_name.fields["source_url"] +'</a></h4></li>';
       self.$el.find('.alldocs > ol').append(html);
     });
   },

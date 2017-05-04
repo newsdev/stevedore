@@ -43,7 +43,12 @@ Stevedore.Models.AllDocumentsAnalysis = Backbone.Model.extend({
       search_type: 'scan',      
       body: {
         size: 100,
-        fields: ["title", "source_url"],
+        fields: ["source_url"],
+        "partial_fields" : {
+            "title" : {
+                "include" : ["file.title"],
+            }
+        },
         query: { match_all: {} }
       }
     }).then(_.bind(function(r){ getMoreUntilDone(null, r); }, this), function (err) {
