@@ -10,6 +10,14 @@
         <li><strong>To:</strong> {{= typeof analyzed.metadata["Message-To"] === "undefined" ? '' :  analyzed.metadata["Message-To"] }}</li>
         <li><strong>From:</strong> {{= typeof analyzed.metadata["Message-From"] === "undefined" ? '' : (typeof analyzed.metadata["Message-From"] == 'object' ? analyzed.metadata["Message-From"].join("; ") : analyzed.metadata["Message-From"]) }}</li>
         <li><strong>Cc:</strong> {{= typeof analyzed.metadata["Message-Cc"] === "undefined" ? '' : (typeof analyzed.metadata["Message-Cc"] === "string" ? analyzed.metadata["Message-Cc"] : analyzed.metadata["Message-Cc"].join("; ")) }}</li>
+
+        {{ if( analyzed.metadata["dkim_verified"]){ }}
+            <li>
+                <span class="glyphicon glyphicon-ok" style="color: green;" title="Verified authentic"></span>
+                <strong><a href="https://docs.google.com/document/d/1Huqyd1UO_b2netzhDVl1vfUs9IjdjDSKc1ZOwWpiQoM/edit?usp=sharing" title="What does this mean?">Definitely authentic</a></strong>
+            </li>
+        {{ } }}
+
     </ul>
 </div>
 <div class="modal-body">

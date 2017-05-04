@@ -4,3 +4,10 @@ li.es-hit {
 li.es-hit .body {
   max-width: 600px;
 }
+
+.email-detail-meta {
+	width: 80%;
+	text-align: left;
+    margin-left: 90px;
+    margin-right: auto;	
+}

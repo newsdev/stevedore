@@ -1,6 +1,11 @@
-<h4 class="email-name"><a class="preview" href="#">
-{{= analyzed.metadata.subject.toString().trim() == '' ?  'No Subject' : analyzed.metadata.subject }}
-</a></h4>
+<h4 class="email-name">
+	<a class="preview" href="#">
+	{{= analyzed.metadata.subject.toString().trim() == '' ?  'No Subject' : analyzed.metadata.subject }}
+	</a>
+    {{ if( analyzed.metadata["dkim_verified"]){ }}
+	<span class="glyphicon glyphicon-ok" style="color: green;" title="Verified authentic"></span>
+    {{ } }}	
+</h4>
 <ul class="email-list-meta">
     <li><strong>From:</strong> {{= typeof analyzed.metadata["Message-From"] === "undefined" ? '' : (typeof analyzed.metadata["Message-From"] == 'object' ? analyzed.metadata["Message-From"].join("; ") : analyzed.metadata["Message-From"]) }}</li>
     <li><strong>To:</strong> {{= typeof analyzed.metadata["Message-To"] === "undefined" ? '' :  analyzed.metadata["Message-To"] }}</li>
