@@ -60,7 +60,7 @@ Customizing Stevedore with New Templates
 
 ### Intro to Templates
 
-Each template must contain four distinct files. Whether inheritance will be possible is TBD.
+Each template must contain four distinct files. Inheritance isn't possible now (just `cp` the file) but I hope to add that in the future.
 
   - a "detail view" template for seeing an entire, single document inside the app 
   - a "list view" template for seeing a single document in a list of returned search results matching a query
@@ -71,8 +71,8 @@ Optionally, you can include custom CSS too.
 
 ### How to write a new template
 
-1. Pick a name for your template file. All of your templates will use that name as their entire filename (except for the extension, either `.template`, `.js` or `.css`.)
-2. Create the files themselves as `templates/<template_type>/<template_name>.<extension>`, e.g. `templates/list_view/blogpost.template`
+1. Pick a name for your template type. This is the path under `templates`. So, maybe, `templates/blogpost/` if you're creating a template to search blogposts.
+2. Create the files themselves as `templates/<template_name>/<template_type>.<extension>`, e.g. `templates/blogpost/list_view.template`
 3. Write template files for detail_view, list_view and search_form. Copy/paste will be your friend (until there's [a DSL for creating these](issues/20)) to make styles easy, as well as making sure the `detail_view` modal works well.
 4. Write a query_builder. This is a JavaScript file that manages transforming your `search_form`'s HTML into a Backbone object representing a search (e.g. so pagination works, etc.) in the `likeActuallyCreate` method and transforming that object into an ElasticSearch query (`toQuery`). The examples provided will be your guide.
 5. The query_builder is also involved in  serializing/deserializing the query fields into a URL (and saved search format). All you have to do is specify the fields, in an array, in a sensical-ish order in the `fieldOrder` method.
