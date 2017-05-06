@@ -97,9 +97,9 @@ Stevedore consists of two main pieces:
   - an ingestion GUI and script to process your documents -- emails, powerpoints, whatever -- and send them to ElasticSearch.
   - a website frontend/framework for actually searching ElasticSearch. If you choose to deploy this frontend to the web, you can easily write custom templates for searching with custom fields.
 
-The ingestion script is [uploader/upload.rb](blob/master/uploader/upload.rb). The ingestion GUI is the rest of the `uploader/` folder, along with `config.ru`.
+The ingestion script is in another repo: [stevedore-uploader](https://github.com/newsdev/stevedore-uploader) [uploader/upload.rb](blob/master/uploader/upload.rb) and most of the logic is in [lib/stevedore_uploader.rb](https://github.com/newsdev/stevedore-uploader/blob/master/lib/stevedore-uploader.rb). The ingestion GUI is a work in progress, but it lives in the `uploader/` folder in this repo, along with `config.ru`.
 
-The frontend framework is all JavaScript and HTML. No backend (besides vanilla ElasticSearch). You run it (in development) by running `rackup` in the root of this project. In production, put the root of this project somewhere where it gets served on the web -- like Amazon S3 or Nginx. (The files? [search.html]()blob/master/search.html, [index.html]()blob/master/index.html, [app/](tree/master/app), [lib/](tree/master/lib) and [templates/](tree/master/templates))
+The frontend framework is all JavaScript and HTML. No backend (besides vanilla ElasticSearch). You run it (in development) by running `rackup` in the root of this project. In production, put the root of this project somewhere where it gets served on the web -- like Amazon S3 or Nginx. (The files? [search.html](blob/master/search.html), [index.html](blob/master/index.html), [app/](tree/master/app), [lib/](tree/master/lib) and [templates/](tree/master/templates))
 
 The `app/` folder contains the framework: a set of common components (frames, sort of) that render project-specific templates (in `templates/`) to handle variation in search app UIs. The common interface includes a place for search forms, a list view and detail view -- as well as an index page (`index.html`) for listing all your search engines. `lib/` is supporting libraries like JQuery.
 
@@ -141,22 +141,22 @@ Questions?
 ==========
 Check out the [GitHub issues](https://github.com/newsdev/stevedore/issues) or these Theoretically Asked Questions:
 
-####Why is this file so big?
+#### Why is this file so big?
 
 ☕ Java. ☕
 
 (And the fact that we're packaging JRuby, ElasticSearch, etc.)
 
-####Why is local-only mode so slow?
+#### Why is local-only mode so slow?
 
 
 Because it's running Elasticsearch from inside the same Java process as the app itself. It's probably faster if you set up your own separate Elasticsearch server.
 
-####Why does this exist? Shouldn't you use DocumentCloud or Overview or Kibana or ________?
+#### Why does this exist? Shouldn't you use DocumentCloud or Overview or Kibana or ________?
 
 Great question! Those are all great tools made by great people, but they solve a different problem than Stevedore. What problem does Stevedore aim to solve? I don't like doing 'training' for software. I think it's pathological and teaches dependency instead of self-sufficiency. Training for how to use Stevedore's search engines (as opposed to the uploader) should be as simple as *Go to this URL, and then type in that box*. Stevedore is designed to make easy-to-use search engines.
 
-####Has this been used in real life?
+#### Has this been used in real life?
 
 Yeah, we use this code all the time at The New York Times. Reporters use the Stevedore frontend to search emails from politicians, scraped websites and all sorts of other document sets.
 
