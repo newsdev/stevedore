@@ -8,6 +8,27 @@ _.templateSettings = {             // mustache-style templating
                                    // apprentice shepherd?
 };
 
+// You may want to change this and add additional options -- maybe a 'dev' environment or a 'sensitive' one to the
+// Stevedore.config hash. You may want to distinguish between them by the URL, e.g.
+// Stevedore.env = window.location.host.indexOf("localhost") > -1 ? 'dev' : 'prd';
+// Stevedore.config is set in app/config.js
+
+if(window.location.host.indexOf("localhost:9293") + window.location.host.indexOf("127.0.0.1:9293") > -2){
+  Stevedore.env = 'docker';
+}else{
+  Stevedore.env = 'prd';
+}
+Stevedore.project = Stevedore.config.use_slash_based_routing ? window.location.pathname.split("/")[2] : window.location.hash.split("/")[0].replace("#", ''); // the first item; [0] is an empty string, [1] is 'search'
+Stevedore.es_host = Stevedore.config[Stevedore.env + 'Host']
+Stevedore.es_port = Stevedore.config[Stevedore.env + 'Port'] || 9200;
+Stevedore.es_scheme = Stevedore.config[Stevedore.env + 'Scheme'] || 'http';
+Stevedore.es_path = Stevedore.config[Stevedore.env + 'Path'] || '';
+Stevedore.es_index = Stevedore.project;
+//var es_doctype = 'doc'
+Stevedore.max_hits = 50;
+
+
+
 
 // primarily for testing and for the "local"-only demo version
 // you can set ?template=email or ?template=whatever to set the default template type
@@ -34,19 +55,8 @@ Stevedore.Models = {};
 Stevedore.Collections = {};
 Stevedore.projects = {}
 
-Stevedore.env = "prd"; // You may want to change this and add additional options -- maybe a 'dev' environment or a 'sensitive' one to the
-                 // Stevedore.config hash. You may want to distinguish between them by the URL, e.g.
-                 // Stevedore.env = window.location.host.indexOf("localhost") > -1 ? 'dev' : 'prd';
-                 // Stevedore.config is set in app/config.js
 
-Stevedore.project = Stevedore.config.use_slash_based_routing ? window.location.pathname.split("/")[2] : window.location.hash.split("/")[0].replace("#", ''); // the first item; [0] is an empty string, [1] is 'search'
-Stevedore.es_host = Stevedore.config[Stevedore.env + 'Host']
-Stevedore.es_port = Stevedore.config[Stevedore.env + 'Port'] || 9200;
-Stevedore.es_scheme = Stevedore.config[Stevedore.env + 'Scheme'] || 'http';
-Stevedore.es_path = Stevedore.config[Stevedore.env + 'Path'] || '';
-Stevedore.es_index = Stevedore.project;
-//var es_doctype = 'doc'
-Stevedore.max_hits = 50;
+
 
 $('.page-header #project-name').attr('href', (Stevedore.config.use_slash_based_routing ? '/search/' : '/search.html#') + Stevedore.project);
 $('.page-header #project-name span').text(Stevedore.project); // placeholder until config comes back, or if the index isn't defined in the config.

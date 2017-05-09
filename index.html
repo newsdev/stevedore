@@ -83,8 +83,8 @@
     <div class="drawer group-{{= index}}">
       <a class="drawer-toggle {{= index == 0 ? '' : 'collapsed'}}" data-toggle="collapse" href="#drawer-content-{{= index }}">
         <div class="container">
-          <span class="drawer-visible-on-out"><span class="group">{{= groupName }}</span> <span class="text-muted">(Click to show)</span></span>     
-          <span class="drawer-visible-on-in"><span class="group">{{= groupName }}</span> <span class="text-muted">(Click to hide)</span></span>
+          <span class="drawer-visible-on-out"><span class="group">{{= String(group_name) }}</span> <span class="text-muted">(Click to show)</span></span>     
+          <span class="drawer-visible-on-in"><span class="group">{{= String(group_name) }}</span> <span class="text-muted">(Click to hide)</span></span>
           <span class="vee"></span>
         </div>
       </a>
@@ -119,51 +119,55 @@
         }
       }
 
-
-      _(
-        _(
-          _(
-            _(
-              _(Stevedore.document_set_metadata).pairs()
-            ).groupBy(function(key_obj){ return key_obj[1]["group"]; })
-          ).pairs()
-        ).sortBy(function(key_obj){ return parseInt(Stevedore.document_set_groups[key_obj[0]] || 123456); })
-      ).each(function(key_list, i){
-        var groupName = key_list[0];
-        var list_of_document_sets = key_list[1];
-
-        renderGroupOfDocumentSets(groupName, list_of_document_sets, i);
-
-      });
-
-      function renderGroupOfDocumentSets(groupName, list_of_document_sets, group_index){
-        var group_template_func = _.template($('#group-template').html());
-        $('#tools-list').append(group_template_func({'groupName': groupName, 'index': group_index}))
-
-        _(list_of_document_sets).each(function(key_obj){
-          // first render out the document sets with metadata and descriptions
-          // then remove them from the list...
-          var set_name = key_obj[0];
-          var metadata = key_obj[1];
+      _(Stevedore.document_set_metadata).chain()
+      .groupBy(function(key_and_obj){ return key_and_obj["group"]; })
+      .pairs()
+      .sortBy(function(key_and_obj){return parseInt(Stevedore.document_set_groups[key_and_obj[0]] || 123456); })
+      .map(function(group_name_and_docsets){
+        var group_name = group_name_and_docsets[0];
+        var list_of_document_sets = group_name_and_docsets[1];
+        list_of_document_sets = _(list_of_document_sets).reject(function(metadata){
+          var index_name = metadata["index_name"];
 
           // don't render document sets with no name (or a name identical to the index name) yet -- they'll be rendered when we loop through Stevedore.document_sets (which is the list of indexes in ES)
-          if((typeof metadata["name"] === "undefined") || (metadata["name"] == set_name) && groupName != name_for_group_of_orphaned_document_sets) return; 
-          var indexToRemove = Stevedore.document_sets.indexOf(set_name);
-          // if the metadata entry doesn't exist in the list of indexes in ElasticSearch (and therefore it probably lives on a different ElasticSearch), so don't render it.        
-          if(indexToRemove == -1 && groupName != name_for_group_of_orphaned_document_sets) return;
-          if(indexToRemove != -1) Stevedore.document_sets.splice(indexToRemove ,1);
-          
+          if((typeof metadata["name"] === "undefined") || (metadata["name"] == index_name) && group_name != name_for_group_of_orphaned_document_sets) return true; 
+
+          // if the metadata entry doesn't exist in the list of indexes in ElasticSearch (and therefore it probably lives on a different ElasticSearch), so don't render it.     
+          if(Stevedore.document_sets.indexOf(index_name) == -1 && group_name != name_for_group_of_orphaned_document_sets) return true;
           // if it has some metadata, but no title, don't render it yet.        
-          if(metadata["private?"] == "TRUE") return;
-          renderSet(set_name, 'group-' + group_index.toString());
+          return false;
+        })
+        return [group_name, list_of_document_sets];
+      })
+      .filter(function(group_name_and_list_of_document_sets){ return group_name_and_list_of_document_sets[1].length })
+      .each(renderGroupOfDocumentSets);
+      
+
+      function renderGroupOfDocumentSets(group_name_list_of_document_sets, group_index){
+        var group_name = group_name_list_of_document_sets[0];
+        var list_of_document_sets = group_name_list_of_document_sets[1];
+        var group_template_func = _.template($('#group-template').html());        
+        $('#tools-list').append(group_template_func({'group_name': group_name, 'index': group_index}))
+
+        _(list_of_document_sets).each(function(metadata){
+          // first render out the document sets with metadata and descriptions
+          // then remove them from the list...
+          var index_name = metadata['index_name'];
+
+          var indexToRemove = Stevedore.document_sets.indexOf(index_name);          
+          if (indexToRemove != -1) Stevedore.document_sets.splice(indexToRemove, 1);
+
+          if(metadata["private?"] == "TRUE") return true;
+          renderSet(index_name, 'group-' + group_index.toString());
         })
 
       }
-      console.log(Stevedore.document_sets[0]);
 
       // we removed all the ones that had metadata from Stevedore.document_sets. (with `splice`, above)
       // so that now we can render out the unloved, unmetadataed orphan document sets
-      renderGroupOfDocumentSets(name_for_group_of_orphaned_document_sets, _(Stevedore.document_sets).map(function(index_name){ return [index_name, {index_name: index_name, name: index_name}] }), 1234567); 
+      var orphaned_document_sets = _(Stevedore.document_sets).map(function(index_name){ return {index_name: index_name, name: index_name} })
+      if(orphaned_document_sets.length)
+        renderGroupOfDocumentSets([name_for_group_of_orphaned_document_sets, orphaned_document_sets], 1234567); 
     }
 
     Stevedore.get_config(render);

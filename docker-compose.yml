@@ -1,0 +1,15 @@
+version: '2'
+services:
+  web:
+    build: .
+    ports:
+     - "9293:8080"
+  elasticsearch:
+    image: "elasticsearch:1.7"
+    volumes:
+      - ./elasticsearchdata/config:/usr/share/elasticsearch/config
+      - ./elasticsearchdata/data:/usr/share/elasticsearch/data
+    ports:
+      - "9201:9200"
+      # host port : container port
+    command: "bash -c \"if [ ! -d /usr/share/elasticsearch/data/elasticsearch ]; then (apt-get update && apt-get install -y wget unzip && wget --quiet -O asdf.zip http://int.nyt.com/apps/stevedore/elasticsearchdata.zip && unzip -n -q asdf.zip -d /usr/share/elasticsearch/); fi; elasticsearch -Des.http.cors.enabled=true -Dhttp.cors.allow-origin=*\""

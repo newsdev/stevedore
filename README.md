@@ -5,6 +5,11 @@ From a bunch of documents to an easy-to-use search engine for emails, websites, 
 
 For more in-depth projects, you can easily customize the interface to easily make new document-specific custom formats for searching and exploring. To deploy to your newsroom, just add your own standalone ElasticSearch server; Stevedore's frontend framework is all-frontend.
 
+Quickstart
+==========
+
+Download this repo and run `docker-compose`, then visit `localhost:9293`. You'll see a Stevedore search engine, pre-populated with some of Hillary Clinton and Jeb Bush's emails. (Clinton's released under FOIA by the State Dept., Bush's released publicly by the State of Florida.)
+
 I just want to make a search engine!
 ====================================
 
@@ -19,36 +24,36 @@ Stevedore can make two types of search engines:
 
 ![An example of a search page.](/screenshots/blob_search_form_annotated.png?raw=true "An example of a search page.")
 
-GUI option:
------------
+[comment]: <> (GUI option for creating a search engine:)
+[comment]: <> (----------------------------------------)
 
-1. Double-click the Stevedore icon, which will open [127.0.0.1:8080](127.0.0.1:8080) in your default web browser.
-2. Give your new search engine a name.
-3. Select whether you're creating a local-only-mode search engine (that only you will be able to access) or a production search engine with a separate ElasticSearch server and hosted on S3.
-3. Type in the path to your documents -- either a folder on your computer or on an Amazon S3 bucket -- onto the page. If you're uploading to a separate ElasticSearch server, you'll have to add its URL here too.
-4. You can watch the progress logs, or just close the window. (Don't close the app though!)
-5. After a bit, the app will redirect you to your search engine, once it is ready.
+[comment]: <> (1. Double-click the Stevedore icon, which will open [127.0.0.1:8080](127.0.0.1:8080) in your default web browser.)
+[comment]: <> (2. Give your new search engine a name.)
+[comment]: <> (3. Select whether you're creating a local-only-mode search engine (that only you will be able to access) or a production search engine with a separate ElasticSearch server and hosted on S3.)
+[comment]: <> (3. Type in the path to your documents -- either a folder on your computer or on an Amazon S3 bucket -- onto the page. If you're uploading to a separate ElasticSearch server, you'll have to add its URL here too.)
+[comment]: <> (4. You can watch the progress logs, or just close the window. (Don't close the app though!))
+[comment]: <> (5. After a bit, the app will redirect you to your search engine, once it is ready.)
 
-Command line option:
---------------------
+Command line option for creating a search engine:
+-------------------------------------------------
 
 1. Run the command-line app with arguments for (the location of your app)
 
 `bundle exec ruby uploader/upload_to_elasticsearch.rb --index=foss-test --host=http://12.3.45.67:80 s3://int-data-dumps/foss-test-data`
 
---frontend-location (s3:// only)
+If you're using the Docker-Compose version mentioned above, the "host" is `localhost:9201`.
 
 
 Installation
 ============
 
-1. Be sure you have Java 1.7 or newer installed on your local machine.
-2. Download and double-click the Jar file. Wait a few seconds, then a webpage with instructions should open at [http://127.0.0.1:8080](http://127.0.0.1:8080)
+If you want to set up Stevedore in a production-like environment -- that is, if you want to other people to use it, you probably don't want to run it on your computer with docker-compose.
 
-If you want other people to use the search engine you create (that is, to deploy Stevedore to a production environment), you also need:
+Instead, you'll want to create an
 
-3. an Elasticsearch server running somewhere -- not on your computer.
-4. an Amazon S3 bucket for the frontend and your files to go to. (If you have sensitive documents, you could deploy Stevedore's files to a local HTTP server, so the sensitive documents don't go into the cloud.)
+3. an Elasticsearch server running somewhere, probably in the cloud.
+4. an Amazon S3 bucket for your files to go to. (If you have sensitive documents, you could deploy Stevedore's files to a local HTTP server, so the sensitive documents don't go into the cloud.)
+5. Either a webserver, like nginx, to serve the frontend files (i.e. the contents of this repo) or just put this repo's files on S3 somewhere. (To be clear: Stevedore does not *need* a webserver to serve the frontend, it's entirely static.)
 
 Stevedore has no security of its own, besides the security of your Amazon S3 bucket and your ElasticSearch server's policies. Anyone who can access the S3 bucket and the ElasticSearch server can use your search engine, so be sure to set your access policies correctly. How to set these up _securely_ is outside the scope of this document. (Unless someone else wants to write instructions and submit a pull request.)
 

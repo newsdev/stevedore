@@ -2,11 +2,18 @@
 // the details for how to connect to your ElasticSearch instance
 // and where to get metadata from 
 // are written here.
+// app.js determines which environment you're in based on the URL.
 
 Stevedore.config = {
-  prdHost: '10.214.1.107',
-  prdPort: 80,
-   document_set_meta_json: 'https://s3.amazonaws.com/int.nyt.com/applications/stevedore/document_sets.json',
+  prdHost: 'localhost',
+  prdPort: 9200,
+
+  // this is how to get to Elasticsearch if this is running via Docker-Compose
+  dockerHost: 'localhost',
+  dockerPort: 9201,
+  dockerScheme: 'http',
+
+
   use_slash_based_routing: true,
   // prdHost: "12.3.45.6", // IP address of your elasticsearch server
   // prdPort: 80,          // your elasticsearch server's port is probably 9200, but might be 80 or 443
