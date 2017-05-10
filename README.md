@@ -127,7 +127,7 @@ Development
 1. clone the repo
 2. Be sure to have JRuby 1.7 or 9.0.0.0 installed (e.g. with [rbenv](https://github.com/sstephenson/rbenv))
 2. `bundle install`
-3. `bundle exec rackup`
+3. `bundle exec rackup` (or `NGINXVERSION=1 bundle exec rackup` if you want to simulate running under NGINX; or just run `nginx`)
 4. edit `templates/` (or `app/`) code
 
 Building

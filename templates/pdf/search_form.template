@@ -1,0 +1,38 @@
+<fieldset>
+
+  <div id="basic-options">
+    <div class="row panel">
+      <div class="form-input">
+        <div class="form-group">
+          <h5 class="form-subhed basic">Full Text Search:</h5>
+          <div class="col-sm-12">
+              <div class="control-input">
+                <input name="search" id="search" class="form-control" placeholder="Your query..." value="{{= search.query_string.replace(/\"/g, "&quot;") }}" type="search">
+              </div>
+          </div> 
+        </div>
+      </div>
+      <div class="form-notes">
+        You may use familiar search operators like:
+        <ul>
+          <li><span style="font-family: monospace;">"quotes for phrases to appear together"</span></li>
+          <li>a minus sign, e.g. <span style="font-family: monospace;">-irrelevant</span> to exclude documents with a given word.</li>
+          <li>Boolean operators like <span style="font-family: monospace;">AND</span> and <span style="font-family: monospace;">NOT</span></li>
+          </ul>
+        <p><a class="analysis" href="{{= Stevedore.config.use_slash_based_routing ? '/search/' : 'search.html#'}}{{= Stevedore.project }}/emotive_words">Search for words that indicate dismay or extreme emotion.</a><p>
+        <p><a href="https://lucene.apache.org/core/2_9_4/queryparsersyntax.html"> What else can I type here? (Search syntax)</a></p>
+      </div>
+    </div>
+  <div class="form-group drawer drawer-default">
+      <div class="form-input">
+        <div class="control-input">
+          <input id="search-btn" type="submit" class="btn btn-primary btn-adcom pull-right" value="Search">
+        </div>
+      </div>
+      <div class="form-notes">
+        Good luck!
+      </div>
+    </div>
+  </div>
+
+</fieldset>
