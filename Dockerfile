@@ -13,6 +13,7 @@ ADD index.html /var/www/html/
 ADD search.html /var/www/html/
 ADD document_sets.json /var/www/html/
 ADD conf/stevedore.nginx.conf /etc/nginx/conf.d/
+ADD user-files/ /var/www/files/user-files/
 
 EXPOSE 8080
 CMD ["nginx"]

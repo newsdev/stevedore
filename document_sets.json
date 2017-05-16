@@ -29,6 +29,16 @@
             "private?": "TRUE",
             "data_type": "blob",
             "description": "Documents a source gave us that we don't really want the whole newsroom to know about. (But if someone finds out, it's not the end of the world.)"
+        },
+
+        {
+            "index_name": "user-files",
+            "name": "The Files You Just Indexed from user-files/",
+            "group": "Highlights",
+            "private?": "FALSE",
+            "data_type": "blob",
+            "description": "Documents that you put in the user-files/ folder"
+
         }
     ],
     "sample searches": [

@@ -13,3 +13,11 @@ services:
       - "9201:9200"
       # host port : container port
     command: "bash -c \"if [ ! -d /usr/share/elasticsearch/data/elasticsearch ]; then (apt-get update && apt-get install -y wget unzip && wget --quiet -O asdf.zip http://int.nyt.com/apps/stevedore/elasticsearchdata.zip && unzip -n -q asdf.zip -d /usr/share/elasticsearch/); fi; elasticsearch -Des.http.cors.enabled=true -Dhttp.cors.allow-origin=*\""
+  uploader: 
+    build:
+      context: .
+      dockerfile: Dockerfile.uploader
+    links:
+      - elasticsearch:dockerelasticsearch
+    command: "stevedore --host=dockerelasticsearch:9200 --index=user-files user-files/"
+    # unfortunately we need to sleep so there's time to download and unzip the documetns.

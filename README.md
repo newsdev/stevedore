@@ -10,6 +10,10 @@ Quickstart
 
 Download this repo and run `docker-compose`, then visit `localhost:9293`. You'll see a Stevedore search engine, pre-populated with some of Hillary Clinton and Jeb Bush's emails. (Clinton's released under FOIA by the State Dept., Bush's released publicly by the State of Florida.)
 
+If you drop some files you want to search in user-files, Stevedore will index them for search. (If those files are emails or PDFs, you'll also want to change the `data-type` for user-files in [document_sets.json](document_sets.json#L39) to `pdf` or `email`.)
+
+This "quickstart" doesn't expose all of the features of Stevedore -- you'd have to go through the full installation for that -- but it's pretty close. 
+
 I just want to make a search engine!
 ====================================
 
@@ -39,7 +43,7 @@ Command line option for creating a search engine:
 
 1. Run the command-line app with arguments for (the location of your app)
 
-`bundle exec ruby uploader/upload_to_elasticsearch.rb --index=foss-test --host=http://12.3.45.67:80 s3://int-data-dumps/foss-test-data`
+`bundle exec ruby uploader/stevedore.rb --index=foss-test --host=http://12.3.45.67:80 s3://int-data-dumps/foss-test-data`
 
 If you're using the Docker-Compose version mentioned above, the "host" is `localhost:9201`.
 

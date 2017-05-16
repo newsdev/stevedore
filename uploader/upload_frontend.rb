@@ -1,7 +1,7 @@
 require 'aws-sdk'
 
 
-# same arguments as upload_to_elasticsearch.
+# same arguments as stevedore uploader.
 if __FILE__ == $0
   require 'optparse'
   require 'ostruct'
