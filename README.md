@@ -28,16 +28,6 @@ Stevedore can make two types of search engines:
 
 ![An example of a search page.](/screenshots/blob_search_form_annotated.png?raw=true "An example of a search page.")
 
-[comment]: <> (GUI option for creating a search engine:)
-[comment]: <> (----------------------------------------)
-
-[comment]: <> (1. Double-click the Stevedore icon, which will open [127.0.0.1:8080](127.0.0.1:8080) in your default web browser.)
-[comment]: <> (2. Give your new search engine a name.)
-[comment]: <> (3. Select whether you're creating a local-only-mode search engine (that only you will be able to access) or a production search engine with a separate ElasticSearch server and hosted on S3.)
-[comment]: <> (3. Type in the path to your documents -- either a folder on your computer or on an Amazon S3 bucket -- onto the page. If you're uploading to a separate ElasticSearch server, you'll have to add its URL here too.)
-[comment]: <> (4. You can watch the progress logs, or just close the window. (Don't close the app though!))
-[comment]: <> (5. After a bit, the app will redirect you to your search engine, once it is ready.)
-
 Command line option for creating a search engine:
 -------------------------------------------------
 
