@@ -1,5 +1,6 @@
 <h4 class="email-name">
-	<a class="preview" href="#">
+    <a class="preview" href="{{= Stevedore.config.use_slash_based_routing ? '/search/' : 'search.html#'}}{{=Stevedore.project}}/document/{{=id}}">
+
 	{{= analyzed.metadata.subject.toString().trim() == '' ?  'No Subject' : analyzed.metadata.subject }}
 	</a>
     {{ if( analyzed.metadata["dkim_verified"]){ }}

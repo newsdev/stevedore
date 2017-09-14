@@ -69,6 +69,11 @@ Stevedore.SearchApp = Backbone.Router.extend({
   emailSenderAnalysis: function() {
     Stevedore.analysis_view = new Stevedore.Views.EmailSenderAnalysis({ el: $('#analysis-container')[0] });
     Stevedore.analysis_view.render();
+  },
+
+  allDocumentsAnalysis: function(){
+    Stevedore.analysis_view = new Stevedore.Views.AllDocumentsAnalysis({ el: $('#analysis-container')[0] });
+    Stevedore.analysis_view.render();
   }
 });
 

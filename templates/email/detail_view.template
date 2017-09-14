@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h4 class="blob-name"><a class="preview" href="#/blob/{{= id }}">
+    <h4 class="blob-name"><a class="preview" href="{{= detail_view_link }}">
         {{= analyzed.metadata.subject.toString().trim() == '' ?  'No Subject' : analyzed.metadata.subject }}
     </a></h4>
 

@@ -30,10 +30,10 @@ Stevedore.Views.Detail = Backbone.View.extend({
     this.setTemplate();
     this.$el.addClass(Stevedore.template_names['detail_view']);
     this.$el.html(this.template(
-      _.extend({}, Stevedore.def_obj, this.model.attributes, {tk: 'tk'} )
+      _.extend({}, Stevedore.def_obj, this.model.attributes, {tk: 'tk', detail_view_link: this.detail_view_link()} )
     ));
     this.$el.find('#detail-view').html(this.project_specific_template(
-      _.extend({}, Stevedore.def_obj, this.model.attributes, {tk: 'tk'} )
+      _.extend({}, Stevedore.def_obj, this.model.attributes, {tk: 'tk', detail_view_link: this.detail_view_link()} )
     ));
     this.$el.scrollTop(0);
 
@@ -86,6 +86,11 @@ Stevedore.Views.Detail = Backbone.View.extend({
     this.project_specific_template = _.template("<div class='modal-body'><h2>Item not found </h2></div>")
     this.render();
     return this;
+  },
+
+    // just an internal helper
+  detail_view_link: function(){
+    return ((Stevedore.config.use_slash_based_routing ? ('/search/' + Stevedore.project) : ("#" + Stevedore.project)) + "/") + "document/" + this.model.get('id')
   },
 
 })

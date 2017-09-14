@@ -27,5 +27,8 @@ module Stevedore
     get '/' do 
       open('index.html').read
     end
+    get '/search.html' do
+      open('search.html').read
+    end
   end
 end
