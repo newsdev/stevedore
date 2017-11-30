@@ -6,7 +6,7 @@ Stevedore.Views.ListItem = Backbone.View.extend({
   },
 
   initialize: function(){
-    _.bindAll(this, 'preview', 'setTemplate', 'render');
+    _.bindAll(this, 'preview', 'setTemplate', 'render', 'detail_view_link', 'detail_view_route');
     this.setTemplate();
   },
   setTemplate: function(){
@@ -45,7 +45,7 @@ Stevedore.Views.ListItem = Backbone.View.extend({
                                                       'model': this.model, 
                                                       'attributes': { 'previous': current_location }
                                                     });
-    Stevedore.router.navigate(this.detail_view_link());
+    Stevedore.router.navigate(this.detail_view_route());
 
     Stevedore.detail_view.render();
   },
@@ -53,8 +53,12 @@ Stevedore.Views.ListItem = Backbone.View.extend({
 
   // just an internal helper
   detail_view_link: function(){
-    return ((Stevedore.config.use_slash_based_routing ? ('/search/' + Stevedore.project) : ("#" + Stevedore.project)) + "/") + "document/" + this.model.get('id')
+    return ((Stevedore.config.use_slash_based_routing ? ('/search/' + Stevedore.project) : ("#" + Stevedore.project)) + "/") + this.detail_view_route()
   },
+
+  detail_view_route: function(){
+    return "document/" + this.model.get('id')
+  }
 
 });
 

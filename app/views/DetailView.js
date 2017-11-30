@@ -3,7 +3,7 @@ Stevedore.Views.Detail = Backbone.View.extend({
     'click .close': 'close',
   },
   initialize: function(){
-    _.bindAll(this, 'render', 'renderNotFound', 'close', 'pageThru', 'handleClick');
+    _.bindAll(this, 'render', 'renderNotFound', 'close', 'pageThru', 'handleClick', 'detail_view_link', 'detail_view_route');
     this.template = _.template($('#detail-container-template').html());
     this.listenTo(this.model, 'change', this.render);
     this.listenTo(this.model, 'notfound', this.renderNotFound);
@@ -88,9 +88,13 @@ Stevedore.Views.Detail = Backbone.View.extend({
     return this;
   },
 
-    // just an internal helper
+  // just an internal helper
   detail_view_link: function(){
-    return ((Stevedore.config.use_slash_based_routing ? ('/search/' + Stevedore.project) : ("#" + Stevedore.project)) + "/") + "document/" + this.model.get('id')
+    return ((Stevedore.config.use_slash_based_routing ? ('/search/' + Stevedore.project) : ("#" + Stevedore.project)) + "/") + this.detail_view_route()
   },
+
+  detail_view_route: function(){
+    return "document/" + this.model.get('id')
+  }
 
 })
