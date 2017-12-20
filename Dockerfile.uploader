@@ -5,5 +5,4 @@ WORKDIR /usr/src/app
 RUN gem install bundler
 ADD Gemfile /usr/src/app/
 ADD Gemfile.lock /usr/src/app/
-ADD user-files /usr/src/app/user-files
 RUN bundle install

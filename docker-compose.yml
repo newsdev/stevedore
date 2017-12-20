@@ -17,7 +17,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.uploader
+    volumes:
+        - ./user-files/:/user-files
     links:
       - elasticsearch:dockerelasticsearch
-    command: "stevedore --host=dockerelasticsearch:9200 --index=user-files user-files/"
-    # unfortunately we need to sleep so there's time to download and unzip the documetns.
+    command: "stevedore --host=dockerelasticsearch:9200 --index=user-files /user-files/"
