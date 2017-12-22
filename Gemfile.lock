@@ -37,7 +37,7 @@ GEM
     multi_json (1.12.1)
     multipart-post (2.0.0)
     mustermann (1.0.0)
-    nokogiri (1.7.2-java)
+    nokogiri (1.8.1-java)
     parslet (1.8.0)
     pst (0.0.2)
       andand
@@ -90,4 +90,4 @@ DEPENDENCIES
   warbler (~> 2.0.0)
 
 BUNDLED WITH
-   1.14.6
+   1.15.3
