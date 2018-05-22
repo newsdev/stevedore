@@ -13,7 +13,7 @@ platform :jruby do
   # because Warbler can't handle gems sourced from git, I had to make a whole new gem.
   gem 'stevedore-uploader', "~> 1.0.15"
   
-  gem "sinatra"
+  gem "sinatra", "~> 2.0.1"
   gem "warbler", "~> 2.0.0"
   gem "jruby-jars", "9.1.5.0"
 
