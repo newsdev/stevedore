@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-platform :jruby do 
+platform :jruby do
   gem 'bundler'
   gem 'elasticsearch'
   gem 'manticore'
@@ -12,8 +12,8 @@ platform :jruby do
   # but with my own custom version of Tika, http://github.com/jeremybmerrill/tika
   # because Warbler can't handle gems sourced from git, I had to make a whole new gem.
   gem 'stevedore-uploader', "~> 1.0.15"
-  
-  gem "sinatra", "~> 2.0.1"
+
+  gem "sinatra", "~> 2.0.2"
   gem "warbler", "~> 2.0.0"
   gem "jruby-jars", "9.1.5.0"
 

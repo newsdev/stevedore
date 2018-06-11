@@ -37,20 +37,20 @@ GEM
     multi_json (1.12.1)
     multipart-post (2.0.0)
     mustermann (1.0.2)
-    nokogiri (1.8.1-java)
+    nokogiri (1.8.2-java)
     parslet (1.8.0)
     pst (0.0.2)
       andand
     rack (2.0.5)
-    rack-protection (2.0.1)
+    rack-protection (2.0.3)
       rack
     rake (12.0.0)
     rika-stevedore (1.7.4-java)
     rubyzip (1.2.1)
-    sinatra (2.0.1)
+    sinatra (2.0.3)
       mustermann (~> 1.0)
       rack (~> 2.0)
-      rack-protection (= 2.0.1)
+      rack-protection (= 2.0.3)
       tilt (~> 2.0)
     stevedore-uploader (1.0.15-java)
       aws-sdk (~> 2)
@@ -85,7 +85,7 @@ DEPENDENCIES
   guess_html_encoding
   jruby-jars (= 9.1.5.0)
   manticore
-  sinatra (~> 2.0.1)
+  sinatra (~> 2.0.2)
   stevedore-uploader (~> 1.0.15)
   therubyrhino
   warbler (~> 2.0.0)
