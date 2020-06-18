@@ -176,5 +176,10 @@ Connecting to the elasticsearch server
 The elasticsearch server runs on it's own EC2 instance. Log into the int aws page here: https://nytint.signin.aws.amazon.com/console. The prd instance is named `stevedore-elasticsearch-but-bigger-this-time`. While on VPN, you can ssh onto the instance using the NYTCar.pem ssh key:
 `ssh -v -i ~/.ssh/NYTCar.pem ubuntu@10.214.1.107`.
 
-You can start the process with systemctl:
-`sudo systemctl start elasticsearch`
+You can start the process with this command:
+
+`sudo service elasticsearch start`
+
+and check that it is running with
+
+`sudo service elasticsearch status`
