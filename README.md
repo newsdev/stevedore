@@ -169,17 +169,3 @@ You can help by:
 4. Fixing bugs in the [issues section](https://github.com/newsdev/stevedore/issues).
 5. Telling your friends if Stevedore might be useful to them.
 6. Helping other people in the [issues section](https://github.com/newsdev/stevedore/issues) if you know how to fix the problem their experiencing.
-
-Connecting to the elasticsearch server
-==========
-
-The elasticsearch server runs on it's own EC2 instance. Log into the int aws page here: https://nytint.signin.aws.amazon.com/console. The prd instance is named `stevedore-elasticsearch-but-bigger-this-time`. While on VPN, you can ssh onto the instance using the NYTCar.pem ssh key:
-`ssh -v -i ~/.ssh/NYTCar.pem ubuntu@10.214.1.107`.
-
-You can start the process with this command:
-
-`sudo service elasticsearch start`
-
-and check that it is running with
-
-`sudo service elasticsearch status`
