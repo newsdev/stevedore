@@ -1,3 +1,8 @@
+![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) NOTE: Stevedore is no longer maintained! ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)
+=======================================================
+This repo is now archived.
+
+
 Stevedore, an ElasticSearch Frontend & Ingestion Engine
 =======================================================
 
